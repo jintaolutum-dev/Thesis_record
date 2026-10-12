@@ -1,0 +1,451 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# mpi_lab experiment config – Comb async scan on CoolMUC-4
+# Usage: python mpi_lab.py preview --config config/comb_cm4.yaml
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: comb_async_scan
+output_base: ../generated   # relative to this config file
+
+# ── Binary paths (edit here) ────────────────────────────────────────────────
+paths:
+  intelmpi_midcomm: &intelmpi_midcomm "/dss/dsshome1/02/ge63neh3/comb_with_compute/build_1_intel_dummy_com_OMP/bin/comb"
+  intelmpi_no_midcomm: &intelmpi_no_midcomm "/dss/dsshome1/02/ge63neh3/comb_with_compute/build_1_intel_dummy_com_OMP/bin/comb"
+  openmpi_midcomm: &openmpi_midcomm "/dss/dsshome1/02/ge63neh3/comb_with_compute/build_2_openmpi_dummy_OMP/bin/comb"
+  openmpi_no_midcomm: &openmpi_no_midcomm "/dss/dsshome1/02/ge63neh3/comb_with_compute/build_2_openmpi_dummy_OMP/bin/comb"
+  mpich_midcomm: &mpich_midcomm "/dss/dsshome1/02/ge63neh3/comb_with_compute/build_3_mpich_dummy_OMP/bin/comb"
+  mpich_no_midcomm: &mpich_no_midcomm "/dss/dsshome1/02/ge63neh3/comb_with_compute/build_3_mpich_dummy_OMP/bin/comb"
+
+# ── MPI implementations ───────────────────────────────────────────────────────
+mpi_impl:
+  intelmpi:
+    modules:
+      - stack/24.4.0
+      - intel-mpi/2021.16.0
+    modules_unload:
+      - openmpi/4.1.7-gcc13
+    binary: *intelmpi_midcomm
+    template: comb_intelmpi.slurm.j2
+    protocol_env:
+      I_MPI_FABRICS: "shm:ofi"
+      I_MPI_OFI_PROVIDER: "verbs"
+      I_MPI_HYDRA_IFACE: "ib0.8001"
+      I_MPI_DEBUG: "5"
+    async_env: I_MPI_ASYNC_PROGRESS
+    async_threads_env: I_MPI_ASYNC_PROGRESS_THREADS
+    async_pin_env: I_MPI_ASYNC_PROGRESS_PIN
+    async_threads: 1
+    # Per-MPI, per-topology, per-grid overrides in microseconds.
+    compute_target_us:
+      1n2r_c24:
+        large: 8000
+        medium: 1000
+        small_msg: 20
+      2n2r_c24:
+        large: 12000
+        medium: 2500
+        small_msg: 30
+        scan_g8_v1: 14
+        scan_g8_v2: 13
+        scan_g8_v3: 22
+        scan_g8_v4: 16
+        scan_g8_v6: 27
+        scan_g8_v8: 23
+        scan_g8_v10: 40
+        scan_g8_v12: 62
+        scan_g32_v1: 33
+        scan_g32_v2: 56
+        scan_g32_v4: 30
+        scan_g32_v8: 125
+        scan_g32_v16: 203
+        scan_g32_v32: 202
+        scan_g32_v64: 199
+        scan_g32_v128: 195
+        scan_g32_v192: 190
+        scan_g32_v256: 185
+        scan_g32_v336: 179
+      2n4r_c24: {}
+      # scan_g8_*: measured inter omp/omp-omp Case06, rounded to us.
+      # scan_g32_*: linear extrapolation from those eight measured points.
+      4n4r_c24:
+        scan_g8_v2: 9
+        scan_g8_v3: 12
+        scan_g8_v5: 24
+        scan_g8_v7: 14
+        scan_g8_v10: 20
+        scan_g8_v13: 23
+        scan_g8_v17: 27
+        scan_g8_v20: 32
+        scan_g32_v2: 32
+        scan_g32_v4: 52
+        scan_g32_v8: 93
+        scan_g32_v15: 176
+        scan_g32_v30: 343
+        scan_g32_v60: 676
+        scan_g32_v121: 1342
+        scan_g32_v242: 2674
+        scan_g32_v363: 4006
+        scan_g32_v484: 5338
+        scan_g32_v635: 7002
+
+  intelmpi_tcp:
+    modules:
+      - stack/24.4.0
+      - intel-mpi/2021.16.0
+    modules_unload:
+      - openmpi/4.1.7-gcc13
+    binary: *intelmpi_midcomm
+    template: comb_intelmpi_tcp.slurm.j2
+    protocol_env:
+      I_MPI_FABRICS: "shm:ofi"
+      I_MPI_OFI_PROVIDER: "tcp"
+      I_MPI_DEBUG: "5"
+    async_env: I_MPI_ASYNC_PROGRESS
+    async_threads_env: I_MPI_ASYNC_PROGRESS_THREADS
+    async_pin_env: I_MPI_ASYNC_PROGRESS_PIN
+    async_threads: 1
+    compute_target_us:
+      1n2r_c24:
+        large: 8000
+        medium: 1000
+        small_msg: 20
+      2n2r_c24:
+        large: 12000
+        medium: 2500
+        small_msg: 30
+        scan_g8_v1: 25
+        scan_g8_v2: 25
+        scan_g8_v3: 31
+        scan_g8_v4: 32
+        scan_g8_v6: 37
+        scan_g8_v8: 41
+        scan_g8_v10: 59
+        scan_g8_v12: 70
+        scan_g32_v1: 54
+        scan_g32_v2: 59
+        scan_g32_v4: 97
+        scan_g32_v8: 98
+        scan_g32_v16: 213
+        scan_g32_v32: 335
+        scan_g32_v64: 580
+        scan_g32_v128: 1068
+        scan_g32_v192: 1557
+        scan_g32_v256: 2046
+        scan_g32_v336: 2657
+      2n4r_c24: {}
+      4n4r_c24:
+        scan_g8_v2: 25
+        scan_g8_v3: 26
+        scan_g8_v5: 33
+        scan_g8_v7: 32
+        scan_g8_v10: 39
+        scan_g8_v13: 40
+        scan_g8_v17: 42
+        scan_g8_v20: 57
+        scan_g32_v2: 57
+        scan_g32_v4: 80
+        scan_g32_v8: 138
+        scan_g32_v15: 253
+        scan_g32_v30: 484
+        scan_g32_v60: 946
+        scan_g32_v121: 1869
+        scan_g32_v242: 3717
+        scan_g32_v363: 5564
+        scan_g32_v484: 7411
+        scan_g32_v635: 9720
+
+  openmpi:
+    modules:
+      - stack/24.4.0
+      - openmpi/4.1.8-intel24
+    modules_unload:
+      - openmpi/4.1.8-gcc13
+    binary: *openmpi_midcomm
+    template: comb_openmpi.slurm.j2
+    protocol_env:
+      OMPI_MCA_pml: ob1
+      OMPI_MCA_btl: self,vader,tcp
+    diagnostics:
+      report_bindings: true
+      mca_env:
+        OMPI_MCA_btl_base_verbose: "100"
+        OMPI_MCA_bml_base_verbose: "100"
+    async_env: OMPI_MCA_mpi_yield_when_idle
+    async_env_on: "0"          # OpenMPI: 0 = don't yield while polling
+    compute_target_us: 
+      1n2r_c24:
+        large: 9000
+        medium: 1000
+        small_msg: 10
+      2n2r_c24:
+        large: 15000
+        medium: 1500
+        small_msg: 20
+        scan_g8_v1: 129
+        scan_g8_v2: 169
+        scan_g8_v3: 190
+        scan_g8_v4: 204
+        scan_g8_v6: 241
+        scan_g8_v8: 268
+        scan_g8_v10: 281
+        scan_g8_v12: 302
+        scan_g32_v1: 312
+        scan_g32_v2: 455
+        scan_g32_v4: 249
+        scan_g32_v8: 212
+        scan_g32_v16: 237
+        scan_g32_v32: 315
+        scan_g32_v64: 471
+        scan_g32_v128: 784
+        scan_g32_v192: 1096
+        scan_g32_v256: 1408
+        scan_g32_v336: 1799
+      2n4r_c24: {}
+      4n4r_c24:
+        scan_g8_v2: 125
+        scan_g8_v3: 175
+        scan_g8_v5: 191
+        scan_g8_v7: 197
+        scan_g8_v10: 257
+        scan_g8_v13: 260
+        scan_g8_v17: 280
+        scan_g8_v20: 365
+        scan_g32_v2: 365
+        scan_g32_v4: 548
+        scan_g32_v8: 969
+        scan_g32_v15: 1810
+        scan_g32_v30: 3494
+        scan_g32_v60: 6861
+        scan_g32_v121: 13596
+        scan_g32_v242: 27066
+        scan_g32_v363: 40535
+        scan_g32_v484: 54004
+        scan_g32_v635: 70841
+  mpich:
+    modules: []
+    binary: *mpich_midcomm
+    template: comb_mpich.slurm.j2
+    protocol_env:
+      PATH: "/dss/dsshome1/02/ge63neh3/local_software/mpich-4.2.2-gcc-spr/bin:${PATH}"
+      LD_LIBRARY_PATH: "/dss/dsshome1/02/ge63neh3/local_software/mpich-4.2.2-gcc-spr/lib:/dss/dsshome1/02/ge63neh3/local_software/mpich-runtime-deps/lib64:/lrz/sys/spack/release/sles15.5/24.6.0/opt/sapphirerapids/rdma-core/52.0-gcc-sdcyulo/lib64:${LD_LIBRARY_PATH:-}"
+      FI_PROVIDER: tcp
+    async_env: MPIR_CVAR_ASYNC_PROGRESS
+    # Stock MPICH 4.2.2's built-in async backend creates one progress thread
+    # per rank. Other MPICH backends may override this capability.
+    async_threads: 1
+    compute_target_us:
+      2n2r_c24:
+        scan_g8_v1: 41
+        scan_g8_v2: 30
+        scan_g8_v3: 50
+        scan_g8_v4: 37
+        scan_g8_v6: 44
+        scan_g8_v8: 45
+        scan_g8_v10: 73
+        scan_g8_v12: 122
+        scan_g32_v1: 48
+        scan_g32_v2: 56
+        scan_g32_v4: 79
+        scan_g32_v8: 84
+        scan_g32_v16: 108
+        scan_g32_v32: 196
+        scan_g32_v64: 372
+        scan_g32_v128: 724
+        scan_g32_v192: 1076
+        scan_g32_v256: 1428
+        scan_g32_v336: 1868
+      4n4r_c24:
+        scan_g8_v2: 45
+        scan_g8_v3: 30
+        scan_g8_v5: 52
+        scan_g8_v7: 35
+        scan_g8_v10: 45
+        scan_g8_v13: 45
+        scan_g8_v17: 50
+        scan_g8_v20: 52
+        scan_g32_v2: 52
+        scan_g32_v4: 63
+        scan_g32_v8: 87
+        scan_g32_v15: 137
+        scan_g32_v30: 236
+        scan_g32_v60: 434
+        scan_g32_v121: 829
+        scan_g32_v242: 1620
+        scan_g32_v363: 2411
+        scan_g32_v484: 3202
+        scan_g32_v635: 4191
+    cases:
+      - {async: 0, omp_threads: 1,  wait_mode: wait_all}
+      - {async: 0, omp_threads: 24, wait_mode: wait_all}
+      - {async: 0, omp_threads: 1,  wait_mode: test_all}
+      - {async: 0, omp_threads: 24, wait_mode: test_all}
+      - {async: 1, omp_threads: 1,  wait_mode: wait_all}
+      - {async: 1, omp_threads: 12, async_threads: 1, wait_mode: wait_all}
+      - {async: 1, omp_threads: 23, wait_mode: wait_all}
+      - {async: 1, omp_threads: 1,  wait_mode: test_all}
+      - {async: 1, omp_threads: 12, async_threads: 1, wait_mode: test_all}
+      - {async: 1, omp_threads: 23, wait_mode: test_all}
+
+# ── Node / rank topology ──────────────────────────────────────────────────────
+topology:
+  - name: 1n2r_c24           # 1 node × 2 ranks/node, 24 cpus/rank used at runtime (112 cpus reserved/job)
+    nodes: 1
+    ntasks_per_node: 2
+    cpus_per_task: 56
+    divide: "2_1_1"
+    # Optional per-grid dummy-compute targets in microseconds. Values here
+    # override grid.compute_target_us for this topology.
+    compute_target_us:
+      large: 8000
+      medium: 1000
+      small_msg: 20
+
+  - name: 2n2r_c24           # 2 nodes × 1 rank/node, 24 cpus/rank used at runtime (112 cpus reserved/job)
+    nodes: 2
+    ntasks_per_node: 1
+    cpus_per_task: 56
+    divide: "2_1_1"
+    compute_target_us:
+      large: 12000
+      medium: 2000
+      small_msg: 30
+
+  - name: 2n4r_c24           # 2 nodes × 2 ranks/node, 24 cpus/rank used at runtime (112 cpus reserved/job)
+    nodes: 2
+    ntasks_per_node: 2
+    cpus_per_task: 28
+    divide: "2_2_1"
+    compute_target_us: {}
+
+  - name: 4n4r_c24           # 4 nodes × 1 rank/node, 24 cpus/rank used at runtime (112 cpus reserved/job)
+    nodes: 4
+    ntasks_per_node: 1
+    cpus_per_task: 28
+    divide: "2_2_1"
+    compute_target_us: {}
+
+# ── Grid / halo message-size tiers ────────────────────────────────────────────
+grid:
+  # Keep a distinct key so historical generated/.../small results are not overwritten.
+  small_msg:
+    label: "small"
+    size: "32_32_32"
+    ghost: "1_1_1"
+    periodic: "1_1_1"
+    vars: 1
+    cutoff: 250
+    compute_target_us: 50
+    cycles: 5
+
+  medium:
+    label: "medium"
+    size: "128_128_128"
+    ghost: "4_4_4"
+    periodic: "1_1_1"
+    vars: 3
+    cutoff: 250
+    compute_target_us: 3000
+    cycles: 100
+
+  large:
+    label: "large"
+    size: "256_256_256"
+    ghost: "4_4_4"
+    periodic: "1_1_1"
+    vars: 3
+    cutoff: 250
+    compute_target_us: 8000
+    cycles: 20
+
+# cm4_std message-size bundle. The web GUI uses this matrix only for cm4_std;
+# cm4_inter continues to use the grid matrix above.
+cm4_std_grid: &cm4_std_grid_4n4r
+  scan_g8_v2:   {label: "peer_ref_1.56KiB",  size: "8_8_8",    ghost: "1_1_1", periodic: "1_1_1", vars: 2,   cutoff: 250, cycles: 100, compute_target_us: 0}
+  scan_g8_v3:   {label: "peer_ref_3.13KiB",  size: "8_8_8",    ghost: "1_1_1", periodic: "1_1_1", vars: 3,   cutoff: 250, cycles: 100, compute_target_us: 0}
+  scan_g8_v5:   {label: "peer_ref_4.69KiB",  size: "8_8_8",    ghost: "1_1_1", periodic: "1_1_1", vars: 5,   cutoff: 250, cycles: 100, compute_target_us: 0}
+  scan_g8_v7:   {label: "peer_ref_6.25KiB",  size: "8_8_8",    ghost: "1_1_1", periodic: "1_1_1", vars: 7,   cutoff: 250, cycles: 100, compute_target_us: 0}
+  scan_g8_v10:  {label: "peer_ref_9.38KiB",  size: "8_8_8",    ghost: "1_1_1", periodic: "1_1_1", vars: 10,  cutoff: 250, cycles: 100, compute_target_us: 0}
+  scan_g8_v13:  {label: "peer_ref_12.50KiB", size: "8_8_8",    ghost: "1_1_1", periodic: "1_1_1", vars: 13,  cutoff: 250, cycles: 100, compute_target_us: 0}
+  scan_g8_v17:  {label: "peer_ref_15.63KiB", size: "8_8_8",    ghost: "1_1_1", periodic: "1_1_1", vars: 17,  cutoff: 250, cycles: 100, compute_target_us: 0}
+  scan_g8_v20:  {label: "peer_ref_18.75KiB", size: "8_8_8",    ghost: "1_1_1", periodic: "1_1_1", vars: 20,  cutoff: 250, cycles: 100, compute_target_us: 0}
+  scan_g32_v2:  {label: "peer_ref_18.06KiB", size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 2,   cutoff: 250, cycles: 100, compute_target_us: 0}
+  scan_g32_v4:  {label: "peer_ref_36.13KiB", size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 4,   cutoff: 250, cycles: 100, compute_target_us: 0}
+  scan_g32_v8:  {label: "peer_ref_72.25KiB", size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 8,   cutoff: 250, cycles: 100, compute_target_us: 0}
+  scan_g32_v15: {label: "peer_ref_144.50KiB", size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 15,  cutoff: 250, cycles: 100, compute_target_us: 0}
+  scan_g32_v30: {label: "peer_ref_289.00KiB", size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 30,  cutoff: 250, cycles: 100, compute_target_us: 0}
+  scan_g32_v60: {label: "peer_ref_578.00KiB", size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 60,  cutoff: 250, cycles: 100, compute_target_us: 0}
+  scan_g32_v121: {label: "peer_ref_1.13MiB",  size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 121, cutoff: 250, cycles: 100, compute_target_us: 0}
+  scan_g32_v242: {label: "peer_ref_2.26MiB",  size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 242, cutoff: 250, cycles: 100, compute_target_us: 0}
+  scan_g32_v363: {label: "peer_ref_3.39MiB",  size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 363, cutoff: 250, cycles: 100, compute_target_us: 0}
+  scan_g32_v484: {label: "peer_ref_4.52MiB",  size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 484, cutoff: 250, cycles: 100, compute_target_us: 0}
+  scan_g32_v635: {label: "peer_ref_5.93MiB",  size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 635, cutoff: 250, cycles: 100, compute_target_us: 0}
+
+cm4_std_grid_by_topology:
+  2n2r_c24:
+    scan_g8_v1:    {label: "peer_1.56KiB",  size: "8_8_8",    ghost: "1_1_1", periodic: "1_1_1", vars: 1,   cutoff: 250, cycles: 100, compute_target_us: 0, target_source: "measured median"}
+    scan_g8_v2:    {label: "peer_3.13KiB",  size: "8_8_8",    ghost: "1_1_1", periodic: "1_1_1", vars: 2,   cutoff: 250, cycles: 100, compute_target_us: 0, target_source: "measured median"}
+    scan_g8_v3:    {label: "peer_4.69KiB",  size: "8_8_8",    ghost: "1_1_1", periodic: "1_1_1", vars: 3,   cutoff: 250, cycles: 100, compute_target_us: 0, target_source: "measured median"}
+    scan_g8_v4:    {label: "peer_6.25KiB",  size: "8_8_8",    ghost: "1_1_1", periodic: "1_1_1", vars: 4,   cutoff: 250, cycles: 100, compute_target_us: 0, target_source: "measured median"}
+    scan_g8_v6:    {label: "peer_9.38KiB",  size: "8_8_8",    ghost: "1_1_1", periodic: "1_1_1", vars: 6,   cutoff: 250, cycles: 100, compute_target_us: 0, target_source: "measured median"}
+    scan_g8_v8:    {label: "peer_12.50KiB", size: "8_8_8",    ghost: "1_1_1", periodic: "1_1_1", vars: 8,   cutoff: 250, cycles: 100, compute_target_us: 0, target_source: "measured median"}
+    scan_g8_v10:   {label: "peer_15.63KiB", size: "8_8_8",    ghost: "1_1_1", periodic: "1_1_1", vars: 10,  cutoff: 250, cycles: 100, compute_target_us: 0, target_source: "measured median"}
+    scan_g8_v12:   {label: "peer_18.75KiB", size: "8_8_8",    ghost: "1_1_1", periodic: "1_1_1", vars: 12,  cutoff: 250, cycles: 100, compute_target_us: 0, target_source: "measured median"}
+    scan_g32_v1:   {label: "peer_18.06KiB", size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 1,   cutoff: 250, cycles: 100, compute_target_us: 0, target_source: "measured median"}
+    scan_g32_v2:   {label: "peer_36.13KiB", size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 2,   cutoff: 250, cycles: 100, compute_target_us: 0, target_source: "measured median"}
+    scan_g32_v4:   {label: "peer_72.25KiB", size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 4,   cutoff: 250, cycles: 100, compute_target_us: 0, target_source: "measured median"}
+    scan_g32_v8:   {label: "peer_144.50KiB", size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 8,   cutoff: 250, cycles: 100, compute_target_us: 0, target_source: "measured median"}
+    scan_g32_v16:  {label: "peer_289.00KiB", size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 16,  cutoff: 250, cycles: 100, compute_target_us: 0, target_source: "measured median"}
+    scan_g32_v32:  {label: "peer_578.00KiB", size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 32,  cutoff: 250, cycles: 100, compute_target_us: 0, target_source: "interpolated"}
+    scan_g32_v64:  {label: "peer_1.13MiB",  size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 64,  cutoff: 250, cycles: 100, compute_target_us: 0, target_source: "interpolated"}
+    scan_g32_v128: {label: "peer_2.26MiB",  size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 128, cutoff: 250, cycles: 100, compute_target_us: 0, target_source: "interpolated"}
+    scan_g32_v192: {label: "peer_3.39MiB",  size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 192, cutoff: 250, cycles: 100, compute_target_us: 0, target_source: "measured median"}
+    scan_g32_v256: {label: "peer_4.52MiB",  size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 256, cutoff: 250, cycles: 100, compute_target_us: 0, target_source: "extrapolated"}
+    scan_g32_v336: {label: "peer_5.93MiB",  size: "32_32_32", ghost: "1_1_1", periodic: "1_1_1", vars: 336, cutoff: 250, cycles: 100, compute_target_us: 0, target_source: "extrapolated"}
+  4n4r_c24: *cm4_std_grid_4n4r
+
+# ── Compute injection mode ────────────────────────────────────────────────────
+compute_mode:
+  midcomm:
+    midcomm_flag: ""           # comb_with_compute enables mid-comm by default
+    backend_mode: both
+
+  no_midcomm:
+    midcomm_flag: ""
+    backend_mode: both
+    binary_overrides:
+      intelmpi: *intelmpi_no_midcomm
+      intelmpi_tcp: *intelmpi_no_midcomm
+      openmpi: *openmpi_no_midcomm
+      mpich: *mpich_no_midcomm
+
+# ── Communication options (shared across all cases) ───────────────────────────
+comm:
+  post_recv: wait_all
+  post_send: wait_all
+  # wait_recv / wait_send are varied per case below
+
+# ── SLURM resource config ─────────────────────────────────────────────────────
+slurm:
+  clusters: cm4
+  partition: cm4_std
+  qos: cm4_std
+  runtime_cpus_per_rank: 24
+  total_cpus_per_job: 112
+  time: "00:30:00"
+
+# ── Cases: inner loop inside each SLURM script ───────────────────────────────
+# Each entry = one run_case() call in the generated script.
+# Label is auto-generated. MPI-specific cases may override this list.
+cases:
+  - {async: 0, omp_threads: 1,  wait_mode: wait_all}
+  - {async: 0, omp_threads: 24, wait_mode: wait_all}
+  - {async: 0, omp_threads: 1,  wait_mode: test_all}
+  - {async: 0, omp_threads: 24, wait_mode: test_all}
+  - {async: 1, omp_threads: 1,  wait_mode: wait_all}
+  - {async: 1, omp_threads: 12, async_threads: 12, wait_mode: wait_all}
+  - {async: 1, omp_threads: 23, wait_mode: wait_all}
+  - {async: 1, omp_threads: 1,  wait_mode: test_all}
+  - {async: 1, omp_threads: 12, async_threads: 12, wait_mode: test_all}
+  - {async: 1, omp_threads: 23, wait_mode: test_all}
+
+# ── Exclusions ────────────────────────────────────────────────────────────────
+exclude: []

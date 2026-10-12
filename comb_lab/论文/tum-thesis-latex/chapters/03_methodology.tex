@@ -1,0 +1,719 @@
+% !TeX root = ../main.tex
+
+\chapter{Methodology and Experimental Setup}\label{chapter:methodology}
+
+\section{Benchmarks and Code Modifications}
+
+\subsection{Comb}
+
+Comb is used as the primary benchmark for the experiments in this work. Within each benchmark cycle, nonblocking receives and sends are initiated before the corresponding completion operations are performed. This separation between communication initiation and completion provides the interval in which the study-specific computation and polling mechanisms are inserted. The complete benchmark cycle is described in Section~\ref{sec:cycles-compute-targets}.
+
+The benchmark provides both an MPI backend and a mock backend. The mock path retains the message layout and local packing and unpacking work but performs no MPI transfer. It is therefore used as a control for framework and memory-handling costs. The modifications introduced for this study, including the injected computation phase and polling mechanism, are described below.
+
+
+\subsection{Injected Computation}
+
+To study communication--computation overlap under controlled conditions, a synthetic compute kernel was added to each communication cycle of Comb. The method draws on the use of dummy computation in the nonblocking-collective overlap tests of OSU Micro-Benchmarks [21]. An adjustable-duration serial computation is inserted after initiating nonblocking communication and before waiting for completion, representing independent application work.
+
+The kernel consists of a sequence of dependent floating-point multiply-add operations. Each block performs 4096 iterations and stores its result in a volatile variable to prevent the computation from being optimized away. The elapsed time of each block is measured with \texttt{MPI\_Wtime} and accumulated until the target computation duration is reached. This time-driven approach provides an approximately controllable compute interval without requiring a processor-specific iteration count.
+
+\autoref{lst:injected-computation} shows the core implementation, including
+the surrounding phase timers. The kernel contains no MPI completion or
+progress calls; \texttt{MPI\_Wtime} is used only to measure elapsed time.
+
+\begin{lstlisting}[basicstyle=\ttfamily\footnotesize,
+  breaklines=true,
+  caption={Time-controlled synthetic computation kernel used in Comb.},
+  label={lst:injected-computation}]
+double compute_elapsed_seconds = 0.0;
+volatile DataT compute_sink = 1.0;
+
+while (compute_elapsed_seconds < compute_target_seconds) {
+    const double start = MPI_Wtime();
+
+    DataT value = compute_sink;
+    for (int i = 0; i < 4096; ++i) {
+        value = value * 1.00000011920928955078125
+                    + 0.00000011920928955078125;
+    }
+
+    compute_sink = value;
+    compute_elapsed_seconds += MPI_Wtime() - start;
+}
+\end{lstlisting}
+
+The configured value is a lower target rather than an exact execution time.
+The termination condition is evaluated only after a complete block of 4096
+iterations, so the measured duration may exceed the target. It also includes
+loop-control and timing overhead. The kernel is serial and does not use OpenMP;
+it is not intended to reproduce the numerical characteristics of a particular
+ocean-model operator. Instead, it provides a reproducible, adjustable interval
+in which the progress of outstanding communication can be observed.
+
+\subsection{Placement of the Injected Computation}
+
+The injected computation is placed between the initiation and completion
+phases of nonblocking communication. Each cycle first posts the nonblocking
+receives. Comb then allocates and packs the send buffers and posts the
+nonblocking sends. After all sends have been initiated, the synthetic kernel is
+executed. The program subsequently completes and unpacks the receives before
+completing the sends. \autoref{fig:comb-cycle-phases} shows the complete
+cycle, with the injected computation highlighted in green between send
+posting and receive completion.
+
+This placement creates an explicit potential overlap interval: communication
+requests have been initiated, but the application thread has not yet entered a
+request completion operation. The kernel invokes no explicit progress or
+completion routine such as \texttt{MPI\_Test} or \texttt{MPI\_Wait}; it uses
+\texttt{MPI\_Wtime} only for timing. A reduction in the subsequent receive
+completion time is consistent with communication progressing during the compute
+interval, although phase timings alone cannot establish this directly. If no
+such progress occurs, most of the remaining
+communication cost is deferred to the completion phase. The measured timing
+components and overlap metrics are defined in \autoref{sec:timing-metrics}.
+
+
+\section{Hardware and Software Environment}
+
+\subsection{CoolMUC-4}
+
+The experiments were conducted on the CoolMUC-4 system of the LRZ Linux Cluster under Slurm. The CoolMUC-4 compute nodes used in this study belong to the Intel Sapphire Rapids node class. The corresponding hardware configuration and interconnect are described in the LRZ CoolMUC-4 system documentation~\cite{lrzCoolMUC4}. In the primary experimental configuration, each MPI rank uses a runtime CPU budget of 24 CPU resources.
+
+The primary inter-node experiments use the interactive CoolMUC-4 partition \texttt{cm4\_inter}. The main configuration uses two compute nodes with one MPI rank per node, resulting in a two-node, two-rank (\texttt{2n2r}) setup~\cite{lrzCm4Inter}.
+
+\subsection{Compilers}
+
+The Intel MPI and Open MPI configurations use modules from release
+24.4.0 of the CoolMUC-4 software stack. For both configurations,
+Comb was compiled with the Intel oneAPI C++ compiler
+(\texttt{icpx}), version 2024.1.0, using C++17. The selected
+Open MPI module is the Intel-compiler build. For the MPICH
+configuration, Comb was compiled with GCC 7.5.0 using C++14
+and linked against the locally installed MPICH 4.2.2 library.
+
+All three builds used the CMake \texttt{Release} configuration
+with \texttt{-O3 -DNDEBUG} and OpenMP enabled. Separate executables
+were linked against each MPI implementation. The Intel MPI
+executable was shared by the verbs and TCP configurations,
+with the transport selected at runtime.
+
+\subsection{MPI Implementations}
+
+Three MPI implementations are evaluated. Intel MPI is additionally executed
+with two OFI providers, so the Intel verbs and Intel TCP results represent two
+transport configurations of the same MPI implementation rather than a fourth
+implementation. \autoref{tab:mpi-implementations} summarizes the archived
+software configurations. The transport-selection parameters and
+asynchronous-progress settings are detailed in
+\autoref{sec:mpi-runtime-configuration}.
+
+\begin{table}[htb]
+	\centering
+	\caption{MPI implementations and communication configurations used in the
+		experiments.}
+	\label{tab:mpi-implementations}
+	\begin{tabular}{lll}
+		\toprule
+		Implementation & Version or build & Evaluated inter-node path \\
+		\midrule
+		Intel MPI (verbs) & 2021.16.0 & OFI verbs \\
+		Intel MPI (TCP) & 2021.16.0 & OFI TCP \\
+		Open MPI (TCP) & 4.1.8-intel24 & \texttt{ob1} with TCP BTL \\
+		MPICH (TCP) & 4.2.2, local GCC build & CH4:OFI with TCP provider \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\subsection{Build Configuration}
+
+All configurations use the same modified Comb source and enable the MPI and
+OpenMP execution backends. The synthetic computation is controlled at runtime,
+so the same executable is used for the paired runs with and without injected
+computation. Newly generated runs pass a common communication cutoff of 250
+explicitly. The build scripts and accompanying documentation in the project
+code repository specify the compiler selections, CMake options, and
+executable paths needed to reproduce the builds.
+
+\section{MPI Runtime Configuration}
+\label{sec:mpi-runtime-configuration}
+
+\subsection{Communication Stacks and Providers}
+
+Intel MPI uses \texttt{I\_MPI\_FABRICS=shm:ofi}, with
+\texttt{I\_MPI\_}\allowbreak\texttt{OFI\_}\allowbreak\texttt{PROVIDER=}\allowbreak\texttt{verbs} or
+\texttt{I\_MPI\_}\allowbreak\texttt{OFI\_}\allowbreak\texttt{PROVIDER=}\allowbreak\texttt{tcp} selecting the provider
+for the two transport configurations.
+
+Open MPI uses \texttt{OMPI\_MCA\_pml=ob1} and
+\texttt{OMPI\_MCA\_btl=self,vader,tcp}.
+The locally built MPICH 4.2.2 uses the CH4:OFI device
+with \texttt{FI\_PROVIDER=tcp}.
+
+\subsection{Verbs and TCP}
+
+The Intel MPI verbs and TCP configurations keep the MPI implementation and benchmark configuration fixed while changing only the OFI provider, allowing the effect of provider selection to be examined separately.
+
+Open MPI and the MPICH build used in this study both rely on TCP for inter-node communication. The MPICH results are therefore primarily compared with the other TCP-based paths.
+
+For the locally built MPICH configuration, a verbs provider was also tested. After the initial library configuration issue had been resolved, OFI initialization on the \texttt{mlx5\_0} device still failed with errors such as \texttt{Failed to modify UD QP to INIT ... Operation not permitted}, eventually causing \texttt{MPI\_Init\_thread} to abort. This indicates that the automatically selected RDMA path required permissions or resources that were not available in the current job environment. The subsequent MPICH run scripts therefore use \texttt{FI\_PROVIDER=tcp} by default, while still allowing the provider to be overridden at runtime. Consequently, no MPICH verbs measurements are included in this study.
+
+
+\subsection{Asynchronous Progress Configuration}
+\label{sec:async-progress-configuration}
+
+For Intel MPI, asynchronous progress is controlled with
+\texttt{I\_MPI\_}\allowbreak\texttt{ASYNC\_}\allowbreak\texttt{PROGRESS}; the number and affinity
+of progress threads are set through
+\texttt{I\_MPI\_}\allowbreak\texttt{ASYNC\_}\allowbreak\texttt{PROGRESS\_}\allowbreak\texttt{THREADS} and
+\texttt{I\_MPI\_}\allowbreak\texttt{ASYNC\_}\allowbreak\texttt{PROGRESS\_PIN}.
+Both Intel transports use the same thread-count and binding logic.
+Communication uses the first progress thread by default; distributing work
+across progress threads requires explicit communicator-to-thread assignment
+through a communicator info key, whose default name is
+\texttt{thread\_id}~\cite{intelAsyncProgressControl,intelAsyncProgressGuide}.
+The evaluated progress-enabled Intel MPI configurations request one
+progress thread per rank and perform no communicator-to-thread assignment.
+
+Open MPI 4.1.8 uses
+\texttt{OMPI\_MCA\_}\allowbreak\texttt{btl\_tcp\_}\allowbreak\texttt{progress\_thread=1}
+in the enabled cases. In this version, the TCP BTL treats the parameter as
+an enable switch and starts a single background progress thread; it is not
+a thread-count parameter~\cite{openmpi418TcpProgress}.
+This requests TCP-BTL-specific progress, not a transport-independent progress
+mode. The scripts also set \texttt{mpi\_yield\_when\_idle=0},
+which controls processor yielding while waiting for MPI communication
+and does not itself enable a progress thread. The script argument
+named \texttt{async\_threads} determines how many CPU IDs are withheld from
+the application's OpenMP places. It does not configure that many Open MPI
+progress threads. No explicit binding of the TCP progress thread to those
+reserved CPU IDs is performed by the launcher script; the reserved list
+therefore does not establish the thread's actual placement.
+
+In the MPICH 4.2.2 configuration used in this study, asynchronous progress
+is enabled through
+\texttt{MPIR\_CVAR\_}\allowbreak\texttt{ASYNC\_PROGRESS=1}, which creates one
+background progress thread per rank. This thread can advance outstanding
+communication while the application performs computation without entering
+MPI calls. The control variable is Boolean and does not expose the number
+of background progress threads as a tunable runtime
+parameter~\cite{mpichAsyncProgressControl}. Its target CPU is set with
+\texttt{MPIR\_CVAR\_}\allowbreak\texttt{PROGRESS\_}\allowbreak\texttt{THREAD\_}\allowbreak\texttt{AFFINITY}.
+Progress-thread count is therefore not treated as an experimental variable
+for MPICH. MPICH extensions provide finer-grained
+application-controlled progress
+mechanisms~\cite{zhou2024mpichExtensions,zhou2024mpiProgressForAll}, but these
+non-standard APIs are outside the scope of the runtime configuration
+evaluated here.
+
+\subsection{CPU and Rank Binding}
+
+In the two-node configuration, one MPI rank is placed on each node. The launcher scripts expand the allowed logical-CPU list and select different subsets by position. Selecting different CPU IDs alone does not guarantee that these CPUs correspond to distinct physical cores. The socket and NUMA labels used in this work describe the selected CPU sets rather than providing a runtime measurement of the actual placement of the progress thread.
+
+For Intel MPI, the configurations without asynchronous progress use Slurm CPU-core binding. When asynchronous progress is enabled, Slurm binding is disabled, the application is restricted to the intended CPU set using \texttt{taskset}, and a separate list of target CPUs for the progress thread is supplied through \texttt{I\_MPI\_}\allowbreak\texttt{ASYNC\_}\allowbreak\texttt{PROGRESS\_PIN}.
+
+MPICH retains Slurm core binding and selects a target CPU for the progress thread. At the same time, application-only CPU sets are constructed through \texttt{OMP\_PLACES}, with \texttt{OMP\_PROC\_}\allowbreak\texttt{BIND=close} used to control application-thread placement.
+
+In the progress-enabled Open MPI configuration, the application threads are restricted to the selected OpenMP CPU places, leaving one CPU unused by the application. However, the TCP progress thread is not explicitly pinned to that reserved CPU. Therefore, the reserved CPU represents an application-side resource reservation rather than a verified placement of the progress thread.
+
+
+
+
+
+\subsection{\texttt{wait\_all} and \texttt{test\_all} Completion Variants}
+
+The receive and send completion methods are varied together: a
+\texttt{wait\_all} case uses \texttt{MPI\_Waitall}, while a
+\texttt{test\_all} case repeatedly calls \texttt{MPI\_Testall} until all
+requests have completed. Both completion methods execute after the injected
+computation. The test loop therefore belongs to the final completion phase
+and does not introduce polling during computation. Receive and send posting
+remain unchanged. \autoref{tab:progress-case-matrix} lists the four cases
+evaluated in this thesis, distinguishing configured progress-thread counts
+from reserved CPU IDs. These quantities are not interchangeable across MPI
+implementations.
+
+\begin{table}[htb]
+	\centering
+	\small
+	\setlength{\tabcolsep}{4pt}
+	\caption{Per-rank completion and CPU-resource configurations. Intel columns
+    apply to both verbs and TCP. Open MPI reports reserved CPU IDs, not a
+    configured progress-thread count.}
+	\label{tab:progress-case-matrix}
+	\begin{tabular}{cccccc}
+		\toprule
+		Case & Completion & App. & Intel & MPICH & Open MPI \\
+        & & threads & progress & progress & reserved CPUs \\
+		\midrule
+        01 & \texttt{wait\_all} & 24 & off & off & 0 (off) \\
+        02 & \texttt{test\_all} & 24 & off & off & 0 (off) \\
+        03 & \texttt{wait\_all} & 23 & 1 & 1 & 1 (on) \\
+        04 & \texttt{test\_all} & 23 & 1 & 1 & 1 (on) \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+For Intel MPI, the progress-enabled configurations use 23 application CPU
+IDs and one CPU ID in the progress pin list. MPICH likewise reserves one
+CPU ID for progress, leaving 23 application places. Open MPI excludes one
+CPU ID from the application's OpenMP places without explicitly binding its
+TCP progress thread to that CPU. The application-thread counts in the table
+are runtime settings; the injected computation itself is serial.
+
+The thesis uses consecutive Case IDs 01--04. They correspond, respectively,
+to the archived experiment IDs 01, 03, 06, and 09; raw data and figure
+filenames retain these archived identifiers for traceability.
+
+\section{Workloads and Experiment Matrix}
+
+\subsection{Grid, Ghost Width, and Variables}
+
+The message-size sweep uses two fixed three-dimensional global grids and varies
+the number of grid variables to increase the communication volume. All
+configurations use a ghost width of one cell in each spatial direction
+(\texttt{ghost=1\_1\_1}) and periodic boundary conditions in all three
+directions (\texttt{periodic=1\_1\_1}).
+
+The reference configuration uses two nodes with one MPI rank per node and a
+\texttt{divide=2\_1\_1} domain decomposition. The global domain is divided only
+in the $x$ direction. The first sweep uses a global grid of
+\texttt{grid=8\_8\_8} to cover the small-message range. Each rank owns an
+interior subdomain of $4\times8\times8$ cells, and the reference variable
+counts are
+
+\begin{equation}
+	v_{8^3}^{2n2r} \in \{1,2,3,4,6,8,10,12\}.
+\end{equation}
+
+The second sweep uses \texttt{grid=32\_32\_32} to cover medium and large
+messages. Each rank owns an interior subdomain of $16\times32\times32$ cells,
+and the reference variable counts are
+
+\begin{equation}
+	v_{32^3}^{2n2r} \in \{1,2,4,8,16,32,64,128,192,256,336\}.
+\end{equation}
+
+\subsection{Message Sizes}
+
+Comb aggregates all halo data addressed to the same partner into one send
+buffer. The payloads reported here therefore denote the complete aggregated
+payload of an inter-node \texttt{MPI\_Isend}, including face, edge, and corner
+data, rather than the payload of a single halo face. For the two-rank reference
+topology, both periodic $x$-direction boundaries address the other rank. With
+a cubic global grid of side length $N$, one ghost layer, double-precision
+values, and $v$ variables, the aggregated inter-node partner payload is
+
+\begin{equation}
+	P_{\mathrm{peer}}(N,v) = 2(N+2)^2 \times 8v \ \mathrm{bytes}.
+\end{equation}
+
+For the $8^3$ grid, each additional variable increases the payload by
+$1{,}600$ bytes. For the $32^3$ grid, one variable produces $18{,}496$ bytes
+of aggregated payload. Together, the two grid configurations form the
+continuous reference sweep from 1.56~KiB to 5.93~MiB shown in
+\autoref{tab:payload-2n2r}.
+
+\begin{table}[p]
+	\centering
+	\caption{Aggregated inter-node partner payloads for the complete message-size
+		sweep in the two-rank reference topology.}
+	\label{tab:payload-2n2r}
+	\begin{tabular}{cccc}
+		\toprule
+		Global grid & Ghost width & Variables & Peer payload \\
+		\midrule
+		$8\times8\times8$ & $1\times1\times1$ & 1  & 1.56 KiB  \\
+		$8\times8\times8$ & $1\times1\times1$ & 2  & 3.13 KiB  \\
+		$8\times8\times8$ & $1\times1\times1$ & 3  & 4.69 KiB  \\
+		$8\times8\times8$ & $1\times1\times1$ & 4  & 6.25 KiB  \\
+		$8\times8\times8$ & $1\times1\times1$ & 6  & 9.38 KiB  \\
+		$8\times8\times8$ & $1\times1\times1$ & 8  & 12.50 KiB \\
+		$8\times8\times8$ & $1\times1\times1$ & 10 & 15.63 KiB \\
+		$8\times8\times8$ & $1\times1\times1$ & 12 & 18.75 KiB \\
+		\midrule
+		$32\times32\times32$ & $1\times1\times1$ & 1   & 18.06 KiB  \\
+		$32\times32\times32$ & $1\times1\times1$ & 2   & 36.13 KiB  \\
+		$32\times32\times32$ & $1\times1\times1$ & 4   & 72.25 KiB  \\
+		$32\times32\times32$ & $1\times1\times1$ & 8   & 144.50 KiB \\
+		$32\times32\times32$ & $1\times1\times1$ & 16  & 289.00 KiB \\
+		$32\times32\times32$ & $1\times1\times1$ & 32  & 578.00 KiB \\
+		$32\times32\times32$ & $1\times1\times1$ & 64  & 1.13 MiB   \\
+		$32\times32\times32$ & $1\times1\times1$ & 128 & 2.26 MiB   \\
+		$32\times32\times32$ & $1\times1\times1$ & 192 & 3.39 MiB   \\
+		$32\times32\times32$ & $1\times1\times1$ & 256 & 4.52 MiB   \\
+		$32\times32\times32$ & $1\times1\times1$ & 336 & 5.93 MiB   \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+\subsection{Cycles and Compute Targets}
+\label{sec:cycles-compute-targets}
+
+Every point in the message-size sweep executes 100 timed communication cycles
+and is repeated in ten independent runs. Each run contains a matched pair of
+executions. The \texttt{no\_midcomm} execution sets
+\texttt{compute\_target\_us=0} and provides the no-compute communication
+reference. The
+\texttt{midcomm} execution uses the same communication and placement settings
+but inserts the synthetic computation between communication initiation and
+completion.
+
+The Comb option \texttt{-cycles} specifies the number of timed halo-exchange
+iterations executed by each rank for every tested communication and execution
+policy. One cycle traverses the complete benchmark path: \texttt{pre-comm}
+initializes the local interior cells; \texttt{post-recv} allocates receive
+buffers and posts the nonblocking receives; \texttt{post-send} allocates and
+packs send buffers and posts the nonblocking sends; \texttt{mid-comm} executes
+the injected computation when its target is positive; \texttt{wait-recv}
+completes receives and performs the associated unpacking and buffer handling;
+\texttt{wait-send} completes the sends; and \texttt{post-comm} restores the
+mesh state for the next iteration. Communication-object construction and
+allocation occur before this timed cycle loop. Comb also executes
+$\max(1,\lfloor N_c/10\rfloor)$ correctness cycles before clearing the phase
+timer; these exercise the same exchange path but are excluded from the reported
+phase statistics. Consequently, a summary count of $P N_c$ for a phase denotes
+$N_c$ samples from each of $P$ ranks, not $P N_c$ independent experimental
+repetitions. Independent runs, rather than cycles, are therefore used for
+statistical aggregation.
+
+\begin{figure}[htb]
+	\centering
+	\resizebox{\textwidth}{!}{%
+	\begin{tikzpicture}[
+		stage/.style={draw, align=center, text width=2.10cm, minimum height=1.35cm},
+		local/.style={stage, fill=TUMLightGray!45},
+		mpi/.style={stage, fill=TUMAccentLightBlue!45},
+		compute/.style={stage, fill=TUMAccentGreen!35},
+		flow/.style={->, thick}]
+		\node[local] (pre) at (0,0) {{\bfseries\texttt{pre-comm}}\\{\scriptsize initialize interior}};
+		\node[mpi] (recv) at (2.55,0) {{\bfseries\texttt{post-recv}}\\{\scriptsize allocate and post receives}};
+		\node[mpi] (send) at (5.10,0) {{\bfseries\texttt{post-send}}\\{\scriptsize pack and post sends}};
+		\node[compute] (mid) at (7.65,0) {{\bfseries\texttt{mid-comm}}\\{\scriptsize injected computation}};
+		\node[mpi] (waitrecv) at (10.20,0) {{\bfseries\texttt{wait-recv}}\\{\scriptsize Waitall / Testall loop\\then unpack}};
+		\node[mpi] (waitsend) at (12.75,0) {{\bfseries\texttt{wait-send}}\\{\scriptsize Waitall / Testall loop\\complete sends}};
+		\node[local] (post) at (15.30,0) {{\bfseries\texttt{post-comm}}\\{\scriptsize restore mesh state}};
+		\draw[flow] (pre) -- (recv);
+		\draw[flow] (recv) -- (send);
+		\draw[flow] (send) -- (mid);
+		\draw[flow] (mid) -- (waitrecv);
+		\draw[flow] (waitrecv) -- (waitsend);
+		\draw[flow] (waitsend) -- (post);
+		\draw[flow] (post.south) -- ++(0,-0.85)
+            -| node[pos=0.25, below, font=\small] {next cycle (repeat $N_c$ times in total)} (pre.south);
+	\end{tikzpicture}
+	}
+	\caption{Phases executed by each rank in one timed Comb communication cycle.
+		Gray boxes denote local mesh operations, blue boxes MPI communication
+		phases, and the green box the injected computation window. Receive and
+        send completion use either Waitall or a Testall loop; the timer names
+        remain \texttt{wait-recv} and \texttt{wait-send} in both cases.
+        The return arrow connects successive cycles.}
+	\label{fig:comb-cycle-phases}
+\end{figure}
+
+Unless otherwise specified in the following sections, the target duration
+of the injected computation is set approximately equal to the corresponding
+reference communication time $T_{\mathrm{comm}}$. This reference is selected
+separately for each MPI implementation, transport configuration, and peer
+payload, rather than applying one fixed duration to the complete sweep.
+All overlap metrics
+use the measured \texttt{mid-comm} duration, not the requested target, because
+the block-based compute loop can overshoot its minimum target.
+
+\subsection{Node Count and Process Topology}
+
+The reference topology, \texttt{2n2r\_c24}, uses two nodes and one MPI rank per
+node. Its \texttt{divide=2\_1\_1} decomposition partitions the global grid
+only along $x$. Under periodic boundary conditions, the $x$ exchange is
+inter-node communication, whereas the undecomposed $y$ and $z$ directions
+produce MPI self-messages.
+
+\section{Timing and Evaluation Metrics}\label{sec:timing-metrics}
+
+\subsection{Timing Components and Baselines}
+
+Comb records one timer sample per rank and cycle for the phases
+\texttt{pre-comm}, \texttt{post-recv}, \texttt{post-send},
+\texttt{mid-comm}, \texttt{wait-recv}, \texttt{wait-send}, and
+\texttt{post-comm}. The \texttt{mid-comm} timer measures the injected compute
+interval. The \texttt{wait-recv} phase contains receive completion followed by
+unpacking and buffer release; it therefore measures exposed receive-side work
+and is not a pure network timer. The \texttt{bench-comm} timer encloses all
+timed cycles and yields one value per rank. Its maximum across ranks represents
+the benchmark critical path.
+
+Let $\bar{W}_0$ and $\bar{W}_c$ be the mean \texttt{wait-recv} times per call
+without and with injected computation, respectively, and let $\bar{C}$ be the
+mean measured \texttt{mid-comm} time per call. Means are taken over the same
+rank--cycle sample set within one run. Let $B_0$ and $B_c$ denote the maximum
+\texttt{bench-comm} values across ranks for the corresponding pair.
+
+\subsection{Mock-Corrected Communication Cost}
+\label{sec:mock-corrected-communication}
+
+To separate MPI-specific cost from Comb's local framework and memory-handling
+costs, an additional matched baseline measurement is performed without
+injected computation. For each workload, the MPI and mock backends are enabled
+separately and run as independent program executions. MPI-only and Mock-only
+runs with matching identifiers use the same allocation, grid, message layout,
+execution policy, cycle count, and completion method. The mock backend follows
+the corresponding benchmark path but performs no MPI transfer. Let
+$\bar{W}^{\mathrm{MPI}}_0$ and $\bar{W}^{\mathrm{mock}}_0$ denote their mean
+\texttt{wait-recv} times. The Mock-corrected communication cost is defined as
+
+\begin{equation}
+\widehat{T}_{\mathrm{comm}} =
+\bar{W}^{\mathrm{MPI}}_0-\bar{W}^{\mathrm{mock}}_0.
+\end{equation}
+
+This quantity estimates the incremental exposed receive-side cost associated with enabling MPI communication after subtracting the local framework and memory-handling cost represented by the mock backend. It is therefore used as the communication cost reference for the subsequent message-size and overlap analyses, but it is not interpreted as pure network-transfer latency.
+The measured values of $\widehat{T}_{\mathrm{comm}}$ for each message
+size and MPI/transport configuration are reported in
+\autoref{tab:cost-2n2r-cm4-inter}.
+
+
+\begin{figure}[htb]
+	\centering
+	\begin{tikzpicture}[
+		measurement/.style={draw, align=center, text width=4.0cm, minimum height=1.45cm},
+		condition/.style={draw, fill=TUMLightGray!25, align=center,
+			text width=9.0cm, minimum height=1.15cm},
+		operation/.style={draw, circle, minimum size=0.9cm, font=\Large\bfseries},
+		result/.style={draw, align=center, text width=4.3cm, minimum height=1.45cm,
+			fill=TUMAccentGreen!35},
+		flow/.style={->, thick}]
+		\node[condition] (matched) at (0,2.25)
+			{Matched configuration: allocation, grid, message layout, policy,
+			cycle count, and completion method};
+		\node[measurement, fill=TUMLightGray!45] (mock) at (-3.0,0)
+			{Mock-only execution\\no MPI transfer\\measure $\bar{W}^{\mathrm{mock}}_0$};
+		\node[measurement, fill=TUMAccentLightBlue!45] (mpi) at (3.0,0)
+			{MPI-only execution\\real MPI transfer\\measure $\bar{W}^{\mathrm{MPI}}_0$};
+		\node[operation] (subtract) at (0,-2.0) {$-$};
+		\node[result] (estimate) at (0,-4.0)
+			{Mock-corrected estimate\\$\widehat{T}_{\mathrm{comm}}
+			=\bar{W}^{\mathrm{MPI}}_0-\bar{W}^{\mathrm{mock}}_0$};
+		\draw[flow] (matched) -- (mock);
+		\draw[flow] (matched) -- (mpi);
+		\draw[flow] (mpi) -- (subtract);
+		\draw[flow] (mock) -- (subtract);
+		\draw[flow] (subtract) -- (estimate);
+	\end{tikzpicture}
+	\caption[Matched MPI-only and Mock-only cost measurement.]{Matched,
+		independent MPI-only and Mock-only executions used to estimate the exposed
+		MPI-specific communication cost. The result is not interpreted as pure
+		network-transfer latency.}
+	\label{fig:mock-corrected-cost}
+\end{figure}
+
+This subtraction removes the local work represented by the mock path and
+retains the incremental cost observed when MPI communication is enabled. It
+is therefore an estimate of MPI-specific exposed communication cost, not a
+direct measurement of pure network-transfer latency. In particular, MPI may
+also change synchronization, protocol processing, cache state, and memory
+behavior. Separate program executions avoid directly carrying one backend's
+in-process allocator and cache state into the other. Temporal drift between
+the paired executions can nevertheless remain; repeated run-level differences
+are therefore reported rather than subtracting values pooled across unrelated
+runs.
+
+\subsection{Operational Measure of Overlap}
+
+The observed receive-wait reduction between matched runs is
+
+\begin{equation}
+	\Delta W = \bar{W}_0-\bar{W}_c.
+\end{equation}
+
+To assess communication--computation overlap using application-visible timings,
+this thesis defines the normalized receive-wait reduction as
+
+\begin{equation}
+	R_{\mathrm{wait}} = \frac{\bar{W}_0-\bar{W}_c}{\bar{C}}\times100\%,
+	\qquad \bar{C}>0.
+\end{equation}
+
+This metric expresses the reduction in receive-side waiting relative to the
+measured computation time. Throughout the following analyses, measured overlap
+refers to this operational metric $R_{\mathrm{wait}}$, rather than the fraction
+of communication time hidden by computation.
+
+\begin{figure}[htb]
+	\centering
+	\resizebox{0.96\textwidth}{!}{%
+	\begin{tikzpicture}[
+		phase/.style={draw, align=center, minimum height=1.15cm},
+		flow/.style={->, thick},
+		compare/.style={->, thick, dashed}]
+		\node[anchor=east, align=right] at (-0.35,1.25)
+			{No computation\\(\texttt{no\_midcomm})};
+		\node[phase, fill=TUMLightGray!45, text width=2.3cm] (post0) at (1.0,1.25)
+			{Requests\\initiated};
+		\node[phase, fill=TUMAccentLightBlue!45, text width=5.0cm] (wait0) at (5.45,1.25)
+			{Exposed wait\\\texttt{wait-recv}\\mean duration $\bar{W}_0$};
+		\draw[flow] (post0) -- (wait0);
+
+		\node[anchor=east, align=right] at (-0.35,-1.25)
+			{With computation\\(\texttt{midcomm})};
+		\node[phase, fill=TUMLightGray!45, text width=2.3cm] (postc) at (1.0,-1.25)
+			{Requests\\initiated};
+		\node[phase, fill=TUMAccentGreen!35, text width=2.5cm] (compute) at (4.0,-1.25)
+			{\texttt{mid-comm}\\mean $\bar{C}$};
+		\node[phase, fill=TUMAccentLightBlue!45, text width=2.5cm] (waitc) at (7.15,-1.25)
+			{Remaining wait\\\texttt{wait-recv}\\mean $\bar{W}_c$};
+		\draw[flow] (postc) -- (compute);
+		\draw[flow] (compute) -- (waitc);
+
+		\node[phase, fill=TUMAccentOrange!30, text width=5.0cm, font=\small] (difference) at (11.4,0)
+			{Reduced exposed wait\\$\Delta W=\bar{W}_0-\bar{W}_c$\\[2pt]
+			$R_{\mathrm{wait}}=\frac{\Delta W}{\bar{C}}\times100\%$};
+		\draw[compare] (wait0.east) -- (difference.north west);
+		\draw[compare] (waitc.east) -- (difference.south west);
+	\end{tikzpicture}
+	}
+	\caption[Normalized receive-wait reduction.]{Schematic comparison used for the
+		normalized receive-wait reduction. The upper and lower rows are matched,
+		separate runs; durations are not drawn to scale.}
+	\label{fig:operational-wait-overlap}
+\end{figure}
+
+A positive value means that less receive-side waiting remains after the
+compute interval. A negative value means that the measured wait increased.
+A value of $100\%$ means that the waiting-time reduction equals the measured
+computation time; it does not necessarily mean that all communication has been
+hidden. Since the measured phase also includes unpacking and buffer release,
+the metric may reflect changes in local processing and runtime conditions in
+addition to communication progress. Values above $100\%$ are possible because
+inserting computation can alter protocol timing, unpacking cost, scheduling,
+and contention, while timing variability between matched runs can also affect
+the difference. Such values must not be interpreted as more than complete
+physical overlap. This metric is an operational response of the measured phase,
+not a direct observation of network progress in isolation or a measure of
+overall application speedup.
+
+
+
+\subsection{Statistical Aggregation and Variability}
+
+Phase means are first computed within each run from the rank--cycle samples
+reported by Comb. Critical-path quantities use the maximum rank-level
+\texttt{bench-comm} time. The formulas above are then evaluated for each
+matched run, preserving \texttt{midcomm} and \texttt{no\_midcomm} as a pair.
+The ten resulting run-level values are treated as the independent
+observations for reporting central tendency and variability. Individual
+cycles are not treated as independent experimental repetitions. Alongside
+derived percentages, absolute phase times and the spread among runs are
+reported so that unstable small-message measurements remain visible.
+
+\section{Experimental Procedure}
+
+\subsection{Staged Experimental Design}
+
+The experimental campaign is organized as a sequence of calibration and
+measurement stages rather than as one undifferentiated parameter sweep.
+First, an exploratory message-size scan is performed on the two-node reference
+topology. The 19 payloads defined in the workload matrix span 1.56~KiB to
+5.93~MiB and are used to identify message-size regimes, unstable points, and
+implementation-specific changes in communication behavior.
+
+Second, communication costs are measured without injected computation.
+For every MPI implementation and payload, matched MPI-only and Mock-only
+executions are run independently, and their \texttt{wait-recv} difference is
+used to estimate $\widehat{T}_{\mathrm{comm}}$. This stage also checks whether
+the subtraction is stable and physically interpretable across independent
+runs. Pilot measurements that used both backends in one process are retained
+only as diagnostic evidence for execution-order effects and are not pooled
+with the formal independent-backend baselines.
+
+Third, the measured communication cost is used to select the injected-computation target
+for each implementation and payload. The main message-size sweep uses a target
+comparable to the exposed communication interval; additional ratio experiments
+use fractions and multiples of that interval to study the
+computation--communication trade-off. Finally, matched \texttt{no\_midcomm} and
+\texttt{midcomm} runs measure overlap under otherwise identical settings.
+
+
+\subsection{Warm-up}
+
+Before the timed benchmark, Comb initializes the communication objects and
+executes a correctness phase of
+$\max(1,\lfloor N_c/10\rfloor)$ communication cycles. For the main setting of
+$N_c=100$, this gives ten untimed cycles. These cycles exercise the same
+communication path and validate exchanged data. A barrier follows the
+correctness phase, the phase timer is cleared, and only then does the
+\texttt{bench-comm} region begin. The warm-up is thus excluded from all timing
+metrics. However, this short correctness phase is intended primarily for data
+validation and initial path activation; it is not assumed to establish a
+steady state for memory allocation, page placement, caches, MPI protocols, or
+the network. Preliminary measurements showed first-run and execution-order
+effects even after these cycles. Consequently, independent runs, rather than
+the built-in correctness cycles, are used to assess stability, and visible
+first-run shifts are retained and reported rather than silently discarded.
+
+\subsection{Repetitions and Paired Runs}
+
+Each workload point is executed ten times for both compute modes. A valid
+pair has identical grid, variable count, MPI implementation, transport,
+progress setting, completion method, thread count, and binding; only the
+compute target differs. Pairing controls configuration drift and allows the
+reference quantities in \autoref{sec:timing-metrics} to be formed without
+combining unrelated executions.
+
+\subsection{Execution Order}
+
+Generated job bundles execute their child experiments serially within a
+single SLURM allocation. This reuses the same allocated nodes for the bundled
+payloads, compute modes, and repetitions and avoids interpreting allocation
+changes as an experimental factor. The generated order is retained in the run
+metadata. The Mock-corrected cost uses separate MPI-only and Mock-only
+program executions with matched run identifiers. Their launch order and
+timestamps are retained so that any remaining temporal drift is visible. The
+ten independent run pairs, rather than individual cycles, form the unit of
+variability.
+
+\subsection{Data Filtering}
+
+Analysis first identifies the cases present in both the computation
+and communication-cost directories. A case is excluded from a derived metric if
+either summary is missing, if the communication-policy
+block is absent, or if any required timer is unavailable. Non-positive compute
+times or serial baselines are rejected because the corresponding ratios are
+undefined. Negative or unexpectedly large normalized values do not, by
+themselves, establish that a run is invalid; such values remain diagnostically
+relevant.
+
+Substantial run-to-run timing variation was observed during the experiments.
+Network contention and changes in shared-cluster load or scheduling are
+possible contributors, but the timing summaries alone do not establish their
+individual effects. During run selection, communication-reference timings
+are compared with the reference for the same workload and configuration.
+Runs or batches that depart markedly from that reference are flagged for
+inspection and may be excluded from the selected dataset or remeasured.
+This is a manual review rather than an automatic rejection rule with a
+predefined numerical threshold. Differences in cycle count, execution mode,
+and runtime configuration must also be considered before attributing a shift
+to external interference.
+
+\section{Reproducibility and Threats to Validity}
+
+Reproducibility is supported by generated job scripts, explicit runtime
+settings, recorded benchmark parameters, CPU-binding configurations, and
+retained per-run summaries. The software versions, transport configuration,
+topology, payload, cycle count, and compute target are recorded for each
+experiment. The accompanying results repository is linked in
+\autoref{app:results-repository}.
+
+Several limitations must be considered when interpreting the results. First,
+the injected computation is synthetic and serial and therefore does not
+reproduce the instruction mix or memory behavior of a complete application.
+Second, \texttt{wait-recv} includes completion and local unpacking work and
+must not be interpreted as pure network-transfer time. Third, Intel MPI is
+evaluated with both verbs and TCP, whereas Open MPI and MPICH use TCP, so
+transport effects cannot always be separated completely from implementation
+effects. Fourth, asynchronous progress consumes CPU resources and may compete
+with application execution. Finally, the experiments are executed on a shared
+cluster, and each data point is repeated ten times independently. These
+repetitions provide a more reliable estimate of run-to-run variability,
+although microsecond-scale measurements can still remain sensitive to system
+noise. Conclusions are therefore based on repeated trends, absolute timings,
+and Mock controls rather than isolated percentage peaks.

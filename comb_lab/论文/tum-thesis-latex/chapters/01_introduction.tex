@@ -1,0 +1,47 @@
+% !TeX root = ../main.tex
+% Add the above to each chapter to make compiling the PDF easier in some editors.
+
+\chapter{Introduction}\label{chapter:introduction}
+
+In large-scale ocean models and other grid-based scientific applications, the
+computational domain is typically divided into multiple subdomains and assigned
+to different Message Passing Interface (MPI) processes. To ensure the correctness
+of numerical computations near subdomain boundaries, neighboring processes must
+periodically exchange halo or ghost-cell data. As the degree of parallelism
+increases, this neighborhood communication can introduce substantial
+communication and synchronization overhead. Nonblocking MPI communication makes
+it possible to perform independent computation while data is being exchanged,
+and therefore offers an opportunity to hide part of the communication cost
+through communication--computation overlap. Effective overlap cannot, however,
+be assumed in every case. Nonblocking communication primarily permits
+communication and computation to execute concurrently at the logical level,
+whereas actual overlap depends on the communication progress mechanism provided
+by the MPI implementation and may vary with message size and the underlying
+communication mechanism~\parencite{denis2016mpi}.
+
+This thesis investigates these effects through a benchmark-based evaluation
+on the LRZ CoolMUC-4 system. The LLNL Comb halo-exchange benchmark~\parencite{combGithub} is extended
+with an adjustable computation window and explicit polling points. These
+extensions make it possible to examine how outstanding communication
+progresses while computation is performed under the selected MPI and
+transport configurations.
+
+\section{Contributions}
+\label{sec:contributions}
+
+The contributions of this thesis are:
+\begin{enumerate}
+    \item A controlled experimental methodology for evaluating communication--computation overlap, implemented using a modified Comb benchmark with an adjustable synthetic computation window and optional polling during computation.
+    \item A comparative evaluation of Open MPI, MPICH, and Intel MPI on LRZ CoolMUC-4, analyzing how MPI implementation, transport, message size, asynchronous progress, completion strategy, and computation duration influence the measured overlap.
+    \item A web-based experiment management and visualization tool that supports experiment configuration, script generation, run management, and comparison of measured results. The tool and accompanying experimental
+    materials are provided through the repository linked in
+    \autoref{app:results-repository}.
+\end{enumerate}
+
+The results characterize communication--computation overlap under the evaluated benchmark, platform, and runtime configurations. They should therefore be interpreted as evidence for the tested environment rather than as direct evidence of application-level performance in a complete ocean model.
+
+The remainder of this thesis presents the background and related work in
+\autoref{chapter:background}, the benchmark methodology and experimental
+setup in \autoref{chapter:methodology}, and the measurements and analysis
+in \autoref{chapter:Experimental Results and Analysis}. The final chapter
+summarizes the conclusions and directions for future work.
