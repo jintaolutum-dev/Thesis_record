@@ -4,7 +4,7 @@ MPI communication–computation overlap experiments. Requires Python 3.10+. Star
 
 All experiment results are stored in [`comb_lab/generated/`](comb_lab/generated/).
 
-**View the dashboard**
+**View experiment results**
 
 ```bash
 python3 -m http.server 8000 --bind 127.0.0.1 --directory comb_lab
@@ -12,7 +12,7 @@ python3 -m http.server 8000 --bind 127.0.0.1 --directory comb_lab
 
 Open <http://127.0.0.1:8000/message-overlap-dashboard/> to browse saved results without rerunning experiments.
 
-**Start the web interface**
+**Manage results and scripts**
 
 Create the environment and install dependencies once:
 
