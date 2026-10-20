@@ -2,6 +2,8 @@
 
 MPI communication–computation overlap experiments. Requires Python 3.10+. Start from the repository root.
 
+All experiment results are stored in [`comb_lab/generated/`](comb_lab/generated/).
+
 **View the dashboard**
 
 ```bash
