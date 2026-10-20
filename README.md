@@ -2,6 +2,9 @@
 
 MPI communication–computation overlap experiments. Requires Python 3.10+. Start from the repository root.
 
+- [`comb_lab/`](comb_lab/): Experiment configuration, job generation and management, analysis scripts, the dashboard, and experiment results.
+- [`comb_with_compute/`](comb_with_compute/): Modified COMB benchmark source code with injected computation and MPI polling support, plus build scripts.
+
 All experiment results are stored in [`comb_lab/generated/`](comb_lab/generated/).
 
 **View experiment results**
