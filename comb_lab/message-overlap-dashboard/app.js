@@ -15,7 +15,12 @@ const MPI_COLORS = {
 const mpiSelect = document.getElementById("mpi-select");
 const caseSelect = document.getElementById("case-select");
 const datasetSelect = document.getElementById("dataset-select");
-const isStd = () => datasetSelect.value !== "inter";
+const isLatest = () => datasetSelect.value === "latest";
+const isBefore = () => datasetSelect.value === "before";
+const isUnfiltered = () => datasetSelect.value === "unfiltered";
+const interCsv = (name) => `${isBefore() ? "before-update/" : isUnfiltered() ? "unfiltered-update/" : ""}${name}`;
+const isStd = () => ["2n2r_c24", "4n4r_c24"].includes(datasetSelect.value);
+const formatValue = (value, digits = 2) => Number.isFinite(value) ? value.toFixed(digits) : "N/A";
 const requestedView = new URLSearchParams(window.location.search);
 for (const [key, select] of [["mpi", mpiSelect], ["case", caseSelect], ["dataset", datasetSelect]]) {
   const value = requestedView.get(key);
@@ -26,13 +31,49 @@ const isResource = () => caseSelect.value === "resources";
 const pairCases = () => caseSelect.value.split("-");
 const caseLabel = (id) => `${id} · ${["01", "06"].includes(id) ? "wait_all" : "test_all"}`;
 const comparisons = {"01-06": COMPARISON0106_DATA, "01-03": COMPARISON01_DATA, "03-06": COMPARISON03_DATA, "06-09": COMPARISON_DATA, "03-09": COMPARISON0309_DATA};
-const comparisonRows = () => (isStd() ? STD_COMPARISONS : comparisons[caseSelect.value]).filter((row) => row.mpi === mpiSelect.value && (!isStd() || (row.topology === datasetSelect.value && row.pair === caseSelect.value)));
-const selectedRows = () => (isStd() ? STD_DATA : OVERLAP_DATA).filter(
+const beforeComparisons = {"01-06": BEFORE_INTER.COMPARISON0106_DATA, "01-03": BEFORE_INTER.COMPARISON01_DATA, "03-06": BEFORE_INTER.COMPARISON03_DATA, "06-09": BEFORE_INTER.COMPARISON_DATA, "03-09": BEFORE_INTER.COMPARISON0309_DATA};
+const unfilteredComparisons = {"01-06": UNFILTERED_INTER.COMPARISON0106_DATA, "01-03": UNFILTERED_INTER.COMPARISON01_DATA, "03-06": UNFILTERED_INTER.COMPARISON03_DATA, "06-09": UNFILTERED_INTER.COMPARISON_DATA, "03-09": UNFILTERED_INTER.COMPARISON0309_DATA};
+const comparisonRows = () => (isLatest() ? LATEST_COMPARISONS : isStd() ? STD_COMPARISONS : (isBefore() ? beforeComparisons : isUnfiltered() ? unfilteredComparisons : comparisons)[caseSelect.value]).filter((row) => row.mpi === mpiSelect.value && (!isLatest() || row.pair === caseSelect.value) && (!isStd() || (row.topology === datasetSelect.value && row.pair === caseSelect.value)));
+const selectedRows = () => (isLatest() ? LATEST_DATA : isStd() ? STD_DATA : isBefore() ? BEFORE_INTER.OVERLAP_DATA : isUnfiltered() ? UNFILTERED_INTER.OVERLAP_DATA : OVERLAP_DATA).filter(
   (row) => (!isStd() || row.topology === datasetSelect.value) && row.mpi === mpiSelect.value && row.case === (isComparison() ? "06" : caseSelect.value),
 );
 const splitPayload = (payload) => payload.split(" ");
-const normalizationLabel = (row) => row.normalization === "fixed_old_baseline"
+const normalizationLabel = (row) => row.target_us === 0 ? "N/A: zero compute target" : row.normalization === "fixed_old_baseline"
   ? `Fixed baseline ${row.baseline_us.toFixed(3)} us` : "Measured mid-comm";
+const sourceLabel = (row) => {
+  let label = row.source;
+  if (row.added_run_count > 0) label = `${row.source.startsWith("retest") ? "Previous retest runs" : "Previous runs"} ${row.previous_run_count} + new supplements ${row.added_run_count}`;
+  else if (row.source === "original+supplement") {
+    const added = row.runs.split(", ").filter(run => run.endsWith("_MPIonly")).length;
+    label = `original ${row.run_count - added} + MPIonly ${added}`;
+  }
+  return row.excluded_run_count > 0 ? `${label} · Excluded ${row.excluded_run_count}: ${row.excluded_runs}` : label;
+};
+
+const updateDatasetNotes = () => {
+  document.getElementById("latest-summary").hidden = !isLatest();
+  document.getElementById("latest-coverage-link").hidden = !isLatest();
+  document.getElementById("supplement-summary").hidden = isLatest() || isStd();
+  document.getElementById("exclusions-link").hidden = datasetSelect.value !== "inter";
+  document.getElementById("supplement-summary").textContent = isBefore()
+    ? "v1: Snapshot before the latest merge, including the two previously verified MPICH supplement groups. Charts, tables and CSV downloads all use this version."
+    : isUnfiltered()
+    ? "Unfiltered merged snapshot: 858 completed scripts, or 429 supplementary run pairs, across four MPI implementations. Every message-size/Case point has at least 10 valid pairs. This snapshot preserves statistics before the user-selected exclusions."
+    : "v2: Latest results merged, with 8 user-selected run pairs excluded from every Case, the main charts and resource statistics across 7 experiment groups. OpenMPI at 3.39 MiB retains 8 runs; the other affected groups retain 9. Statistics use the remaining valid runs. Raw results are preserved.";
+  document.getElementById("denominator-note").textContent = isLatest()
+    ? "Overlap = (no_midcomm wait-recv − midcomm wait-recv) / measured mid-comm time × 100%. Compute overlap for each run pair, then aggregate the mean and min–max range. Zero compute targets produce N/A and gaps in the chart."
+    : isStd() ? "Denominator: measured mid-comm time."
+    : "Retest denominator: fixed old communication baseline. Original denominator: measured mid-comm time.";
+  if (isLatest()) document.getElementById("latest-summary").textContent =
+    `Earlier supplement batch: ${LATEST_SUMMARY.scripts} completed scripts / ${LATEST_SUMMARY.complete_pairs} midcomm + no_midcomm pairs / ${LATEST_SUMMARY.experiment_groups} experiment groups. Actual run counts are listed in the table; not every group has 10 complete pairs. Only two verified MPICH groups from this batch were merged into the historical data; the other groups have different parameters or lack a historical reference. ${LATEST_SUMMARY.zero_compute_groups} groups have zero compute targets. The polling and compute-time comparisons use separate datasets.`;
+};
+
+const updateLatestStatus = (rows) => {
+  const counts = rows.map(row => row.run_count);
+  document.getElementById("data-status").textContent = rows.length
+    ? `${rows.length} message sizes · ${Math.min(...counts)}–${Math.max(...counts)} complete pairs per point · New MPIonly batch · Measured compute denominator`
+    : "No new paired results for this selection";
+};
 
 const updateTable = (rows) => {
   const compared = isComparison();
@@ -45,9 +86,9 @@ const updateTable = (rows) => {
   document.getElementById("data-head").replaceChildren(header);
   document.getElementById("comparison-body").replaceChildren(...rows.map((row) => {
     const tr = document.createElement("tr");
-    const values = [row.payload, `${row.source} (${row.run_count}); ${row.cycles} cycles`, row.runs, normalizationLabel(row), ...(compared
-      ? [row[`${first}_overlap`].toFixed(2), row[`${second}_overlap`].toFixed(2), row.delta.toFixed(2), `${row.delta_min.toFixed(2)} to ${row.delta_max.toFixed(2)}`, row.bench_change_pct.toFixed(2)]
-      : [row.min.toFixed(2), row.mean.toFixed(2), row.max.toFixed(2)])];
+    const values = [row.payload, `${sourceLabel(row)} (${row.run_count}); ${row.cycles} cycles`, row.runs, normalizationLabel(row), ...(compared
+      ? [formatValue(row[`${first}_overlap`]), formatValue(row[`${second}_overlap`]), formatValue(row.delta), `${formatValue(row.delta_min)} to ${formatValue(row.delta_max)}`, formatValue(row.bench_change_pct)]
+      : [formatValue(row.min), formatValue(row.mean), formatValue(row.max)])];
     values.forEach((value, index) => {
       const td = document.createElement("td"); td.textContent = value;
       if (index === 2) td.className = "run-list";
@@ -56,11 +97,12 @@ const updateTable = (rows) => {
     return tr;
   }));
   document.getElementById("difference-title").textContent = compared ? `Case ${second} − Case ${first}` : `Case ${first} data`;
-  document.getElementById("comparison-csv").href = compared ? `case${first}_vs_case${second}-current.csv` : "overlap-current.csv";
-  const count = rows.filter((row) => row.source === "retest").length;
-  const counts = rows.filter((row) => row.source === "retest").map((row) => row.run_count);
+  document.getElementById("comparison-csv").href = interCsv(compared ? `case${first}_vs_case${second}-current.csv` : "overlap-current.csv");
+  const count = rows.filter((row) => row.source.startsWith("retest")).length;
+  const counts = rows.filter((row) => row.source.startsWith("retest")).map((row) => row.run_count);
   const runRange = counts.length ? `${Math.min(...counts)}-${Math.max(...counts)}` : "0";
-  document.getElementById("data-status").textContent = `${count} retest points (${runRange} valid runs each) · ${rows.length - count} original points · Mixed normalization`;
+  const supplemented = rows.filter(row => row.source === "original+supplement").length;
+  document.getElementById("data-status").textContent = `${count} retest points (${runRange} valid runs each) · ${rows.length - count - supplemented} original points · ${supplemented} original + supplement points · Mixed normalization`;
 };
 
 Chart.defaults.font.family = '"IBM Plex Mono", monospace';
@@ -80,6 +122,7 @@ const rangeBars = {
     context.lineWidth = 1.5;
 
     rows.forEach((row, index) => {
+      if (!Number.isFinite(row.min) || !Number.isFinite(row.max)) return;
       const x = xScale.getPixelForValue(index);
       const minY = yScale.getPixelForValue(row.min);
       const maxY = yScale.getPixelForValue(row.max);
@@ -101,7 +144,7 @@ const rangeBars = {
 const gridBoundary = {
   id: "gridBoundary",
   beforeDatasetsDraw(chart, args, options) {
-    if (isStd()) return;
+    if (isStd() || isLatest()) return;
     const xScale = chart.scales.x;
     const yScale = chart.scales.y;
     const boundary = (xScale.getPixelForValue(7) + xScale.getPixelForValue(8)) / 2;
@@ -154,22 +197,22 @@ const chart = new Chart(document.getElementById("overlap-chart"), {
         callbacks: {
           title: (items) => (isResource() ? resourceRows("04") : isComparison() ? comparisonRows() : selectedRows())[items[0].dataIndex].payload,
           label: (item) => {
-            if (isResource()) return `${item.dataset.label}: ${item.raw.toFixed(4)}`;
-            if (isComparison()) return ` ${item.dataset.label}: ${item.raw.toFixed(2)}%`;
+            if (isResource()) return `${item.dataset.label}: ${formatValue(item.raw, 4)}`;
+            if (isComparison()) return ` ${item.dataset.label}: ${formatValue(item.raw)}%`;
             const row = selectedRows()[item.dataIndex];
-            return ` Mean ${row.mean.toFixed(2)}% · ${row.min.toFixed(2)}%–${row.max.toFixed(2)}%`;
+            return ` Mean ${formatValue(row.mean)}% · ${formatValue(row.min)}%–${formatValue(row.max)}%`;
           },
           afterLabel: (item) => {
             if (isResource()) {
               const row = resourceRows(item.dataset.caseId)[item.dataIndex];
               const metric = resourceMetric();
-              return [`Min-max: ${row[metric + "_min"].toFixed(4)} to ${row[metric + "_max"].toFixed(4)}`,
-                `${row.source}: ${row.run_count} runs; ${row.cycles} cycles`, normalizationLabel(row), row.runs];
+              return [`Min-max: ${formatValue(row[metric + "_min"], 4)} to ${formatValue(row[metric + "_max"], 4)}`,
+                `${sourceLabel(row)}: ${row.run_count} runs; ${row.cycles} cycles`, normalizationLabel(row), row.runs];
             }
             const row = (isComparison() ? comparisonRows() : selectedRows())[item.dataIndex];
-            const provenance = [`${row.source}: ${row.run_count} runs; ${row.cycles} cycles`, normalizationLabel(row), ...row.runs.split(", ").map((run) => ` ${run}`)];
+            const provenance = [`${sourceLabel(row)}: ${row.run_count} runs; ${row.cycles} cycles`, normalizationLabel(row), ...row.runs.split(", ").map((run) => ` ${run}`)];
             if (!isComparison()) return [...provenance, ...(row.anomaly ? ["Review recommended"] : [])];
-            return [...provenance, `Difference: ${row.delta.toFixed(2)} pp`, `Paired range: ${row.delta_min.toFixed(2)} to ${row.delta_max.toFixed(2)} pp`];
+            return [...provenance, `Difference: ${formatValue(row.delta)} pp`, `Paired range: ${formatValue(row.delta_min)} to ${formatValue(row.delta_max)} pp`];
           },
         },
       },
@@ -210,15 +253,16 @@ const chart = new Chart(document.getElementById("overlap-chart"), {
 });
 
 const updateChart = () => {
+  updateDatasetNotes();
   for (const option of caseSelect.options) option.disabled = false;
-  document.querySelector(".grid-boundary-key").parentElement.hidden = isStd();
+  document.querySelector(".grid-boundary-key").parentElement.hidden = isStd() || isLatest();
   document.getElementById("resource-metric-control").hidden = !isResource();
   if (isResource()) { updateResourceChart(); return; }
   chart.options.plugins.legend.display = false;
-  chart.options.scales.y.title.text = "Normalized wait reduction (mixed denominators)";
+  chart.options.scales.y.title.text = isLatest() || isStd() ? "Normalized wait reduction (measured compute)" : "Normalized wait reduction (mixed denominators)";
   chart.options.scales.y.ticks.callback = (value) => `${value}%`;
   document.querySelector(".unit").textContent = "Unit: %";
-  document.getElementById("runs-csv").href = "overlap-runs-current.csv";
+  document.getElementById("runs-csv").href = interCsv("overlap-runs-current.csv");
   const rows = selectedRows();
   const color = MPI_COLORS[mpiSelect.value];
 
@@ -263,12 +307,18 @@ const updateChart = () => {
       : "No complete paired data available for this selection";
   }
   const plottedRows = isComparison() ? comparisonRows() : rows;
+  document.getElementById("message-count").textContent = `${plottedRows.length} message sizes`;
+  if (isLatest()) {
+    document.getElementById("comparison-csv").href = isComparison() ? "latest-comparisons.csv" : "latest-overlap.csv";
+    document.getElementById("runs-csv").href = "latest-runs.csv";
+    updateLatestStatus(plottedRows);
+  }
   chart.data.datasets.forEach((dataset) => {
-    dataset.pointRadius = plottedRows.map((row) => row.source === "retest" ? 5 : 4);
+    dataset.pointRadius = plottedRows.map((row) => row.source.startsWith("retest") ? 5 : 4);
   });
   // Include run ranges in single-case limits so retest outliers are not clipped.
-  const limits = isComparison() ? chart.data.datasets.flatMap((dataset) => dataset.data)
-    : rows.flatMap((row) => [row.min, row.max]);
+  const limits = (isComparison() ? chart.data.datasets.flatMap((dataset) => dataset.data)
+    : rows.flatMap((row) => [row.min, row.max])).filter(Number.isFinite);
   chart.options.scales.y.min = Math.floor(Math.min(0, ...limits) / 10) * 10 - 10;
   chart.options.scales.y.max = Math.ceil(Math.max(100, ...limits) / 10) * 10 + 10;
   chart.options.plugins.rangeBars.color = `${color}94`;

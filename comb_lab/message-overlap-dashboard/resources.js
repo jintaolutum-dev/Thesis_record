@@ -1,5 +1,5 @@
 const resourceMetric = () => document.getElementById("resource-metric").value;
-const resourceRows = (id) => (isStd() ? STD_RESOURCES : RESOURCE_DATA).filter(r => r.mpi === mpiSelect.value && r.case === id && (!isStd() || r.topology === datasetSelect.value));
+const resourceRows = (id) => (isLatest() ? LATEST_RESOURCES : isStd() ? STD_RESOURCES : isBefore() ? BEFORE_INTER.RESOURCE_DATA : isUnfiltered() ? UNFILTERED_INTER.RESOURCE_DATA : RESOURCE_DATA).filter(r => r.mpi === mpiSelect.value && r.case === id && (!isStd() || r.topology === datasetSelect.value));
 const resourceLabel = (id) => {
   const app = {"04": 1, "05": 12, "06": 23}[id];
   const reserved = mpiSelect.value === "mpich" ? 1 : id === "05" ? 12 : 1;
@@ -36,8 +36,8 @@ function updateResourceChart() {
   document.getElementById("data-head").replaceChildren(head);
   const table = rows.flatMap((_, i) => ["04", "05", "06"].map(id => resourceRows(id)[i])).map(r => {
     const tr = document.createElement("tr");
-    [r.payload, r.case, `${r.source} / ${r.cycles}`, r.runs, normalizationLabel(r),
-      r[metric].toFixed(4), r[metric + "_min"].toFixed(4), r[metric + "_max"].toFixed(4)].forEach((v, index) => {
+    [r.payload, r.case, `${sourceLabel(r)} / ${r.cycles}`, r.runs, normalizationLabel(r),
+      formatValue(r[metric], 4), formatValue(r[metric + "_min"], 4), formatValue(r[metric + "_max"], 4)].forEach((v, index) => {
       const td = document.createElement("td"); td.textContent = v;
       if (index === 3) td.className = "run-list";
       tr.append(td);
@@ -45,9 +45,9 @@ function updateResourceChart() {
   });
   document.getElementById("comparison-body").replaceChildren(...table);
   document.getElementById("difference-title").textContent = "Case 04 / 05 / 06 · OMP/SEQ-SEQ";
-  document.getElementById("comparison-csv").href = "resources-current.csv";
-  document.getElementById("runs-csv").href = "resources-runs-current.csv";
-  document.getElementById("data-status").textContent = `${rows.length} message sizes · ${rows.filter(r => r.source === "retest").length} retest points · runtime: mean of per-run rank maxima`;
+  document.getElementById("comparison-csv").href = interCsv("resources-current.csv");
+  document.getElementById("runs-csv").href = interCsv("resources-runs-current.csv");
+  document.getElementById("data-status").textContent = `${rows.length} message sizes · ${rows.filter(r => r.source.startsWith("retest")).length} retest points · ${rows.filter(r => r.source === "original+supplement").length} original + supplement points · runtime: mean of per-run rank maxima`;
   if (isStd()) {
     document.getElementById("configuration").textContent = `CM4_STD · ${datasetSelect.value.slice(0, 4).toUpperCase()} · OMP/SEQ-SEQ · WAIT_ALL · ASYNC ON`;
     document.getElementById("comparison-csv").href = "std-resources-current.csv";
@@ -57,5 +57,11 @@ function updateResourceChart() {
       : "No complete Case 04/05/06 resource data available for this selection";
   }
   document.title = `${MPI_NAMES[mpiSelect.value]} · Case 04 / 05 / 06 · ${metricName}`;
+  document.getElementById("message-count").textContent = `${rows.length} message sizes`;
+  if (isLatest()) {
+    document.getElementById("comparison-csv").href = "latest-resources.csv";
+    document.getElementById("runs-csv").href = "latest-runs.csv";
+    updateLatestStatus(rows);
+  }
   chart.update();
 }

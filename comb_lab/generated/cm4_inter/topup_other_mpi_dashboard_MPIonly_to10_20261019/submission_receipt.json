@@ -1,0 +1,65 @@
+{
+  "submitted_at": "2026-10-19T09:55:11.168116+02:00",
+  "cluster": "inter",
+  "partition": "cm4_inter",
+  "nodes_per_job": 2,
+  "time_limit_per_job": "395244: 04:00:00; 395246: 06:00:00",
+  "order": "intelmpi -> intelmpi_tcp -> openmpi",
+  "dependency_policy": "afterok",
+  "jobs": [
+    {
+      "mpi": "intelmpi",
+      "job_id": "395244",
+      "scripts": 228,
+      "dependency": null,
+      "wrapper": "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/topup_other_mpi_dashboard_MPIonly_to10_20261019/run_intelmpi_topup.slurm.sh",
+      "wrapper_sha256": "e46b57d9f6edbfe22ed4d151e5ab771a53aaf077c302b913629dcbbcce67ab23",
+      "stdout": "395244;inter",
+      "stderr": ""
+    },
+    {
+      "mpi": "intelmpi_tcp",
+      "job_id": "395245",
+      "scripts": 228,
+      "dependency": "afterok:395244",
+      "wrapper": "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/topup_other_mpi_dashboard_MPIonly_to10_20261019/run_intelmpi_tcp_topup.slurm.sh",
+      "wrapper_sha256": "c9ff0b6452cfa2a65741a8d10f430aa125c6999e576e4d4a6d813d02915f0b39",
+      "stdout": "395245;inter",
+      "stderr": "",
+      "status": "cancelled_before_start_for_combined_replacement"
+    },
+    {
+      "mpi": [
+        "intelmpi_tcp",
+        "openmpi"
+      ],
+      "job_id": "395246",
+      "scripts": 400,
+      "nodes": 2,
+      "time_limit": "06:00:00",
+      "dependency": "afterok:395244",
+      "wrapper": "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/topup_other_mpi_dashboard_MPIonly_to10_20261019/run_tcp_openmpi_topup.slurm.sh",
+      "wrapper_sha256": "b6109b7e5723bbb8f5c8c98696370cd5b155a502817dd7c032d9ef9073ab092e",
+      "stdout": "395246;inter",
+      "stderr": ""
+    }
+  ],
+  "submission_error": {
+    "mpi": "openmpi",
+    "stderr": "sbatch: error: AssocMaxSubmitJobLimit\nsbatch: error: Batch job submission failed: Job violates accounting/QOS policy (job submit limit, user's size and/or time limits)\n",
+    "stdout": ""
+  },
+  "replacement_reason": "AssocMaxSubmitJobLimit: combine Intel MPI TCP and OpenMPI into one sequential two-node job",
+  "status": "cancelled_at_user_request",
+  "active_job_ids": [
+    "395244",
+    "395246"
+  ],
+  "updated_at": "2026-10-19T09:56:23.749482+02:00",
+  "cancelled_at": "2026-10-19T10:47:52.903779+02:00",
+  "cancelled_job_ids": [
+    "395244",
+    "395246"
+  ],
+  "cancellation_note": "User requested stop after Intel MPI stalled at manifest line 71, Case 09. Existing scripts, results and logs retained; TCP/OpenMPI had not started."
+}

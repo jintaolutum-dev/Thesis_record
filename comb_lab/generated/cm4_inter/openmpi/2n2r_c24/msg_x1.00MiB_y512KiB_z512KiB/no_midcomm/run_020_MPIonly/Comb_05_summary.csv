@@ -1,0 +1,78 @@
+Comb version 0.3.1
+Args  ./comb;32_32_32;-divide;2_1_1;-periodic;1_1_1;-ghost;1_1_1;-vars;128;-comm;cutoff;250;-comm;disable;all;-comm;enable;mpi;-comm;post_recv;wait_all;-comm;post_send;wait_all;-comm;wait_recv;wait_all;-comm;wait_send;wait_all;-exec;enable;omp;-compute_target_us;0;-cycles;80;-print_message_sizes;-print_packing_sizes
+Started rank 0 of 2
+Node cm4r15c06s06
+Compiler "/dss/lrzsys/sys/spack/release/24.4.0/opt/x86_64/intel-oneapi-compilers/2024.1.0-gcc-ibqwgcs/compiler/2024.1/bin/icpx"
+OMP num threads    12
+OMP thread map      0;1;2;3;4;5;6;7;8;9;10;11
+Cart coords         0        0        0
+Message policy cutoff 250
+Post Recv using wait_all method
+Post Send using wait_all method
+Wait Recv using wait_all method
+Wait Send using wait_all method
+Num cycles         80
+Num vars          128
+ghost_widths        1        1        1
+sizes              32       32       32
+divisions           2        1        1
+periodic            1        1        1
+division map
+map                 0        0        0
+map                16       32       32
+map                32                  
+print message and packing sizes to proc file(s)
+Starting test memcpy seq dst Host src Host
+                     ,    number,  average(s),      min(s),      max(s)
+copy_sync-128-20808-8,       160, 0.001559004, 0.001554549, 0.001576928
+Starting test memcpy omp dst Host src Host
+                     ,    number,  average(s),      min(s),      max(s)
+copy_sync-128-20808-8,       160, 0.000321220, 0.000314570, 0.000349830
+Starting test Comm mpi Mesh seq Host Buffers seq Host seq Host
+          ,    number,  average(s),      min(s),      max(s)
+pre-comm  ,       160, 0.000973669, 0.000966785, 0.000989859
+post-recv ,       160, 0.000008771, 0.000001379, 0.000024322
+post-send ,       160, 0.002621081, 0.001005091, 0.004390636
+mid-comm  ,       160, 0.000000075, 0.000000047, 0.000000175
+wait-recv ,       160, 0.003404075, 0.001315849, 0.016643316
+wait-send ,       160, 0.000254763, 0.000000532, 0.000314600
+post-comm ,       160, 0.000863954, 0.000858242, 0.000881422
+start-up  ,         2, 0.006432933, 0.006422894, 0.006442971
+test-comm ,         2, 0.372397523, 0.372356923, 0.372438123
+bench-comm,         2, 0.650381339, 0.650324393, 0.650438284
+Starting test Comm mpi Mesh omp Host Buffers seq Host seq Host
+          ,    number,  average(s),      min(s),      max(s)
+pre-comm  ,       160, 0.000273989, 0.000265065, 0.000291417
+post-recv ,       160, 0.000004783, 0.000001167, 0.000012254
+post-send ,       160, 0.002197077, 0.001350857, 0.003119777
+mid-comm  ,       160, 0.000000075, 0.000000049, 0.000000168
+wait-recv ,       160, 0.002376737, 0.001382363, 0.003758935
+wait-send ,       160, 0.000135279, 0.000000564, 0.000302380
+post-comm ,       160, 0.000272894, 0.000268064, 0.000303968
+start-up  ,         2, 0.002516015, 0.000546473, 0.004485556
+test-comm ,         2, 0.071588668, 0.071539697, 0.071637638
+bench-comm,         2, 0.421075166, 0.421075024, 0.421075307
+Starting test Comm mpi Mesh omp Host Buffers omp Host seq Host
+          ,    number,  average(s),      min(s),      max(s)
+pre-comm  ,       160, 0.000276035, 0.000268670, 0.000302163
+post-recv ,       160, 0.000004906, 0.000001204, 0.000012151
+post-send ,       160, 0.001636155, 0.000998158, 0.002406808
+mid-comm  ,       160, 0.000000065, 0.000000020, 0.000000121
+wait-recv ,       160, 0.002056160, 0.001251825, 0.003078435
+wait-send ,       160, 0.000134260, 0.000000549, 0.000286918
+post-comm ,       160, 0.000280976, 0.000274381, 0.000302049
+start-up  ,         2, 0.001640723, 0.000443240, 0.002838205
+test-comm ,         2, 0.059966087, 0.059913223, 0.060018950
+bench-comm,         2, 0.351259564, 0.351258165, 0.351260963
+Starting test Comm mpi Mesh omp Host Buffers omp Host omp Host
+          ,    number,  average(s),      min(s),      max(s)
+pre-comm  ,       160, 0.000273020, 0.000265901, 0.000290323
+post-recv ,       160, 0.000004775, 0.000001132, 0.000012200
+post-send ,       160, 0.001634376, 0.000997653, 0.002407707
+mid-comm  ,       160, 0.000000067, 0.000000046, 0.000000154
+wait-recv ,       160, 0.002059785, 0.001253172, 0.003044045
+wait-send ,       160, 0.000133688, 0.000000506, 0.000285768
+post-comm ,       160, 0.000278804, 0.000273153, 0.000293983
+start-up  ,         2, 0.001647494, 0.000470668, 0.002824320
+test-comm ,         2, 0.060196797, 0.060147602, 0.060245991
+bench-comm,         2, 0.350917034, 0.350916391, 0.350917677

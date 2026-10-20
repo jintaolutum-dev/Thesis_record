@@ -1,0 +1,1580 @@
+===== 00_async0_c1_wait_all =====
+launcher=mpirun --mca plm slurm --hostfile /dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/openmpi/2n2r_c24/msg_x1KiB_y512B_z512B/midcomm/run_020_MPIonly/openmpi_hosts.gY4XkE -np 2 --map-by ppr:1:node:PE=24 --bind-to core --report-bindings
+comb_cmd=./comb 8_8_8 -divide 2_1_1 -periodic 1_1_1 -ghost 1_1_1 -vars 2 -comm cutoff 250 -comm disable all -comm enable mpi  -comm post_recv wait_all -comm post_send wait_all -comm wait_recv wait_all -comm wait_send wait_all -exec enable omp -compute_target_us 26.0 -cycles 100 -print_message_sizes -print_packing_sizes 
+binding_mode=mpirun --bind-to core
+job_metadata_file=job_metadata.log
+[cm4r15c06s06:85458] MCW rank 0 bound to socket 0[core 0[hwt 0-1]], socket 0[core 1[hwt 0-1]], socket 0[core 2[hwt 0-1]], socket 0[core 3[hwt 0-1]], socket 0[core 4[hwt 0-1]], socket 0[core 5[hwt 0-1]], socket 0[core 6[hwt 0-1]], socket 0[core 7[hwt 0-1]], socket 0[core 8[hwt 0-1]], socket 0[core 9[hwt 0-1]], socket 0[core 10[hwt 0-1]], socket 0[core 11[hwt 0-1]], socket 0[core 12[hwt 0-1]], socket 0[core 13[hwt 0-1]], socket 0[core 14[hwt 0-1]], socket 0[core 15[hwt 0-1]], socket 0[core 16[hwt 0-1]], socket 0[core 17[hwt 0-1]], socket 0[core 18[hwt 0-1]], socket 0[core 19[hwt 0-1]], socket 0[core 20[hwt 0-1]], socket 0[core 21[hwt 0-1]], socket 0[core 22[hwt 0-1]], socket 0[core 23[hwt 0-1]]: [BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..][../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..]
+[cm4r15c06s07:175269] MCW rank 1 bound to socket 0[core 0[hwt 0-1]], socket 0[core 1[hwt 0-1]], socket 0[core 2[hwt 0-1]], socket 0[core 3[hwt 0-1]], socket 0[core 4[hwt 0-1]], socket 0[core 5[hwt 0-1]], socket 0[core 6[hwt 0-1]], socket 0[core 7[hwt 0-1]], socket 0[core 8[hwt 0-1]], socket 0[core 9[hwt 0-1]], socket 0[core 10[hwt 0-1]], socket 0[core 11[hwt 0-1]], socket 0[core 12[hwt 0-1]], socket 0[core 13[hwt 0-1]], socket 0[core 14[hwt 0-1]], socket 0[core 15[hwt 0-1]], socket 0[core 16[hwt 0-1]], socket 0[core 17[hwt 0-1]], socket 0[core 18[hwt 0-1]], socket 0[core 19[hwt 0-1]], socket 0[core 20[hwt 0-1]], socket 0[core 21[hwt 0-1]], socket 0[core 22[hwt 0-1]], socket 0[core 23[hwt 0-1]]: [BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..][../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..]
+rank=0 host=cm4r15c06s06 bind_mode=mpirun allowed=0-23,112-135 main_cpu_list=0-23,112-135 progress_cpu_list= main_socket_set=unknown progress_socket_set=none main_numa_set=unknown progress_numa_set=none binding_relation=no_progress_threads
+rank=1 host=cm4r15c06s07 bind_mode=mpirun allowed=0-23,112-135 main_cpu_list=0-23,112-135 progress_cpu_list= main_socket_set=unknown progress_socket_set=none main_numa_set=unknown progress_numa_set=none binding_relation=no_progress_threads
+runtime_state rank=0 host=cm4r15c06s06 pid=85468 threads=1 Cpus_allowed_list:	0-23,112-135 Mems_allowed_list:	0-1 taskset=pid 85468's current affinity list: 0-23,112-135 
+runtime_state rank=1 host=cm4r15c06s07 pid=175272 threads=1 Cpus_allowed_list:	0-23,112-135 Mems_allowed_list:	0-1 taskset=pid 175272's current affinity list: 0-23,112-135 
+[cm4r15c06s06:85468] mca: base: components_register: registering framework bml components
+[cm4r15c06s06:85468] mca: base: components_register: found loaded component r2
+[cm4r15c06s06:85468] mca: base: components_register: component r2 register function successful
+[cm4r15c06s06:85468] mca: base: components_open: opening bml components
+[cm4r15c06s06:85468] mca: base: components_open: found loaded component r2
+[cm4r15c06s06:85468] mca: base: components_open: component r2 open function successful
+[cm4r15c06s06:85468] mca: base: components_register: registering framework btl components
+[cm4r15c06s06:85468] mca: base: components_register: found loaded component vader
+[cm4r15c06s06:85468] mca: base: components_register: component vader register function successful
+[cm4r15c06s06:85468] mca: base: components_register: found loaded component tcp
+[cm4r15c06s06:85468] mca: base: components_register: component tcp register function successful
+[cm4r15c06s06:85468] mca: base: components_register: found loaded component self
+[cm4r15c06s06:85468] mca: base: components_register: component self register function successful
+[cm4r15c06s06:85468] mca: base: components_open: opening btl components
+[cm4r15c06s06:85468] mca: base: components_open: found loaded component vader
+[cm4r15c06s06:85468] mca: base: components_open: component vader open function successful
+[cm4r15c06s06:85468] mca: base: components_open: found loaded component tcp
+[cm4r15c06s06:85468] mca: base: components_open: component tcp open function successful
+[cm4r15c06s06:85468] mca: base: components_open: found loaded component self
+[cm4r15c06s06:85468] mca: base: components_open: component self open function successful
+[cm4r15c06s06:85468] select: initializing btl component vader
+[cm4r15c06s06:85468] select: init of component vader returned failure
+[cm4r15c06s06:85468] mca: base: close: component vader closed
+[cm4r15c06s06:85468] mca: base: close: unloading component vader
+[cm4r15c06s06:85468] select: initializing btl component tcp
+[cm4r15c06s06:85468] btl: tcp: Searching for exclude address+prefix: 127.0.0.1 / 8
+[cm4r15c06s06:85468] btl: tcp: Found match: 127.0.0.1 (lo)
+[cm4r15c06s06:85468] btl: tcp: Using interface: sppp 
+[cm4r15c06s06:85468] btl:tcp: Attempting to bind to AF_INET port 1024
+[cm4r15c06s06:85468] btl:tcp: Successfully bound to AF_INET port 1024
+[cm4r15c06s06:85468] btl:tcp: my listening v4 socket is 0.0.0.0:1024
+[cm4r15c06s06:85468] btl:tcp: examining interface em3
+[cm4r15c06s06:85468] btl:tcp: using ipv6 interface em3
+[cm4r15c06s06:85468] btl:tcp: examining interface ib0.8001
+[cm4r15c06s06:85468] btl:tcp: using ipv6 interface ib0.8001
+[cm4r15c06s06:85468] select: init of component tcp returned success
+[cm4r15c06s06:85468] select: initializing btl component self
+[cm4r15c06s06:85468] select: init of component self returned success
+[cm4r15c06s07:175272] mca: base: components_register: registering framework bml components
+[cm4r15c06s07:175272] mca: base: components_register: found loaded component r2
+[cm4r15c06s07:175272] mca: base: components_register: component r2 register function successful
+[cm4r15c06s07:175272] mca: base: components_open: opening bml components
+[cm4r15c06s07:175272] mca: base: components_open: found loaded component r2
+[cm4r15c06s07:175272] mca: base: components_open: component r2 open function successful
+[cm4r15c06s07:175272] mca: base: components_register: registering framework btl components
+[cm4r15c06s07:175272] mca: base: components_register: found loaded component vader
+[cm4r15c06s07:175272] mca: base: components_register: component vader register function successful
+[cm4r15c06s07:175272] mca: base: components_register: found loaded component tcp
+[cm4r15c06s07:175272] mca: base: components_register: component tcp register function successful
+[cm4r15c06s07:175272] mca: base: components_register: found loaded component self
+[cm4r15c06s07:175272] mca: base: components_register: component self register function successful
+[cm4r15c06s07:175272] mca: base: components_open: opening btl components
+[cm4r15c06s07:175272] mca: base: components_open: found loaded component vader
+[cm4r15c06s07:175272] mca: base: components_open: component vader open function successful
+[cm4r15c06s07:175272] mca: base: components_open: found loaded component tcp
+[cm4r15c06s07:175272] mca: base: components_open: component tcp open function successful
+[cm4r15c06s07:175272] mca: base: components_open: found loaded component self
+[cm4r15c06s07:175272] mca: base: components_open: component self open function successful
+[cm4r15c06s07:175272] select: initializing btl component vader
+[cm4r15c06s07:175272] select: init of component vader returned failure
+[cm4r15c06s07:175272] mca: base: close: component vader closed
+[cm4r15c06s07:175272] mca: base: close: unloading component vader
+[cm4r15c06s07:175272] select: initializing btl component tcp
+[cm4r15c06s07:175272] btl: tcp: Searching for exclude address+prefix: 127.0.0.1 / 8
+[cm4r15c06s07:175272] btl: tcp: Found match: 127.0.0.1 (lo)
+[cm4r15c06s07:175272] btl: tcp: Using interface: sppp 
+[cm4r15c06s07:175272] btl:tcp: Attempting to bind to AF_INET port 1024
+[cm4r15c06s07:175272] btl:tcp: Successfully bound to AF_INET port 1024
+[cm4r15c06s07:175272] btl:tcp: my listening v4 socket is 0.0.0.0:1024
+[cm4r15c06s07:175272] btl:tcp: examining interface em3
+[cm4r15c06s07:175272] btl:tcp: using ipv6 interface em3
+[cm4r15c06s07:175272] btl:tcp: examining interface ib0.8001
+[cm4r15c06s07:175272] btl:tcp: using ipv6 interface ib0.8001
+[cm4r15c06s07:175272] select: init of component tcp returned success
+[cm4r15c06s07:175272] select: initializing btl component self
+[cm4r15c06s07:175272] select: init of component self returned success
+[cm4r15c06s07:175272] mca: bml: Using self btl for send to [[12803,1],1] on node cm4r15c06s07
+[cm4r15c06s06:85468] mca: bml: Using self btl for send to [[12803,1],0] on node cm4r15c06s06
+[cm4r15c06s06:85468] btl:tcp: path from 10.0.3.138 to 10.0.3.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85468] btl:tcp: path from 10.0.3.138 to 10.156.155.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85468] btl:tcp: path from 10.156.155.138 to 10.0.3.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85468] btl:tcp: path from 10.156.155.138 to 10.156.155.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85468] mca: bml: Using tcp btl for send to [[12803,1],1] on node cm4r15c06s07
+[cm4r15c06s06:85468] btl:tcp: path from 10.0.3.138 to 10.0.3.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85468] btl:tcp: path from 10.0.3.138 to 10.156.155.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85468] btl:tcp: path from 10.156.155.138 to 10.0.3.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85468] btl:tcp: path from 10.156.155.138 to 10.156.155.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85468] mca: bml: Using tcp btl for send to [[12803,1],1] on node cm4r15c06s07
+[cm4r15c06s06:85468] btl: tcp: attempting to connect() to [[12803,1],1] address 10.0.3.139 on port 1024
+[cm4r15c06s06:85468] btl:tcp: would block, so allowing background progress
+[cm4r15c06s06:85468] btl:tcp: connect() to 10.0.3.139:1024 completed (complete_connect), sending connect ACK
+[cm4r15c06s07:175272] btl:tcp: path from 10.0.3.139 to 10.0.3.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175272] btl:tcp: path from 10.0.3.139 to 10.156.155.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175272] btl:tcp: path from 10.156.155.139 to 10.0.3.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175272] btl:tcp: path from 10.156.155.139 to 10.156.155.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175272] btl:tcp: path from 10.0.3.139 to 10.0.3.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175272] btl:tcp: path from 10.0.3.139 to 10.156.155.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175272] btl:tcp: path from 10.156.155.139 to 10.0.3.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175272] btl:tcp: path from 10.156.155.139 to 10.156.155.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175272] btl:tcp: now connected to 10.0.3.138, process [[12803,1],0]
+Comb version 0.3.1
+Args  ./comb;8_8_8;-divide;2_1_1;-periodic;1_1_1;-ghost;1_1_1;-vars;2;-comm;cutoff;250;-comm;disable;all;-comm;enable;mpi;-comm;post_recv;wait_all;-comm;post_send;wait_all;-comm;wait_recv;wait_all;-comm;wait_send;wait_all;-exec;enable;omp;-compute_target_us;26.0;-cycles;100;-print_message_sizes;-print_packing_sizes
+Started rank 0 of 2
+Node cm4r15c06s06
+Compiler "/dss/lrzsys/sys/spack/release/24.4.0/opt/x86_64/intel-oneapi-compilers/2024.1.0-gcc-ibqwgcs/compiler/2024.1/bin/icpx"
+OMP num threads     1
+OMP thread map    112
+[cm4r15c06s07:175272] mca: bml: Using tcp btl for send to [[12803,1],0] on node cm4r15c06s06
+[cm4r15c06s07:175272] mca: bml: Using tcp btl for send to [[12803,1],0] on node cm4r15c06s06
+Cart coords         0        0        0
+Message policy cutoff 250
+Post Recv using wait_all method
+Post Send using wait_all method
+Wait Recv using wait_all method
+Wait Send using wait_all method
+Num cycles        100
+Num vars            2
+ghost_widths        1        1        1
+sizes               8        8        8
+divisions           2        1        1
+periodic            1        1        1
+division map
+map                 0        0        0
+map                 4        8        8
+map                 8                  
+print message and packing sizes to proc file(s)
+Starting test memcpy seq dst Host src Host
+Starting test memcpy omp dst Host src Host
+Starting test Comm mpi Mesh seq Host Buffers seq Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers seq Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers omp Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers omp Host omp Host
+[cm4r15c06s06:85468] mca: base: close: component r2 closed
+[cm4r15c06s06:85468] mca: base: close: unloading component r2
+[cm4r15c06s06:85468] mca: base: close: component tcp closed
+[cm4r15c06s06:85468] mca: base: close: unloading component tcp
+[cm4r15c06s06:85468] mca: base: close: component self closed
+[cm4r15c06s06:85468] mca: base: close: unloading component self
+[cm4r15c06s07:175272] mca: base: close: component r2 closed
+[cm4r15c06s07:175272] mca: base: close: unloading component r2
+[cm4r15c06s07:175272] mca: base: close: component tcp closed
+[cm4r15c06s07:175272] mca: base: close: unloading component tcp
+[cm4r15c06s07:175272] mca: base: close: component self closed
+[cm4r15c06s07:175272] mca: base: close: unloading component self
+===== 00_async0_c1_wait_all exit code: 0 =====
+===== 01_async0_c24_wait_all =====
+launcher=mpirun --mca plm slurm --hostfile /dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/openmpi/2n2r_c24/msg_x1KiB_y512B_z512B/midcomm/run_020_MPIonly/openmpi_hosts.gY4XkE -np 2 --map-by ppr:1:node:PE=24 --bind-to core --report-bindings
+comb_cmd=./comb 8_8_8 -divide 2_1_1 -periodic 1_1_1 -ghost 1_1_1 -vars 2 -comm cutoff 250 -comm disable all -comm enable mpi  -comm post_recv wait_all -comm post_send wait_all -comm wait_recv wait_all -comm wait_send wait_all -exec enable omp -compute_target_us 26.0 -cycles 100 -print_message_sizes -print_packing_sizes 
+binding_mode=mpirun --bind-to core
+job_metadata_file=job_metadata.log
+[cm4r15c06s06:85525] MCW rank 0 bound to socket 0[core 0[hwt 0-1]], socket 0[core 1[hwt 0-1]], socket 0[core 2[hwt 0-1]], socket 0[core 3[hwt 0-1]], socket 0[core 4[hwt 0-1]], socket 0[core 5[hwt 0-1]], socket 0[core 6[hwt 0-1]], socket 0[core 7[hwt 0-1]], socket 0[core 8[hwt 0-1]], socket 0[core 9[hwt 0-1]], socket 0[core 10[hwt 0-1]], socket 0[core 11[hwt 0-1]], socket 0[core 12[hwt 0-1]], socket 0[core 13[hwt 0-1]], socket 0[core 14[hwt 0-1]], socket 0[core 15[hwt 0-1]], socket 0[core 16[hwt 0-1]], socket 0[core 17[hwt 0-1]], socket 0[core 18[hwt 0-1]], socket 0[core 19[hwt 0-1]], socket 0[core 20[hwt 0-1]], socket 0[core 21[hwt 0-1]], socket 0[core 22[hwt 0-1]], socket 0[core 23[hwt 0-1]]: [BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..][../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..]
+[cm4r15c06s07:175321] MCW rank 1 bound to socket 0[core 0[hwt 0-1]], socket 0[core 1[hwt 0-1]], socket 0[core 2[hwt 0-1]], socket 0[core 3[hwt 0-1]], socket 0[core 4[hwt 0-1]], socket 0[core 5[hwt 0-1]], socket 0[core 6[hwt 0-1]], socket 0[core 7[hwt 0-1]], socket 0[core 8[hwt 0-1]], socket 0[core 9[hwt 0-1]], socket 0[core 10[hwt 0-1]], socket 0[core 11[hwt 0-1]], socket 0[core 12[hwt 0-1]], socket 0[core 13[hwt 0-1]], socket 0[core 14[hwt 0-1]], socket 0[core 15[hwt 0-1]], socket 0[core 16[hwt 0-1]], socket 0[core 17[hwt 0-1]], socket 0[core 18[hwt 0-1]], socket 0[core 19[hwt 0-1]], socket 0[core 20[hwt 0-1]], socket 0[core 21[hwt 0-1]], socket 0[core 22[hwt 0-1]], socket 0[core 23[hwt 0-1]]: [BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..][../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..]
+rank=1 host=cm4r15c06s07 bind_mode=mpirun allowed=0-23,112-135 main_cpu_list=0-23,112-135 progress_cpu_list= main_socket_set=unknown progress_socket_set=none main_numa_set=unknown progress_numa_set=none binding_relation=no_progress_threads
+rank=0 host=cm4r15c06s06 bind_mode=mpirun allowed=0-23,112-135 main_cpu_list=0-23,112-135 progress_cpu_list= main_socket_set=unknown progress_socket_set=none main_numa_set=unknown progress_numa_set=none binding_relation=no_progress_threads
+runtime_state rank=1 host=cm4r15c06s07 pid=175324 threads=1 Cpus_allowed_list:	0-23,112-135 Mems_allowed_list:	0-1 taskset=pid 175324's current affinity list: 0-23,112-135 
+runtime_state rank=0 host=cm4r15c06s06 pid=85536 threads=1 Cpus_allowed_list:	0-23,112-135 Mems_allowed_list:	0-1 taskset=pid 85536's current affinity list: 0-23,112-135 
+[cm4r15c06s06:85536] mca: base: components_register: registering framework bml components
+[cm4r15c06s06:85536] mca: base: components_register: found loaded component r2
+[cm4r15c06s06:85536] mca: base: components_register: component r2 register function successful
+[cm4r15c06s06:85536] mca: base: components_open: opening bml components
+[cm4r15c06s06:85536] mca: base: components_open: found loaded component r2
+[cm4r15c06s06:85536] mca: base: components_open: component r2 open function successful
+[cm4r15c06s06:85536] mca: base: components_register: registering framework btl components
+[cm4r15c06s06:85536] mca: base: components_register: found loaded component vader
+[cm4r15c06s06:85536] mca: base: components_register: component vader register function successful
+[cm4r15c06s06:85536] mca: base: components_register: found loaded component tcp
+[cm4r15c06s06:85536] mca: base: components_register: component tcp register function successful
+[cm4r15c06s06:85536] mca: base: components_register: found loaded component self
+[cm4r15c06s06:85536] mca: base: components_register: component self register function successful
+[cm4r15c06s06:85536] mca: base: components_open: opening btl components
+[cm4r15c06s06:85536] mca: base: components_open: found loaded component vader
+[cm4r15c06s06:85536] mca: base: components_open: component vader open function successful
+[cm4r15c06s06:85536] mca: base: components_open: found loaded component tcp
+[cm4r15c06s06:85536] mca: base: components_open: component tcp open function successful
+[cm4r15c06s06:85536] mca: base: components_open: found loaded component self
+[cm4r15c06s06:85536] mca: base: components_open: component self open function successful
+[cm4r15c06s06:85536] select: initializing btl component vader
+[cm4r15c06s06:85536] select: init of component vader returned failure
+[cm4r15c06s06:85536] mca: base: close: component vader closed
+[cm4r15c06s06:85536] mca: base: close: unloading component vader
+[cm4r15c06s06:85536] select: initializing btl component tcp
+[cm4r15c06s06:85536] btl: tcp: Searching for exclude address+prefix: 127.0.0.1 / 8
+[cm4r15c06s06:85536] btl: tcp: Found match: 127.0.0.1 (lo)
+[cm4r15c06s06:85536] btl: tcp: Using interface: sppp 
+[cm4r15c06s06:85536] btl:tcp: Attempting to bind to AF_INET port 1024
+[cm4r15c06s06:85536] btl:tcp: Successfully bound to AF_INET port 1024
+[cm4r15c06s06:85536] btl:tcp: my listening v4 socket is 0.0.0.0:1024
+[cm4r15c06s06:85536] btl:tcp: examining interface em3
+[cm4r15c06s06:85536] btl:tcp: using ipv6 interface em3
+[cm4r15c06s06:85536] btl:tcp: examining interface ib0.8001
+[cm4r15c06s06:85536] btl:tcp: using ipv6 interface ib0.8001
+[cm4r15c06s06:85536] select: init of component tcp returned success
+[cm4r15c06s06:85536] select: initializing btl component self
+[cm4r15c06s06:85536] select: init of component self returned success
+[cm4r15c06s07:175324] mca: base: components_register: registering framework bml components
+[cm4r15c06s07:175324] mca: base: components_register: found loaded component r2
+[cm4r15c06s07:175324] mca: base: components_register: component r2 register function successful
+[cm4r15c06s07:175324] mca: base: components_open: opening bml components
+[cm4r15c06s07:175324] mca: base: components_open: found loaded component r2
+[cm4r15c06s07:175324] mca: base: components_open: component r2 open function successful
+[cm4r15c06s07:175324] mca: base: components_register: registering framework btl components
+[cm4r15c06s07:175324] mca: base: components_register: found loaded component vader
+[cm4r15c06s07:175324] mca: base: components_register: component vader register function successful
+[cm4r15c06s07:175324] mca: base: components_register: found loaded component tcp
+[cm4r15c06s07:175324] mca: base: components_register: component tcp register function successful
+[cm4r15c06s07:175324] mca: base: components_register: found loaded component self
+[cm4r15c06s07:175324] mca: base: components_register: component self register function successful
+[cm4r15c06s07:175324] mca: base: components_open: opening btl components
+[cm4r15c06s07:175324] mca: base: components_open: found loaded component vader
+[cm4r15c06s07:175324] mca: base: components_open: component vader open function successful
+[cm4r15c06s07:175324] mca: base: components_open: found loaded component tcp
+[cm4r15c06s07:175324] mca: base: components_open: component tcp open function successful
+[cm4r15c06s07:175324] mca: base: components_open: found loaded component self
+[cm4r15c06s07:175324] mca: base: components_open: component self open function successful
+[cm4r15c06s07:175324] select: initializing btl component vader
+[cm4r15c06s07:175324] select: init of component vader returned failure
+[cm4r15c06s07:175324] mca: base: close: component vader closed
+[cm4r15c06s07:175324] mca: base: close: unloading component vader
+[cm4r15c06s07:175324] select: initializing btl component tcp
+[cm4r15c06s07:175324] btl: tcp: Searching for exclude address+prefix: 127.0.0.1 / 8
+[cm4r15c06s07:175324] btl: tcp: Found match: 127.0.0.1 (lo)
+[cm4r15c06s07:175324] btl: tcp: Using interface: sppp 
+[cm4r15c06s07:175324] btl:tcp: Attempting to bind to AF_INET port 1024
+[cm4r15c06s07:175324] btl:tcp: Successfully bound to AF_INET port 1024
+[cm4r15c06s07:175324] btl:tcp: my listening v4 socket is 0.0.0.0:1024
+[cm4r15c06s07:175324] btl:tcp: examining interface em3
+[cm4r15c06s07:175324] btl:tcp: using ipv6 interface em3
+[cm4r15c06s07:175324] btl:tcp: examining interface ib0.8001
+[cm4r15c06s07:175324] btl:tcp: using ipv6 interface ib0.8001
+[cm4r15c06s07:175324] select: init of component tcp returned success
+[cm4r15c06s07:175324] select: initializing btl component self
+[cm4r15c06s07:175324] select: init of component self returned success
+[cm4r15c06s07:175324] mca: bml: Using self btl for send to [[12740,1],1] on node cm4r15c06s07
+[cm4r15c06s06:85536] mca: bml: Using self btl for send to [[12740,1],0] on node cm4r15c06s06
+[cm4r15c06s06:85536] btl:tcp: path from 10.0.3.138 to 10.0.3.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85536] btl:tcp: path from 10.0.3.138 to 10.156.155.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85536] btl:tcp: path from 10.156.155.138 to 10.0.3.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85536] btl:tcp: path from 10.156.155.138 to 10.156.155.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85536] mca: bml: Using tcp btl for send to [[12740,1],1] on node cm4r15c06s07
+[cm4r15c06s06:85536] btl:tcp: path from 10.0.3.138 to 10.0.3.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85536] btl:tcp: path from 10.0.3.138 to 10.156.155.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85536] btl:tcp: path from 10.156.155.138 to 10.0.3.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85536] btl:tcp: path from 10.156.155.138 to 10.156.155.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85536] mca: bml: Using tcp btl for send to [[12740,1],1] on node cm4r15c06s07
+[cm4r15c06s06:85536] btl: tcp: attempting to connect() to [[12740,1],1] address 10.0.3.139 on port 1024
+[cm4r15c06s06:85536] btl:tcp: would block, so allowing background progress
+[cm4r15c06s06:85536] btl:tcp: connect() to 10.0.3.139:1024 completed (complete_connect), sending connect ACK
+[cm4r15c06s07:175324] btl:tcp: path from 10.0.3.139 to 10.0.3.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175324] btl:tcp: path from 10.0.3.139 to 10.156.155.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175324] btl:tcp: path from 10.156.155.139 to 10.0.3.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175324] btl:tcp: path from 10.156.155.139 to 10.156.155.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175324] btl:tcp: path from 10.0.3.139 to 10.0.3.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175324] btl:tcp: path from 10.0.3.139 to 10.156.155.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175324] btl:tcp: path from 10.156.155.139 to 10.0.3.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175324] btl:tcp: path from 10.156.155.139 to 10.156.155.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175324] btl:tcp: now connected to 10.0.3.138, process [[12740,1],0]
+Comb version 0.3.1
+Args  ./comb;8_8_8;-divide;2_1_1;-periodic;1_1_1;-ghost;1_1_1;-vars;2;-comm;cutoff;250;-comm;disable;all;-comm;enable;mpi;-comm;post_recv;wait_all;-comm;post_send;wait_all;-comm;wait_recv;wait_all;-comm;wait_send;wait_all;-exec;enable;omp;-compute_target_us;26.0;-cycles;100;-print_message_sizes;-print_packing_sizes
+Started rank 0 of 2
+Node cm4r15c06s06
+Compiler "/dss/lrzsys/sys/spack/release/24.4.0/opt/x86_64/intel-oneapi-compilers/2024.1.0-gcc-ibqwgcs/compiler/2024.1/bin/icpx"
+[cm4r15c06s07:175324] mca: bml: Using tcp btl for send to [[12740,1],0] on node cm4r15c06s06
+[cm4r15c06s07:175324] mca: bml: Using tcp btl for send to [[12740,1],0] on node cm4r15c06s06
+OMP num threads    24
+OMP thread map    112;1;2;3;4;5;6;7;120;9;10;11;124;13;14;15;16;17;18;19;20;133;22;23
+Cart coords         0        0        0
+Message policy cutoff 250
+Post Recv using wait_all method
+Post Send using wait_all method
+Wait Recv using wait_all method
+Wait Send using wait_all method
+Num cycles        100
+Num vars            2
+ghost_widths        1        1        1
+sizes               8        8        8
+divisions           2        1        1
+periodic            1        1        1
+division map
+map                 0        0        0
+map                 4        8        8
+map                 8                  
+print message and packing sizes to proc file(s)
+Starting test memcpy seq dst Host src Host
+Starting test memcpy omp dst Host src Host
+Starting test Comm mpi Mesh seq Host Buffers seq Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers seq Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers omp Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers omp Host omp Host
+[cm4r15c06s06:85536] mca: base: close: component r2 closed
+[cm4r15c06s06:85536] mca: base: close: unloading component r2
+[cm4r15c06s06:85536] mca: base: close: component tcp closed
+[cm4r15c06s06:85536] mca: base: close: unloading component tcp
+[cm4r15c06s06:85536] mca: base: close: component self closed
+[cm4r15c06s06:85536] mca: base: close: unloading component self
+[cm4r15c06s07:175324] mca: base: close: component r2 closed
+[cm4r15c06s07:175324] mca: base: close: unloading component r2
+[cm4r15c06s07:175324] mca: base: close: component tcp closed
+[cm4r15c06s07:175324] mca: base: close: unloading component tcp
+[cm4r15c06s07:175324] mca: base: close: component self closed
+[cm4r15c06s07:175324] mca: base: close: unloading component self
+===== 01_async0_c24_wait_all exit code: 0 =====
+===== 02_async0_c1_test_all =====
+launcher=mpirun --mca plm slurm --hostfile /dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/openmpi/2n2r_c24/msg_x1KiB_y512B_z512B/midcomm/run_020_MPIonly/openmpi_hosts.gY4XkE -np 2 --map-by ppr:1:node:PE=24 --bind-to core --report-bindings
+comb_cmd=./comb 8_8_8 -divide 2_1_1 -periodic 1_1_1 -ghost 1_1_1 -vars 2 -comm cutoff 250 -comm disable all -comm enable mpi  -comm post_recv wait_all -comm post_send wait_all -comm wait_recv test_all -comm wait_send test_all -exec enable omp -compute_target_us 26.0 -cycles 100 -print_message_sizes -print_packing_sizes 
+binding_mode=mpirun --bind-to core
+job_metadata_file=job_metadata.log
+[cm4r15c06s06:85616] MCW rank 0 bound to socket 0[core 0[hwt 0-1]], socket 0[core 1[hwt 0-1]], socket 0[core 2[hwt 0-1]], socket 0[core 3[hwt 0-1]], socket 0[core 4[hwt 0-1]], socket 0[core 5[hwt 0-1]], socket 0[core 6[hwt 0-1]], socket 0[core 7[hwt 0-1]], socket 0[core 8[hwt 0-1]], socket 0[core 9[hwt 0-1]], socket 0[core 10[hwt 0-1]], socket 0[core 11[hwt 0-1]], socket 0[core 12[hwt 0-1]], socket 0[core 13[hwt 0-1]], socket 0[core 14[hwt 0-1]], socket 0[core 15[hwt 0-1]], socket 0[core 16[hwt 0-1]], socket 0[core 17[hwt 0-1]], socket 0[core 18[hwt 0-1]], socket 0[core 19[hwt 0-1]], socket 0[core 20[hwt 0-1]], socket 0[core 21[hwt 0-1]], socket 0[core 22[hwt 0-1]], socket 0[core 23[hwt 0-1]]: [BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..][../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..]
+[cm4r15c06s07:175395] MCW rank 1 bound to socket 0[core 0[hwt 0-1]], socket 0[core 1[hwt 0-1]], socket 0[core 2[hwt 0-1]], socket 0[core 3[hwt 0-1]], socket 0[core 4[hwt 0-1]], socket 0[core 5[hwt 0-1]], socket 0[core 6[hwt 0-1]], socket 0[core 7[hwt 0-1]], socket 0[core 8[hwt 0-1]], socket 0[core 9[hwt 0-1]], socket 0[core 10[hwt 0-1]], socket 0[core 11[hwt 0-1]], socket 0[core 12[hwt 0-1]], socket 0[core 13[hwt 0-1]], socket 0[core 14[hwt 0-1]], socket 0[core 15[hwt 0-1]], socket 0[core 16[hwt 0-1]], socket 0[core 17[hwt 0-1]], socket 0[core 18[hwt 0-1]], socket 0[core 19[hwt 0-1]], socket 0[core 20[hwt 0-1]], socket 0[core 21[hwt 0-1]], socket 0[core 22[hwt 0-1]], socket 0[core 23[hwt 0-1]]: [BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..][../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..]
+rank=0 host=cm4r15c06s06 bind_mode=mpirun allowed=0-23,112-135 main_cpu_list=0-23,112-135 progress_cpu_list= main_socket_set=unknown progress_socket_set=none main_numa_set=unknown progress_numa_set=none binding_relation=no_progress_threads
+rank=1 host=cm4r15c06s07 bind_mode=mpirun allowed=0-23,112-135 main_cpu_list=0-23,112-135 progress_cpu_list= main_socket_set=unknown progress_socket_set=none main_numa_set=unknown progress_numa_set=none binding_relation=no_progress_threads
+runtime_state rank=1 host=cm4r15c06s07 pid=175399 threads=1 Cpus_allowed_list:	0-23,112-135 Mems_allowed_list:	0-1 taskset=pid 175399's current affinity list: 0-23,112-135 
+runtime_state rank=0 host=cm4r15c06s06 pid=85627 threads=1 Cpus_allowed_list:	0-23,112-135 Mems_allowed_list:	0-1 taskset=pid 85627's current affinity list: 0-23,112-135 
+[cm4r15c06s07:175399] mca: base: components_register: registering framework bml components
+[cm4r15c06s07:175399] mca: base: components_register: found loaded component r2
+[cm4r15c06s07:175399] mca: base: components_register: component r2 register function successful
+[cm4r15c06s07:175399] mca: base: components_open: opening bml components
+[cm4r15c06s07:175399] mca: base: components_open: found loaded component r2
+[cm4r15c06s07:175399] mca: base: components_open: component r2 open function successful
+[cm4r15c06s07:175399] mca: base: components_register: registering framework btl components
+[cm4r15c06s07:175399] mca: base: components_register: found loaded component vader
+[cm4r15c06s07:175399] mca: base: components_register: component vader register function successful
+[cm4r15c06s07:175399] mca: base: components_register: found loaded component tcp
+[cm4r15c06s07:175399] mca: base: components_register: component tcp register function successful
+[cm4r15c06s07:175399] mca: base: components_register: found loaded component self
+[cm4r15c06s07:175399] mca: base: components_register: component self register function successful
+[cm4r15c06s07:175399] mca: base: components_open: opening btl components
+[cm4r15c06s07:175399] mca: base: components_open: found loaded component vader
+[cm4r15c06s07:175399] mca: base: components_open: component vader open function successful
+[cm4r15c06s07:175399] mca: base: components_open: found loaded component tcp
+[cm4r15c06s07:175399] mca: base: components_open: component tcp open function successful
+[cm4r15c06s07:175399] mca: base: components_open: found loaded component self
+[cm4r15c06s07:175399] mca: base: components_open: component self open function successful
+[cm4r15c06s07:175399] select: initializing btl component vader
+[cm4r15c06s07:175399] select: init of component vader returned failure
+[cm4r15c06s07:175399] mca: base: close: component vader closed
+[cm4r15c06s07:175399] mca: base: close: unloading component vader
+[cm4r15c06s07:175399] select: initializing btl component tcp
+[cm4r15c06s07:175399] btl: tcp: Searching for exclude address+prefix: 127.0.0.1 / 8
+[cm4r15c06s07:175399] btl: tcp: Found match: 127.0.0.1 (lo)
+[cm4r15c06s07:175399] btl: tcp: Using interface: sppp 
+[cm4r15c06s07:175399] btl:tcp: Attempting to bind to AF_INET port 1024
+[cm4r15c06s07:175399] btl:tcp: Successfully bound to AF_INET port 1024
+[cm4r15c06s07:175399] btl:tcp: my listening v4 socket is 0.0.0.0:1024
+[cm4r15c06s07:175399] btl:tcp: examining interface em3
+[cm4r15c06s07:175399] btl:tcp: using ipv6 interface em3
+[cm4r15c06s07:175399] btl:tcp: examining interface ib0.8001
+[cm4r15c06s07:175399] btl:tcp: using ipv6 interface ib0.8001
+[cm4r15c06s07:175399] select: init of component tcp returned success
+[cm4r15c06s07:175399] select: initializing btl component self
+[cm4r15c06s07:175399] select: init of component self returned success
+[cm4r15c06s06:85627] mca: base: components_register: registering framework bml components
+[cm4r15c06s06:85627] mca: base: components_register: found loaded component r2
+[cm4r15c06s06:85627] mca: base: components_register: component r2 register function successful
+[cm4r15c06s06:85627] mca: base: components_open: opening bml components
+[cm4r15c06s06:85627] mca: base: components_open: found loaded component r2
+[cm4r15c06s06:85627] mca: base: components_open: component r2 open function successful
+[cm4r15c06s06:85627] mca: base: components_register: registering framework btl components
+[cm4r15c06s06:85627] mca: base: components_register: found loaded component vader
+[cm4r15c06s06:85627] mca: base: components_register: component vader register function successful
+[cm4r15c06s06:85627] mca: base: components_register: found loaded component tcp
+[cm4r15c06s06:85627] mca: base: components_register: component tcp register function successful
+[cm4r15c06s06:85627] mca: base: components_register: found loaded component self
+[cm4r15c06s06:85627] mca: base: components_register: component self register function successful
+[cm4r15c06s06:85627] mca: base: components_open: opening btl components
+[cm4r15c06s06:85627] mca: base: components_open: found loaded component vader
+[cm4r15c06s06:85627] mca: base: components_open: component vader open function successful
+[cm4r15c06s06:85627] mca: base: components_open: found loaded component tcp
+[cm4r15c06s06:85627] mca: base: components_open: component tcp open function successful
+[cm4r15c06s06:85627] mca: base: components_open: found loaded component self
+[cm4r15c06s06:85627] mca: base: components_open: component self open function successful
+[cm4r15c06s06:85627] select: initializing btl component vader
+[cm4r15c06s06:85627] select: init of component vader returned failure
+[cm4r15c06s06:85627] mca: base: close: component vader closed
+[cm4r15c06s06:85627] mca: base: close: unloading component vader
+[cm4r15c06s06:85627] select: initializing btl component tcp
+[cm4r15c06s06:85627] btl: tcp: Searching for exclude address+prefix: 127.0.0.1 / 8
+[cm4r15c06s06:85627] btl: tcp: Found match: 127.0.0.1 (lo)
+[cm4r15c06s06:85627] btl: tcp: Using interface: sppp 
+[cm4r15c06s06:85627] btl:tcp: Attempting to bind to AF_INET port 1024
+[cm4r15c06s06:85627] btl:tcp: Successfully bound to AF_INET port 1024
+[cm4r15c06s06:85627] btl:tcp: my listening v4 socket is 0.0.0.0:1024
+[cm4r15c06s06:85627] btl:tcp: examining interface em3
+[cm4r15c06s06:85627] btl:tcp: using ipv6 interface em3
+[cm4r15c06s06:85627] btl:tcp: examining interface ib0.8001
+[cm4r15c06s06:85627] btl:tcp: using ipv6 interface ib0.8001
+[cm4r15c06s06:85627] select: init of component tcp returned success
+[cm4r15c06s06:85627] select: initializing btl component self
+[cm4r15c06s06:85627] select: init of component self returned success
+[cm4r15c06s06:85627] mca: bml: Using self btl for send to [[12705,1],0] on node cm4r15c06s06
+[cm4r15c06s07:175399] mca: bml: Using self btl for send to [[12705,1],1] on node cm4r15c06s07
+[cm4r15c06s06:85627] btl:tcp: path from 10.0.3.138 to 10.0.3.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85627] btl:tcp: path from 10.0.3.138 to 10.156.155.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85627] btl:tcp: path from 10.156.155.138 to 10.0.3.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85627] btl:tcp: path from 10.156.155.138 to 10.156.155.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85627] mca: bml: Using tcp btl for send to [[12705,1],1] on node cm4r15c06s07
+[cm4r15c06s06:85627] btl:tcp: path from 10.0.3.138 to 10.0.3.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85627] btl:tcp: path from 10.0.3.138 to 10.156.155.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85627] btl:tcp: path from 10.156.155.138 to 10.0.3.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85627] btl:tcp: path from 10.156.155.138 to 10.156.155.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85627] mca: bml: Using tcp btl for send to [[12705,1],1] on node cm4r15c06s07
+[cm4r15c06s06:85627] btl: tcp: attempting to connect() to [[12705,1],1] address 10.0.3.139 on port 1024
+[cm4r15c06s06:85627] btl:tcp: would block, so allowing background progress
+[cm4r15c06s06:85627] btl:tcp: connect() to 10.0.3.139:1024 completed (complete_connect), sending connect ACK
+[cm4r15c06s07:175399] btl:tcp: path from 10.0.3.139 to 10.0.3.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175399] btl:tcp: path from 10.0.3.139 to 10.156.155.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175399] btl:tcp: path from 10.156.155.139 to 10.0.3.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175399] btl:tcp: path from 10.156.155.139 to 10.156.155.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175399] btl:tcp: path from 10.0.3.139 to 10.0.3.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175399] btl:tcp: path from 10.0.3.139 to 10.156.155.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175399] btl:tcp: path from 10.156.155.139 to 10.0.3.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175399] btl:tcp: path from 10.156.155.139 to 10.156.155.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175399] btl:tcp: now connected to 10.0.3.138, process [[12705,1],0]
+Comb version 0.3.1
+Args  ./comb;8_8_8;-divide;2_1_1;-periodic;1_1_1;-ghost;1_1_1;-vars;2;-comm;cutoff;250;-comm;disable;all;-comm;enable;mpi;-comm;post_recv;wait_all;-comm;post_send;wait_all;-comm;wait_recv;test_all;-comm;wait_send;test_all;-exec;enable;omp;-compute_target_us;26.0;-cycles;100;-print_message_sizes;-print_packing_sizes
+Started rank 0 of 2
+Node cm4r15c06s06
+Compiler "/dss/lrzsys/sys/spack/release/24.4.0/opt/x86_64/intel-oneapi-compilers/2024.1.0-gcc-ibqwgcs/compiler/2024.1/bin/icpx"
+OMP num threads     1
+OMP thread map    112
+[cm4r15c06s07:175399] mca: bml: Using tcp btl for send to [[12705,1],0] on node cm4r15c06s06
+[cm4r15c06s07:175399] mca: bml: Using tcp btl for send to [[12705,1],0] on node cm4r15c06s06
+Cart coords         0        0        0
+Message policy cutoff 250
+Post Recv using wait_all method
+Post Send using wait_all method
+Wait Recv using test_all method
+Wait Send using test_all method
+Num cycles        100
+Num vars            2
+ghost_widths        1        1        1
+sizes               8        8        8
+divisions           2        1        1
+periodic            1        1        1
+division map
+map                 0        0        0
+map                 4        8        8
+map                 8                  
+print message and packing sizes to proc file(s)
+Starting test memcpy seq dst Host src Host
+Starting test memcpy omp dst Host src Host
+Starting test Comm mpi Mesh seq Host Buffers seq Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers seq Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers omp Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers omp Host omp Host
+[cm4r15c06s06:85627] mca: base: close: component r2 closed
+[cm4r15c06s06:85627] mca: base: close: unloading component r2
+[cm4r15c06s06:85627] mca: base: close: component tcp closed
+[cm4r15c06s06:85627] mca: base: close: unloading component tcp
+[cm4r15c06s07:175399] mca: base: close: component r2 closed
+[cm4r15c06s07:175399] mca: base: close: unloading component r2
+[cm4r15c06s06:85627] mca: base: close: component self closed
+[cm4r15c06s06:85627] mca: base: close: unloading component self
+[cm4r15c06s07:175399] mca: base: close: component tcp closed
+[cm4r15c06s07:175399] mca: base: close: unloading component tcp
+[cm4r15c06s07:175399] mca: base: close: component self closed
+[cm4r15c06s07:175399] mca: base: close: unloading component self
+===== 02_async0_c1_test_all exit code: 0 =====
+===== 03_async0_c24_test_all =====
+launcher=mpirun --mca plm slurm --hostfile /dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/openmpi/2n2r_c24/msg_x1KiB_y512B_z512B/midcomm/run_020_MPIonly/openmpi_hosts.gY4XkE -np 2 --map-by ppr:1:node:PE=24 --bind-to core --report-bindings
+comb_cmd=./comb 8_8_8 -divide 2_1_1 -periodic 1_1_1 -ghost 1_1_1 -vars 2 -comm cutoff 250 -comm disable all -comm enable mpi  -comm post_recv wait_all -comm post_send wait_all -comm wait_recv test_all -comm wait_send test_all -exec enable omp -compute_target_us 26.0 -cycles 100 -print_message_sizes -print_packing_sizes 
+binding_mode=mpirun --bind-to core
+job_metadata_file=job_metadata.log
+[cm4r15c06s06:85685] MCW rank 0 bound to socket 0[core 0[hwt 0-1]], socket 0[core 1[hwt 0-1]], socket 0[core 2[hwt 0-1]], socket 0[core 3[hwt 0-1]], socket 0[core 4[hwt 0-1]], socket 0[core 5[hwt 0-1]], socket 0[core 6[hwt 0-1]], socket 0[core 7[hwt 0-1]], socket 0[core 8[hwt 0-1]], socket 0[core 9[hwt 0-1]], socket 0[core 10[hwt 0-1]], socket 0[core 11[hwt 0-1]], socket 0[core 12[hwt 0-1]], socket 0[core 13[hwt 0-1]], socket 0[core 14[hwt 0-1]], socket 0[core 15[hwt 0-1]], socket 0[core 16[hwt 0-1]], socket 0[core 17[hwt 0-1]], socket 0[core 18[hwt 0-1]], socket 0[core 19[hwt 0-1]], socket 0[core 20[hwt 0-1]], socket 0[core 21[hwt 0-1]], socket 0[core 22[hwt 0-1]], socket 0[core 23[hwt 0-1]]: [BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..][../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..]
+[cm4r15c06s07:175450] MCW rank 1 bound to socket 0[core 0[hwt 0-1]], socket 0[core 1[hwt 0-1]], socket 0[core 2[hwt 0-1]], socket 0[core 3[hwt 0-1]], socket 0[core 4[hwt 0-1]], socket 0[core 5[hwt 0-1]], socket 0[core 6[hwt 0-1]], socket 0[core 7[hwt 0-1]], socket 0[core 8[hwt 0-1]], socket 0[core 9[hwt 0-1]], socket 0[core 10[hwt 0-1]], socket 0[core 11[hwt 0-1]], socket 0[core 12[hwt 0-1]], socket 0[core 13[hwt 0-1]], socket 0[core 14[hwt 0-1]], socket 0[core 15[hwt 0-1]], socket 0[core 16[hwt 0-1]], socket 0[core 17[hwt 0-1]], socket 0[core 18[hwt 0-1]], socket 0[core 19[hwt 0-1]], socket 0[core 20[hwt 0-1]], socket 0[core 21[hwt 0-1]], socket 0[core 22[hwt 0-1]], socket 0[core 23[hwt 0-1]]: [BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..][../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..]
+rank=1 host=cm4r15c06s07 bind_mode=mpirun allowed=0-23,112-135 main_cpu_list=0-23,112-135 progress_cpu_list= main_socket_set=unknown progress_socket_set=none main_numa_set=unknown progress_numa_set=none binding_relation=no_progress_threads
+rank=0 host=cm4r15c06s06 bind_mode=mpirun allowed=0-23,112-135 main_cpu_list=0-23,112-135 progress_cpu_list= main_socket_set=unknown progress_socket_set=none main_numa_set=unknown progress_numa_set=none binding_relation=no_progress_threads
+runtime_state rank=0 host=cm4r15c06s06 pid=85695 threads=1 Cpus_allowed_list:	0-23,112-135 Mems_allowed_list:	0-1 taskset=pid 85695's current affinity list: 0-23,112-135 
+runtime_state rank=1 host=cm4r15c06s07 pid=175454 threads=1 Cpus_allowed_list:	0-23,112-135 Mems_allowed_list:	0-1 taskset=pid 175454's current affinity list: 0-23,112-135 
+[cm4r15c06s06:85695] mca: base: components_register: registering framework bml components
+[cm4r15c06s06:85695] mca: base: components_register: found loaded component r2
+[cm4r15c06s06:85695] mca: base: components_register: component r2 register function successful
+[cm4r15c06s06:85695] mca: base: components_open: opening bml components
+[cm4r15c06s06:85695] mca: base: components_open: found loaded component r2
+[cm4r15c06s06:85695] mca: base: components_open: component r2 open function successful
+[cm4r15c06s06:85695] mca: base: components_register: registering framework btl components
+[cm4r15c06s06:85695] mca: base: components_register: found loaded component vader
+[cm4r15c06s06:85695] mca: base: components_register: component vader register function successful
+[cm4r15c06s06:85695] mca: base: components_register: found loaded component tcp
+[cm4r15c06s06:85695] mca: base: components_register: component tcp register function successful
+[cm4r15c06s06:85695] mca: base: components_register: found loaded component self
+[cm4r15c06s06:85695] mca: base: components_register: component self register function successful
+[cm4r15c06s06:85695] mca: base: components_open: opening btl components
+[cm4r15c06s06:85695] mca: base: components_open: found loaded component vader
+[cm4r15c06s06:85695] mca: base: components_open: component vader open function successful
+[cm4r15c06s06:85695] mca: base: components_open: found loaded component tcp
+[cm4r15c06s06:85695] mca: base: components_open: component tcp open function successful
+[cm4r15c06s06:85695] mca: base: components_open: found loaded component self
+[cm4r15c06s06:85695] mca: base: components_open: component self open function successful
+[cm4r15c06s06:85695] select: initializing btl component vader
+[cm4r15c06s06:85695] select: init of component vader returned failure
+[cm4r15c06s06:85695] mca: base: close: component vader closed
+[cm4r15c06s06:85695] mca: base: close: unloading component vader
+[cm4r15c06s06:85695] select: initializing btl component tcp
+[cm4r15c06s06:85695] btl: tcp: Searching for exclude address+prefix: 127.0.0.1 / 8
+[cm4r15c06s06:85695] btl: tcp: Found match: 127.0.0.1 (lo)
+[cm4r15c06s06:85695] btl: tcp: Using interface: sppp 
+[cm4r15c06s06:85695] btl:tcp: Attempting to bind to AF_INET port 1024
+[cm4r15c06s06:85695] btl:tcp: Successfully bound to AF_INET port 1024
+[cm4r15c06s06:85695] btl:tcp: my listening v4 socket is 0.0.0.0:1024
+[cm4r15c06s06:85695] btl:tcp: examining interface em3
+[cm4r15c06s06:85695] btl:tcp: using ipv6 interface em3
+[cm4r15c06s06:85695] btl:tcp: examining interface ib0.8001
+[cm4r15c06s06:85695] btl:tcp: using ipv6 interface ib0.8001
+[cm4r15c06s06:85695] select: init of component tcp returned success
+[cm4r15c06s06:85695] select: initializing btl component self
+[cm4r15c06s06:85695] select: init of component self returned success
+[cm4r15c06s07:175454] mca: base: components_register: registering framework bml components
+[cm4r15c06s07:175454] mca: base: components_register: found loaded component r2
+[cm4r15c06s07:175454] mca: base: components_register: component r2 register function successful
+[cm4r15c06s07:175454] mca: base: components_open: opening bml components
+[cm4r15c06s07:175454] mca: base: components_open: found loaded component r2
+[cm4r15c06s07:175454] mca: base: components_open: component r2 open function successful
+[cm4r15c06s07:175454] mca: base: components_register: registering framework btl components
+[cm4r15c06s07:175454] mca: base: components_register: found loaded component vader
+[cm4r15c06s07:175454] mca: base: components_register: component vader register function successful
+[cm4r15c06s07:175454] mca: base: components_register: found loaded component tcp
+[cm4r15c06s07:175454] mca: base: components_register: component tcp register function successful
+[cm4r15c06s07:175454] mca: base: components_register: found loaded component self
+[cm4r15c06s07:175454] mca: base: components_register: component self register function successful
+[cm4r15c06s07:175454] mca: base: components_open: opening btl components
+[cm4r15c06s07:175454] mca: base: components_open: found loaded component vader
+[cm4r15c06s07:175454] mca: base: components_open: component vader open function successful
+[cm4r15c06s07:175454] mca: base: components_open: found loaded component tcp
+[cm4r15c06s07:175454] mca: base: components_open: component tcp open function successful
+[cm4r15c06s07:175454] mca: base: components_open: found loaded component self
+[cm4r15c06s07:175454] mca: base: components_open: component self open function successful
+[cm4r15c06s07:175454] select: initializing btl component vader
+[cm4r15c06s07:175454] select: init of component vader returned failure
+[cm4r15c06s07:175454] mca: base: close: component vader closed
+[cm4r15c06s07:175454] mca: base: close: unloading component vader
+[cm4r15c06s07:175454] select: initializing btl component tcp
+[cm4r15c06s07:175454] btl: tcp: Searching for exclude address+prefix: 127.0.0.1 / 8
+[cm4r15c06s07:175454] btl: tcp: Found match: 127.0.0.1 (lo)
+[cm4r15c06s07:175454] btl: tcp: Using interface: sppp 
+[cm4r15c06s07:175454] btl:tcp: Attempting to bind to AF_INET port 1024
+[cm4r15c06s07:175454] btl:tcp: Attempting to bind to AF_INET port 1025
+[cm4r15c06s07:175454] btl:tcp: Successfully bound to AF_INET port 1025
+[cm4r15c06s07:175454] btl:tcp: my listening v4 socket is 0.0.0.0:1025
+[cm4r15c06s07:175454] btl:tcp: examining interface em3
+[cm4r15c06s07:175454] btl:tcp: using ipv6 interface em3
+[cm4r15c06s07:175454] btl:tcp: examining interface ib0.8001
+[cm4r15c06s07:175454] btl:tcp: using ipv6 interface ib0.8001
+[cm4r15c06s07:175454] select: init of component tcp returned success
+[cm4r15c06s07:175454] select: initializing btl component self
+[cm4r15c06s07:175454] select: init of component self returned success
+[cm4r15c06s07:175454] mca: bml: Using self btl for send to [[12644,1],1] on node cm4r15c06s07
+[cm4r15c06s06:85695] mca: bml: Using self btl for send to [[12644,1],0] on node cm4r15c06s06
+[cm4r15c06s06:85695] btl:tcp: path from 10.0.3.138 to 10.0.3.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85695] btl:tcp: path from 10.0.3.138 to 10.156.155.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85695] btl:tcp: path from 10.156.155.138 to 10.0.3.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85695] btl:tcp: path from 10.156.155.138 to 10.156.155.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85695] mca: bml: Using tcp btl for send to [[12644,1],1] on node cm4r15c06s07
+[cm4r15c06s06:85695] btl:tcp: path from 10.0.3.138 to 10.0.3.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85695] btl:tcp: path from 10.0.3.138 to 10.156.155.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85695] btl:tcp: path from 10.156.155.138 to 10.0.3.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85695] btl:tcp: path from 10.156.155.138 to 10.156.155.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85695] mca: bml: Using tcp btl for send to [[12644,1],1] on node cm4r15c06s07
+[cm4r15c06s06:85695] btl: tcp: attempting to connect() to [[12644,1],1] address 10.0.3.139 on port 1025
+[cm4r15c06s06:85695] btl:tcp: would block, so allowing background progress
+[cm4r15c06s06:85695] btl:tcp: connect() to 10.0.3.139:1025 completed (complete_connect), sending connect ACK
+[cm4r15c06s07:175454] btl:tcp: path from 10.0.3.139 to 10.0.3.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175454] btl:tcp: path from 10.0.3.139 to 10.156.155.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175454] btl:tcp: path from 10.156.155.139 to 10.0.3.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175454] btl:tcp: path from 10.156.155.139 to 10.156.155.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175454] btl:tcp: path from 10.0.3.139 to 10.0.3.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175454] btl:tcp: path from 10.0.3.139 to 10.156.155.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175454] btl:tcp: path from 10.156.155.139 to 10.0.3.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175454] btl:tcp: path from 10.156.155.139 to 10.156.155.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175454] btl:tcp: now connected to 10.0.3.138, process [[12644,1],0]
+Comb version 0.3.1
+Args  ./comb;8_8_8;-divide;2_1_1;-periodic;1_1_1;-ghost;1_1_1;-vars;2;-comm;cutoff;250;-comm;disable;all;-comm;enable;mpi;-comm;post_recv;wait_all;-comm;post_send;wait_all;-comm;wait_recv;test_all;-comm;wait_send;test_all;-exec;enable;omp;-compute_target_us;26.0;-cycles;100;-print_message_sizes;-print_packing_sizes
+Started rank 0 of 2
+Node cm4r15c06s06
+Compiler "/dss/lrzsys/sys/spack/release/24.4.0/opt/x86_64/intel-oneapi-compilers/2024.1.0-gcc-ibqwgcs/compiler/2024.1/bin/icpx"
+OMP num threads    24
+OMP thread map    112;113;114;115;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;133;22;23
+[cm4r15c06s07:175454] mca: bml: Using tcp btl for send to [[12644,1],0] on node cm4r15c06s06
+[cm4r15c06s07:175454] mca: bml: Using tcp btl for send to [[12644,1],0] on node cm4r15c06s06
+Cart coords         0        0        0
+Message policy cutoff 250
+Post Recv using wait_all method
+Post Send using wait_all method
+Wait Recv using test_all method
+Wait Send using test_all method
+Num cycles        100
+Num vars            2
+ghost_widths        1        1        1
+sizes               8        8        8
+divisions           2        1        1
+periodic            1        1        1
+division map
+map                 0        0        0
+map                 4        8        8
+map                 8                  
+print message and packing sizes to proc file(s)
+Starting test memcpy seq dst Host src Host
+Starting test memcpy omp dst Host src Host
+Starting test Comm mpi Mesh seq Host Buffers seq Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers seq Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers omp Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers omp Host omp Host
+[cm4r15c06s06:85695] mca: base: close: component r2 closed
+[cm4r15c06s06:85695] mca: base: close: unloading component r2
+[cm4r15c06s06:85695] mca: base: close: component tcp closed
+[cm4r15c06s06:85695] mca: base: close: unloading component tcp
+[cm4r15c06s06:85695] mca: base: close: component self closed
+[cm4r15c06s06:85695] mca: base: close: unloading component self
+[cm4r15c06s07:175454] mca: base: close: component r2 closed
+[cm4r15c06s07:175454] mca: base: close: unloading component r2
+[cm4r15c06s07:175454] mca: base: close: component tcp closed
+[cm4r15c06s07:175454] mca: base: close: unloading component tcp
+[cm4r15c06s07:175454] mca: base: close: component self closed
+[cm4r15c06s07:175454] mca: base: close: unloading component self
+===== 03_async0_c24_test_all exit code: 0 =====
+===== 04_async1_at1_c1_wait_all =====
+launcher=mpirun --mca plm slurm --hostfile /dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/openmpi/2n2r_c24/msg_x1KiB_y512B_z512B/midcomm/run_020_MPIonly/openmpi_hosts.gY4XkE -np 2 --map-by ppr:1:node:PE=24 --bind-to core --report-bindings
+comb_cmd=./comb 8_8_8 -divide 2_1_1 -periodic 1_1_1 -ghost 1_1_1 -vars 2 -comm cutoff 250 -comm disable all -comm enable mpi  -comm post_recv wait_all -comm post_send wait_all -comm wait_recv wait_all -comm wait_send wait_all -exec enable omp -compute_target_us 26.0 -cycles 100 -print_message_sizes -print_packing_sizes 
+binding_mode=omp places + reserved async CPUs
+job_metadata_file=job_metadata.log
+[cm4r15c06s06:85776] MCW rank 0 bound to socket 0[core 0[hwt 0-1]], socket 0[core 1[hwt 0-1]], socket 0[core 2[hwt 0-1]], socket 0[core 3[hwt 0-1]], socket 0[core 4[hwt 0-1]], socket 0[core 5[hwt 0-1]], socket 0[core 6[hwt 0-1]], socket 0[core 7[hwt 0-1]], socket 0[core 8[hwt 0-1]], socket 0[core 9[hwt 0-1]], socket 0[core 10[hwt 0-1]], socket 0[core 11[hwt 0-1]], socket 0[core 12[hwt 0-1]], socket 0[core 13[hwt 0-1]], socket 0[core 14[hwt 0-1]], socket 0[core 15[hwt 0-1]], socket 0[core 16[hwt 0-1]], socket 0[core 17[hwt 0-1]], socket 0[core 18[hwt 0-1]], socket 0[core 19[hwt 0-1]], socket 0[core 20[hwt 0-1]], socket 0[core 21[hwt 0-1]], socket 0[core 22[hwt 0-1]], socket 0[core 23[hwt 0-1]]: [BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..][../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..]
+[cm4r15c06s07:175525] MCW rank 1 bound to socket 0[core 0[hwt 0-1]], socket 0[core 1[hwt 0-1]], socket 0[core 2[hwt 0-1]], socket 0[core 3[hwt 0-1]], socket 0[core 4[hwt 0-1]], socket 0[core 5[hwt 0-1]], socket 0[core 6[hwt 0-1]], socket 0[core 7[hwt 0-1]], socket 0[core 8[hwt 0-1]], socket 0[core 9[hwt 0-1]], socket 0[core 10[hwt 0-1]], socket 0[core 11[hwt 0-1]], socket 0[core 12[hwt 0-1]], socket 0[core 13[hwt 0-1]], socket 0[core 14[hwt 0-1]], socket 0[core 15[hwt 0-1]], socket 0[core 16[hwt 0-1]], socket 0[core 17[hwt 0-1]], socket 0[core 18[hwt 0-1]], socket 0[core 19[hwt 0-1]], socket 0[core 20[hwt 0-1]], socket 0[core 21[hwt 0-1]], socket 0[core 22[hwt 0-1]], socket 0[core 23[hwt 0-1]]: [BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..][../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..]
+rank=0 host=cm4r15c06s06 bind_mode=omp_places allowed=0-23,112-135 total_cpus_per_rank=24 omp_threads=1 async_threads=1 main_cpus_per_rank=23 main_cpu_list=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 progress_cpu_list=23 reserved_async_cpu_list=23 main_socket_set=0 progress_socket_set=0 main_numa_set=0 progress_numa_set=0 binding_relation=same_numa
+rank=0 host=cm4r15c06s06
+rank=1 host=cm4r15c06s07 bind_mode=omp_places allowed=0-23,112-135 total_cpus_per_rank=24 omp_threads=1 async_threads=1 main_cpus_per_rank=23 main_cpu_list=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 progress_cpu_list=23 reserved_async_cpu_list=23 main_socket_set=0 progress_socket_set=0 main_numa_set=0 progress_numa_set=0 binding_relation=same_numa
+rank=1 host=cm4r15c06s07
+runtime_state rank=0 host=cm4r15c06s06 pid=85786 threads=1 Cpus_allowed_list:	0-23,112-135 Mems_allowed_list:	0-1 taskset=pid 85786's current affinity list: 0-23,112-135 
+runtime_state rank=1 host=cm4r15c06s07 pid=175528 threads=1 Cpus_allowed_list:	0-23,112-135 Mems_allowed_list:	0-1 taskset=pid 175528's current affinity list: 0-23,112-135 
+[cm4r15c06s06:85786] mca: base: components_register: registering framework bml components
+[cm4r15c06s06:85786] mca: base: components_register: found loaded component r2
+[cm4r15c06s06:85786] mca: base: components_register: component r2 register function successful
+[cm4r15c06s06:85786] mca: base: components_open: opening bml components
+[cm4r15c06s06:85786] mca: base: components_open: found loaded component r2
+[cm4r15c06s06:85786] mca: base: components_open: component r2 open function successful
+[cm4r15c06s06:85786] mca: base: components_register: registering framework btl components
+[cm4r15c06s06:85786] mca: base: components_register: found loaded component vader
+[cm4r15c06s06:85786] mca: base: components_register: component vader register function successful
+[cm4r15c06s06:85786] mca: base: components_register: found loaded component tcp
+[cm4r15c06s06:85786] mca: base: components_register: component tcp register function successful
+[cm4r15c06s06:85786] mca: base: components_register: found loaded component self
+[cm4r15c06s06:85786] mca: base: components_register: component self register function successful
+[cm4r15c06s06:85786] mca: base: components_open: opening btl components
+[cm4r15c06s06:85786] mca: base: components_open: found loaded component vader
+[cm4r15c06s06:85786] mca: base: components_open: component vader open function successful
+[cm4r15c06s06:85786] mca: base: components_open: found loaded component tcp
+[cm4r15c06s06:85786] mca: base: components_open: component tcp open function successful
+[cm4r15c06s06:85786] mca: base: components_open: found loaded component self
+[cm4r15c06s06:85786] mca: base: components_open: component self open function successful
+[cm4r15c06s06:85786] select: initializing btl component vader
+[cm4r15c06s06:85786] select: init of component vader returned failure
+[cm4r15c06s06:85786] mca: base: close: component vader closed
+[cm4r15c06s06:85786] mca: base: close: unloading component vader
+[cm4r15c06s06:85786] select: initializing btl component tcp
+[cm4r15c06s06:85786] btl: tcp: Searching for exclude address+prefix: 127.0.0.1 / 8
+[cm4r15c06s06:85786] btl: tcp: Found match: 127.0.0.1 (lo)
+[cm4r15c06s06:85786] btl: tcp: Using interface: sppp 
+[cm4r15c06s06:85786] btl:tcp: Attempting to bind to AF_INET port 1024
+[cm4r15c06s06:85786] btl:tcp: Successfully bound to AF_INET port 1024
+[cm4r15c06s06:85786] btl:tcp: my listening v4 socket is 0.0.0.0:1024
+[cm4r15c06s06:85786] btl:tcp: examining interface em3
+[cm4r15c06s06:85786] btl:tcp: using ipv6 interface em3
+[cm4r15c06s06:85786] btl:tcp: examining interface ib0.8001
+[cm4r15c06s06:85786] btl:tcp: using ipv6 interface ib0.8001
+[cm4r15c06s06:85786] select: init of component tcp returned success
+[cm4r15c06s06:85786] select: initializing btl component self
+[cm4r15c06s06:85786] select: init of component self returned success
+[cm4r15c06s07:175528] mca: base: components_register: registering framework bml components
+[cm4r15c06s07:175528] mca: base: components_register: found loaded component r2
+[cm4r15c06s07:175528] mca: base: components_register: component r2 register function successful
+[cm4r15c06s07:175528] mca: base: components_open: opening bml components
+[cm4r15c06s07:175528] mca: base: components_open: found loaded component r2
+[cm4r15c06s07:175528] mca: base: components_open: component r2 open function successful
+[cm4r15c06s07:175528] mca: base: components_register: registering framework btl components
+[cm4r15c06s07:175528] mca: base: components_register: found loaded component vader
+[cm4r15c06s07:175528] mca: base: components_register: component vader register function successful
+[cm4r15c06s07:175528] mca: base: components_register: found loaded component tcp
+[cm4r15c06s07:175528] mca: base: components_register: component tcp register function successful
+[cm4r15c06s07:175528] mca: base: components_register: found loaded component self
+[cm4r15c06s07:175528] mca: base: components_register: component self register function successful
+[cm4r15c06s07:175528] mca: base: components_open: opening btl components
+[cm4r15c06s07:175528] mca: base: components_open: found loaded component vader
+[cm4r15c06s07:175528] mca: base: components_open: component vader open function successful
+[cm4r15c06s07:175528] mca: base: components_open: found loaded component tcp
+[cm4r15c06s07:175528] mca: base: components_open: component tcp open function successful
+[cm4r15c06s07:175528] mca: base: components_open: found loaded component self
+[cm4r15c06s07:175528] mca: base: components_open: component self open function successful
+[cm4r15c06s07:175528] select: initializing btl component vader
+[cm4r15c06s07:175528] select: init of component vader returned failure
+[cm4r15c06s07:175528] mca: base: close: component vader closed
+[cm4r15c06s07:175528] mca: base: close: unloading component vader
+[cm4r15c06s07:175528] select: initializing btl component tcp
+[cm4r15c06s07:175528] btl: tcp: Searching for exclude address+prefix: 127.0.0.1 / 8
+[cm4r15c06s07:175528] btl: tcp: Found match: 127.0.0.1 (lo)
+[cm4r15c06s07:175528] btl: tcp: Using interface: sppp 
+[cm4r15c06s07:175528] btl:tcp: Attempting to bind to AF_INET port 1024
+[cm4r15c06s07:175528] btl:tcp: Attempting to bind to AF_INET port 1025
+[cm4r15c06s07:175528] btl:tcp: Successfully bound to AF_INET port 1025
+[cm4r15c06s07:175528] btl:tcp: my listening v4 socket is 0.0.0.0:1025
+[cm4r15c06s07:175528] btl:tcp: examining interface em3
+[cm4r15c06s07:175528] btl:tcp: using ipv6 interface em3
+[cm4r15c06s07:175528] btl:tcp: examining interface ib0.8001
+[cm4r15c06s07:175528] btl:tcp: using ipv6 interface ib0.8001
+[cm4r15c06s07:175528] select: init of component tcp returned success
+[cm4r15c06s07:175528] select: initializing btl component self
+[cm4r15c06s07:175528] select: init of component self returned success
+[cm4r15c06s07:175528] mca: bml: Using self btl for send to [[12481,1],1] on node cm4r15c06s07
+[cm4r15c06s07:175528] btl:tcp: path from 10.0.3.139 to 10.0.3.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175528] btl:tcp: path from 10.0.3.139 to 10.156.155.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175528] btl:tcp: path from 10.156.155.139 to 10.0.3.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175528] btl:tcp: path from 10.156.155.139 to 10.156.155.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175528] mca: bml: Using tcp btl for send to [[12481,1],0] on node cm4r15c06s06
+[cm4r15c06s07:175528] btl:tcp: path from 10.0.3.139 to 10.0.3.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175528] btl:tcp: path from 10.0.3.139 to 10.156.155.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175528] btl:tcp: path from 10.156.155.139 to 10.0.3.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175528] btl:tcp: path from 10.156.155.139 to 10.156.155.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175528] mca: bml: Using tcp btl for send to [[12481,1],0] on node cm4r15c06s06
+[cm4r15c06s06:85786] mca: bml: Using self btl for send to [[12481,1],0] on node cm4r15c06s06
+[cm4r15c06s06:85786] btl:tcp: path from 10.0.3.138 to 10.0.3.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85786] btl:tcp: path from 10.0.3.138 to 10.156.155.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85786] btl:tcp: path from 10.156.155.138 to 10.0.3.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85786] btl:tcp: path from 10.156.155.138 to 10.156.155.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85786] mca: bml: Using tcp btl for send to [[12481,1],1] on node cm4r15c06s07
+[cm4r15c06s06:85786] btl:tcp: path from 10.0.3.138 to 10.0.3.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85786] btl:tcp: path from 10.0.3.138 to 10.156.155.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85786] btl:tcp: path from 10.156.155.138 to 10.0.3.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85786] btl:tcp: path from 10.156.155.138 to 10.156.155.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85786] mca: bml: Using tcp btl for send to [[12481,1],1] on node cm4r15c06s07
+[cm4r15c06s06:85786] btl: tcp: attempting to connect() to [[12481,1],1] address 10.0.3.139 on port 1025
+[cm4r15c06s06:85786] btl:tcp: would block, so allowing background progress
+[cm4r15c06s06:85786] btl:tcp: connect() to 10.0.3.139:1025 completed (complete_connect), sending connect ACK
+[cm4r15c06s07:175528] btl:tcp: now connected to 10.0.3.138, process [[12481,1],0]
+Comb version 0.3.1
+Args  ./comb;8_8_8;-divide;2_1_1;-periodic;1_1_1;-ghost;1_1_1;-vars;2;-comm;cutoff;250;-comm;disable;all;-comm;enable;mpi;-comm;post_recv;wait_all;-comm;post_send;wait_all;-comm;wait_recv;wait_all;-comm;wait_send;wait_all;-exec;enable;omp;-compute_target_us;26.0;-cycles;100;-print_message_sizes;-print_packing_sizes
+Started rank 0 of 2
+Node cm4r15c06s06
+Compiler "/dss/lrzsys/sys/spack/release/24.4.0/opt/x86_64/intel-oneapi-compilers/2024.1.0-gcc-ibqwgcs/compiler/2024.1/bin/icpx"
+OMP num threads     1
+OMP thread map      0
+Cart coords         0        0        0
+Message policy cutoff 250
+Post Recv using wait_all method
+Post Send using wait_all method
+Wait Recv using wait_all method
+Wait Send using wait_all method
+Num cycles        100
+Num vars            2
+ghost_widths        1        1        1
+sizes               8        8        8
+divisions           2        1        1
+periodic            1        1        1
+division map
+map                 0        0        0
+map                 4        8        8
+map                 8                  
+print message and packing sizes to proc file(s)
+Starting test memcpy seq dst Host src Host
+Starting test memcpy omp dst Host src Host
+Starting test Comm mpi Mesh seq Host Buffers seq Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers seq Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers omp Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers omp Host omp Host
+[cm4r15c06s06:85786] mca: base: close: component r2 closed
+[cm4r15c06s06:85786] mca: base: close: unloading component r2
+[cm4r15c06s07:175528] mca: base: close: component r2 closed
+[cm4r15c06s07:175528] mca: base: close: unloading component r2
+[cm4r15c06s06:85786] mca: base: close: component tcp closed
+[cm4r15c06s06:85786] mca: base: close: unloading component tcp
+[cm4r15c06s06:85786] mca: base: close: component self closed
+[cm4r15c06s06:85786] mca: base: close: unloading component self
+[cm4r15c06s07:175528] mca: base: close: component tcp closed
+[cm4r15c06s07:175528] mca: base: close: unloading component tcp
+[cm4r15c06s07:175528] mca: base: close: component self closed
+[cm4r15c06s07:175528] mca: base: close: unloading component self
+===== 04_async1_at1_c1_wait_all exit code: 0 =====
+===== 05_async1_at12_c12_wait_all =====
+launcher=mpirun --mca plm slurm --hostfile /dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/openmpi/2n2r_c24/msg_x1KiB_y512B_z512B/midcomm/run_020_MPIonly/openmpi_hosts.gY4XkE -np 2 --map-by ppr:1:node:PE=24 --bind-to core --report-bindings
+comb_cmd=./comb 8_8_8 -divide 2_1_1 -periodic 1_1_1 -ghost 1_1_1 -vars 2 -comm cutoff 250 -comm disable all -comm enable mpi  -comm post_recv wait_all -comm post_send wait_all -comm wait_recv wait_all -comm wait_send wait_all -exec enable omp -compute_target_us 26.0 -cycles 100 -print_message_sizes -print_packing_sizes 
+binding_mode=omp places + reserved async CPUs
+job_metadata_file=job_metadata.log
+[cm4r15c06s06:85983] MCW rank 0 bound to socket 0[core 0[hwt 0-1]], socket 0[core 1[hwt 0-1]], socket 0[core 2[hwt 0-1]], socket 0[core 3[hwt 0-1]], socket 0[core 4[hwt 0-1]], socket 0[core 5[hwt 0-1]], socket 0[core 6[hwt 0-1]], socket 0[core 7[hwt 0-1]], socket 0[core 8[hwt 0-1]], socket 0[core 9[hwt 0-1]], socket 0[core 10[hwt 0-1]], socket 0[core 11[hwt 0-1]], socket 0[core 12[hwt 0-1]], socket 0[core 13[hwt 0-1]], socket 0[core 14[hwt 0-1]], socket 0[core 15[hwt 0-1]], socket 0[core 16[hwt 0-1]], socket 0[core 17[hwt 0-1]], socket 0[core 18[hwt 0-1]], socket 0[core 19[hwt 0-1]], socket 0[core 20[hwt 0-1]], socket 0[core 21[hwt 0-1]], socket 0[core 22[hwt 0-1]], socket 0[core 23[hwt 0-1]]: [BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..][../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..]
+[cm4r15c06s07:175714] MCW rank 1 bound to socket 0[core 0[hwt 0-1]], socket 0[core 1[hwt 0-1]], socket 0[core 2[hwt 0-1]], socket 0[core 3[hwt 0-1]], socket 0[core 4[hwt 0-1]], socket 0[core 5[hwt 0-1]], socket 0[core 6[hwt 0-1]], socket 0[core 7[hwt 0-1]], socket 0[core 8[hwt 0-1]], socket 0[core 9[hwt 0-1]], socket 0[core 10[hwt 0-1]], socket 0[core 11[hwt 0-1]], socket 0[core 12[hwt 0-1]], socket 0[core 13[hwt 0-1]], socket 0[core 14[hwt 0-1]], socket 0[core 15[hwt 0-1]], socket 0[core 16[hwt 0-1]], socket 0[core 17[hwt 0-1]], socket 0[core 18[hwt 0-1]], socket 0[core 19[hwt 0-1]], socket 0[core 20[hwt 0-1]], socket 0[core 21[hwt 0-1]], socket 0[core 22[hwt 0-1]], socket 0[core 23[hwt 0-1]]: [BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..][../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..]
+rank=0 host=cm4r15c06s06 bind_mode=omp_places allowed=0-23,112-135 total_cpus_per_rank=24 omp_threads=12 async_threads=12 main_cpus_per_rank=12 main_cpu_list=0,1,2,3,4,5,6,7,8,9,10,11 progress_cpu_list=12,13,14,15,16,17,18,19,20,21,22,23 reserved_async_cpu_list=12,13,14,15,16,17,18,19,20,21,22,23 main_socket_set=0 progress_socket_set=0 main_numa_set=0 progress_numa_set=0 binding_relation=same_numa
+rank=0 host=cm4r15c06s06
+rank=1 host=cm4r15c06s07 bind_mode=omp_places allowed=0-23,112-135 total_cpus_per_rank=24 omp_threads=12 async_threads=12 main_cpus_per_rank=12 main_cpu_list=0,1,2,3,4,5,6,7,8,9,10,11 progress_cpu_list=12,13,14,15,16,17,18,19,20,21,22,23 reserved_async_cpu_list=12,13,14,15,16,17,18,19,20,21,22,23 main_socket_set=0 progress_socket_set=0 main_numa_set=0 progress_numa_set=0 binding_relation=same_numa
+rank=1 host=cm4r15c06s07
+runtime_state rank=0 host=cm4r15c06s06 pid=85994 threads=1 Cpus_allowed_list:	0-23,112-135 Mems_allowed_list:	0-1 taskset=pid 85994's current affinity list: 0-23,112-135 
+runtime_state rank=1 host=cm4r15c06s07 pid=175717 threads=1 Cpus_allowed_list:	0-23,112-135 Mems_allowed_list:	0-1 taskset=pid 175717's current affinity list: 0-23,112-135 
+[cm4r15c06s06:85994] mca: base: components_register: registering framework bml components
+[cm4r15c06s06:85994] mca: base: components_register: found loaded component r2
+[cm4r15c06s06:85994] mca: base: components_register: component r2 register function successful
+[cm4r15c06s06:85994] mca: base: components_open: opening bml components
+[cm4r15c06s06:85994] mca: base: components_open: found loaded component r2
+[cm4r15c06s06:85994] mca: base: components_open: component r2 open function successful
+[cm4r15c06s06:85994] mca: base: components_register: registering framework btl components
+[cm4r15c06s06:85994] mca: base: components_register: found loaded component vader
+[cm4r15c06s06:85994] mca: base: components_register: component vader register function successful
+[cm4r15c06s06:85994] mca: base: components_register: found loaded component tcp
+[cm4r15c06s06:85994] mca: base: components_register: component tcp register function successful
+[cm4r15c06s06:85994] mca: base: components_register: found loaded component self
+[cm4r15c06s06:85994] mca: base: components_register: component self register function successful
+[cm4r15c06s06:85994] mca: base: components_open: opening btl components
+[cm4r15c06s06:85994] mca: base: components_open: found loaded component vader
+[cm4r15c06s06:85994] mca: base: components_open: component vader open function successful
+[cm4r15c06s06:85994] mca: base: components_open: found loaded component tcp
+[cm4r15c06s06:85994] mca: base: components_open: component tcp open function successful
+[cm4r15c06s06:85994] mca: base: components_open: found loaded component self
+[cm4r15c06s06:85994] mca: base: components_open: component self open function successful
+[cm4r15c06s06:85994] select: initializing btl component vader
+[cm4r15c06s06:85994] select: init of component vader returned failure
+[cm4r15c06s06:85994] mca: base: close: component vader closed
+[cm4r15c06s06:85994] mca: base: close: unloading component vader
+[cm4r15c06s06:85994] select: initializing btl component tcp
+[cm4r15c06s06:85994] btl: tcp: Searching for exclude address+prefix: 127.0.0.1 / 8
+[cm4r15c06s06:85994] btl: tcp: Found match: 127.0.0.1 (lo)
+[cm4r15c06s06:85994] btl: tcp: Using interface: sppp 
+[cm4r15c06s06:85994] btl:tcp: Attempting to bind to AF_INET port 1024
+[cm4r15c06s06:85994] btl:tcp: Successfully bound to AF_INET port 1024
+[cm4r15c06s06:85994] btl:tcp: my listening v4 socket is 0.0.0.0:1024
+[cm4r15c06s06:85994] btl:tcp: examining interface em3
+[cm4r15c06s06:85994] btl:tcp: using ipv6 interface em3
+[cm4r15c06s06:85994] btl:tcp: examining interface ib0.8001
+[cm4r15c06s06:85994] btl:tcp: using ipv6 interface ib0.8001
+[cm4r15c06s06:85994] select: init of component tcp returned success
+[cm4r15c06s06:85994] select: initializing btl component self
+[cm4r15c06s06:85994] select: init of component self returned success
+[cm4r15c06s07:175717] mca: base: components_register: registering framework bml components
+[cm4r15c06s07:175717] mca: base: components_register: found loaded component r2
+[cm4r15c06s07:175717] mca: base: components_register: component r2 register function successful
+[cm4r15c06s07:175717] mca: base: components_open: opening bml components
+[cm4r15c06s07:175717] mca: base: components_open: found loaded component r2
+[cm4r15c06s07:175717] mca: base: components_open: component r2 open function successful
+[cm4r15c06s07:175717] mca: base: components_register: registering framework btl components
+[cm4r15c06s07:175717] mca: base: components_register: found loaded component vader
+[cm4r15c06s07:175717] mca: base: components_register: component vader register function successful
+[cm4r15c06s07:175717] mca: base: components_register: found loaded component tcp
+[cm4r15c06s07:175717] mca: base: components_register: component tcp register function successful
+[cm4r15c06s07:175717] mca: base: components_register: found loaded component self
+[cm4r15c06s07:175717] mca: base: components_register: component self register function successful
+[cm4r15c06s07:175717] mca: base: components_open: opening btl components
+[cm4r15c06s07:175717] mca: base: components_open: found loaded component vader
+[cm4r15c06s07:175717] mca: base: components_open: component vader open function successful
+[cm4r15c06s07:175717] mca: base: components_open: found loaded component tcp
+[cm4r15c06s07:175717] mca: base: components_open: component tcp open function successful
+[cm4r15c06s07:175717] mca: base: components_open: found loaded component self
+[cm4r15c06s07:175717] mca: base: components_open: component self open function successful
+[cm4r15c06s07:175717] select: initializing btl component vader
+[cm4r15c06s07:175717] select: init of component vader returned failure
+[cm4r15c06s07:175717] mca: base: close: component vader closed
+[cm4r15c06s07:175717] mca: base: close: unloading component vader
+[cm4r15c06s07:175717] select: initializing btl component tcp
+[cm4r15c06s07:175717] btl: tcp: Searching for exclude address+prefix: 127.0.0.1 / 8
+[cm4r15c06s07:175717] btl: tcp: Found match: 127.0.0.1 (lo)
+[cm4r15c06s07:175717] btl: tcp: Using interface: sppp 
+[cm4r15c06s07:175717] btl:tcp: Attempting to bind to AF_INET port 1024
+[cm4r15c06s07:175717] btl:tcp: Attempting to bind to AF_INET port 1025
+[cm4r15c06s07:175717] btl:tcp: Successfully bound to AF_INET port 1025
+[cm4r15c06s07:175717] btl:tcp: my listening v4 socket is 0.0.0.0:1025
+[cm4r15c06s07:175717] btl:tcp: examining interface em3
+[cm4r15c06s07:175717] btl:tcp: using ipv6 interface em3
+[cm4r15c06s07:175717] btl:tcp: examining interface ib0.8001
+[cm4r15c06s07:175717] btl:tcp: using ipv6 interface ib0.8001
+[cm4r15c06s07:175717] select: init of component tcp returned success
+[cm4r15c06s07:175717] select: initializing btl component self
+[cm4r15c06s07:175717] select: init of component self returned success
+[cm4r15c06s07:175717] mca: bml: Using self btl for send to [[12302,1],1] on node cm4r15c06s07
+[cm4r15c06s07:175717] btl:tcp: path from 10.0.3.139 to 10.0.3.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175717] btl:tcp: path from 10.0.3.139 to 10.156.155.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175717] btl:tcp: path from 10.156.155.139 to 10.0.3.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175717] btl:tcp: path from 10.156.155.139 to 10.156.155.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175717] mca: bml: Using tcp btl for send to [[12302,1],0] on node cm4r15c06s06
+[cm4r15c06s07:175717] btl:tcp: path from 10.0.3.139 to 10.0.3.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175717] btl:tcp: path from 10.0.3.139 to 10.156.155.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175717] btl:tcp: path from 10.156.155.139 to 10.0.3.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175717] btl:tcp: path from 10.156.155.139 to 10.156.155.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175717] mca: bml: Using tcp btl for send to [[12302,1],0] on node cm4r15c06s06
+[cm4r15c06s06:85994] mca: bml: Using self btl for send to [[12302,1],0] on node cm4r15c06s06
+[cm4r15c06s06:85994] btl:tcp: path from 10.0.3.138 to 10.0.3.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85994] btl:tcp: path from 10.0.3.138 to 10.156.155.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85994] btl:tcp: path from 10.156.155.138 to 10.0.3.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85994] btl:tcp: path from 10.156.155.138 to 10.156.155.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85994] mca: bml: Using tcp btl for send to [[12302,1],1] on node cm4r15c06s07
+[cm4r15c06s06:85994] btl:tcp: path from 10.0.3.138 to 10.0.3.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85994] btl:tcp: path from 10.0.3.138 to 10.156.155.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85994] btl:tcp: path from 10.156.155.138 to 10.0.3.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:85994] btl:tcp: path from 10.156.155.138 to 10.156.155.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:85994] mca: bml: Using tcp btl for send to [[12302,1],1] on node cm4r15c06s07
+[cm4r15c06s06:85994] btl: tcp: attempting to connect() to [[12302,1],1] address 10.0.3.139 on port 1025
+[cm4r15c06s06:85994] btl:tcp: would block, so allowing background progress
+[cm4r15c06s06:85994] btl:tcp: connect() to 10.0.3.139:1025 completed (complete_connect), sending connect ACK
+[cm4r15c06s07:175717] btl:tcp: now connected to 10.0.3.138, process [[12302,1],0]
+Comb version 0.3.1
+Args  ./comb;8_8_8;-divide;2_1_1;-periodic;1_1_1;-ghost;1_1_1;-vars;2;-comm;cutoff;250;-comm;disable;all;-comm;enable;mpi;-comm;post_recv;wait_all;-comm;post_send;wait_all;-comm;wait_recv;wait_all;-comm;wait_send;wait_all;-exec;enable;omp;-compute_target_us;26.0;-cycles;100;-print_message_sizes;-print_packing_sizes
+Started rank 0 of 2
+Node cm4r15c06s06
+Compiler "/dss/lrzsys/sys/spack/release/24.4.0/opt/x86_64/intel-oneapi-compilers/2024.1.0-gcc-ibqwgcs/compiler/2024.1/bin/icpx"
+OMP num threads    12
+OMP thread map      0;1;2;3;4;5;6;7;8;9;10;11
+Cart coords         0        0        0
+Message policy cutoff 250
+Post Recv using wait_all method
+Post Send using wait_all method
+Wait Recv using wait_all method
+Wait Send using wait_all method
+Num cycles        100
+Num vars            2
+ghost_widths        1        1        1
+sizes               8        8        8
+divisions           2        1        1
+periodic            1        1        1
+division map
+map                 0        0        0
+map                 4        8        8
+map                 8                  
+print message and packing sizes to proc file(s)
+Starting test memcpy seq dst Host src Host
+Starting test memcpy omp dst Host src Host
+Starting test Comm mpi Mesh seq Host Buffers seq Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers seq Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers omp Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers omp Host omp Host
+[cm4r15c06s06:85994] mca: base: close: component r2 closed
+[cm4r15c06s06:85994] mca: base: close: unloading component r2
+[cm4r15c06s07:175717] mca: base: close: component r2 closed
+[cm4r15c06s07:175717] mca: base: close: unloading component r2
+[cm4r15c06s06:85994] mca: base: close: component tcp closed
+[cm4r15c06s06:85994] mca: base: close: unloading component tcp
+[cm4r15c06s06:85994] mca: base: close: component self closed
+[cm4r15c06s06:85994] mca: base: close: unloading component self
+[cm4r15c06s07:175717] mca: base: close: component tcp closed
+[cm4r15c06s07:175717] mca: base: close: unloading component tcp
+[cm4r15c06s07:175717] mca: base: close: component self closed
+[cm4r15c06s07:175717] mca: base: close: unloading component self
+===== 05_async1_at12_c12_wait_all exit code: 0 =====
+===== 06_async1_at1_c23_wait_all =====
+launcher=mpirun --mca plm slurm --hostfile /dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/openmpi/2n2r_c24/msg_x1KiB_y512B_z512B/midcomm/run_020_MPIonly/openmpi_hosts.gY4XkE -np 2 --map-by ppr:1:node:PE=24 --bind-to core --report-bindings
+comb_cmd=./comb 8_8_8 -divide 2_1_1 -periodic 1_1_1 -ghost 1_1_1 -vars 2 -comm cutoff 250 -comm disable all -comm enable mpi  -comm post_recv wait_all -comm post_send wait_all -comm wait_recv wait_all -comm wait_send wait_all -exec enable omp -compute_target_us 26.0 -cycles 100 -print_message_sizes -print_packing_sizes 
+binding_mode=omp places + reserved async CPUs
+job_metadata_file=job_metadata.log
+[cm4r15c06s06:86199] MCW rank 0 bound to socket 0[core 0[hwt 0-1]], socket 0[core 1[hwt 0-1]], socket 0[core 2[hwt 0-1]], socket 0[core 3[hwt 0-1]], socket 0[core 4[hwt 0-1]], socket 0[core 5[hwt 0-1]], socket 0[core 6[hwt 0-1]], socket 0[core 7[hwt 0-1]], socket 0[core 8[hwt 0-1]], socket 0[core 9[hwt 0-1]], socket 0[core 10[hwt 0-1]], socket 0[core 11[hwt 0-1]], socket 0[core 12[hwt 0-1]], socket 0[core 13[hwt 0-1]], socket 0[core 14[hwt 0-1]], socket 0[core 15[hwt 0-1]], socket 0[core 16[hwt 0-1]], socket 0[core 17[hwt 0-1]], socket 0[core 18[hwt 0-1]], socket 0[core 19[hwt 0-1]], socket 0[core 20[hwt 0-1]], socket 0[core 21[hwt 0-1]], socket 0[core 22[hwt 0-1]], socket 0[core 23[hwt 0-1]]: [BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..][../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..]
+[cm4r15c06s07:175913] MCW rank 1 bound to socket 0[core 0[hwt 0-1]], socket 0[core 1[hwt 0-1]], socket 0[core 2[hwt 0-1]], socket 0[core 3[hwt 0-1]], socket 0[core 4[hwt 0-1]], socket 0[core 5[hwt 0-1]], socket 0[core 6[hwt 0-1]], socket 0[core 7[hwt 0-1]], socket 0[core 8[hwt 0-1]], socket 0[core 9[hwt 0-1]], socket 0[core 10[hwt 0-1]], socket 0[core 11[hwt 0-1]], socket 0[core 12[hwt 0-1]], socket 0[core 13[hwt 0-1]], socket 0[core 14[hwt 0-1]], socket 0[core 15[hwt 0-1]], socket 0[core 16[hwt 0-1]], socket 0[core 17[hwt 0-1]], socket 0[core 18[hwt 0-1]], socket 0[core 19[hwt 0-1]], socket 0[core 20[hwt 0-1]], socket 0[core 21[hwt 0-1]], socket 0[core 22[hwt 0-1]], socket 0[core 23[hwt 0-1]]: [BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..][../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..]
+rank=0 host=cm4r15c06s06 bind_mode=omp_places allowed=0-23,112-135 total_cpus_per_rank=24 omp_threads=23 async_threads=1 main_cpus_per_rank=23 main_cpu_list=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 progress_cpu_list=23 reserved_async_cpu_list=23 main_socket_set=0 progress_socket_set=0 main_numa_set=0 progress_numa_set=0 binding_relation=same_numa
+rank=1 host=cm4r15c06s07 bind_mode=omp_places allowed=0-23,112-135 total_cpus_per_rank=24 omp_threads=23 async_threads=1 main_cpus_per_rank=23 main_cpu_list=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 progress_cpu_list=23 reserved_async_cpu_list=23 main_socket_set=0 progress_socket_set=0 main_numa_set=0 progress_numa_set=0 binding_relation=same_numa
+rank=0 host=cm4r15c06s06
+rank=1 host=cm4r15c06s07
+runtime_state rank=0 host=cm4r15c06s06 pid=86211 threads=1 Cpus_allowed_list:	0-23,112-135 Mems_allowed_list:	0-1 taskset=pid 86211's current affinity list: 0-23,112-135 
+runtime_state rank=1 host=cm4r15c06s07 pid=175916 threads=1 Cpus_allowed_list:	0-23,112-135 Mems_allowed_list:	0-1 taskset=pid 175916's current affinity list: 0-23,112-135 
+[cm4r15c06s06:86211] mca: base: components_register: registering framework bml components
+[cm4r15c06s06:86211] mca: base: components_register: found loaded component r2
+[cm4r15c06s06:86211] mca: base: components_register: component r2 register function successful
+[cm4r15c06s06:86211] mca: base: components_open: opening bml components
+[cm4r15c06s06:86211] mca: base: components_open: found loaded component r2
+[cm4r15c06s06:86211] mca: base: components_open: component r2 open function successful
+[cm4r15c06s06:86211] mca: base: components_register: registering framework btl components
+[cm4r15c06s06:86211] mca: base: components_register: found loaded component vader
+[cm4r15c06s06:86211] mca: base: components_register: component vader register function successful
+[cm4r15c06s06:86211] mca: base: components_register: found loaded component tcp
+[cm4r15c06s06:86211] mca: base: components_register: component tcp register function successful
+[cm4r15c06s06:86211] mca: base: components_register: found loaded component self
+[cm4r15c06s06:86211] mca: base: components_register: component self register function successful
+[cm4r15c06s06:86211] mca: base: components_open: opening btl components
+[cm4r15c06s06:86211] mca: base: components_open: found loaded component vader
+[cm4r15c06s06:86211] mca: base: components_open: component vader open function successful
+[cm4r15c06s06:86211] mca: base: components_open: found loaded component tcp
+[cm4r15c06s06:86211] mca: base: components_open: component tcp open function successful
+[cm4r15c06s06:86211] mca: base: components_open: found loaded component self
+[cm4r15c06s06:86211] mca: base: components_open: component self open function successful
+[cm4r15c06s06:86211] select: initializing btl component vader
+[cm4r15c06s06:86211] select: init of component vader returned failure
+[cm4r15c06s06:86211] mca: base: close: component vader closed
+[cm4r15c06s06:86211] mca: base: close: unloading component vader
+[cm4r15c06s06:86211] select: initializing btl component tcp
+[cm4r15c06s06:86211] btl: tcp: Searching for exclude address+prefix: 127.0.0.1 / 8
+[cm4r15c06s06:86211] btl: tcp: Found match: 127.0.0.1 (lo)
+[cm4r15c06s06:86211] btl: tcp: Using interface: sppp 
+[cm4r15c06s06:86211] btl:tcp: Attempting to bind to AF_INET port 1024
+[cm4r15c06s06:86211] btl:tcp: Successfully bound to AF_INET port 1024
+[cm4r15c06s06:86211] btl:tcp: my listening v4 socket is 0.0.0.0:1024
+[cm4r15c06s06:86211] btl:tcp: examining interface em3
+[cm4r15c06s06:86211] btl:tcp: using ipv6 interface em3
+[cm4r15c06s06:86211] btl:tcp: examining interface ib0.8001
+[cm4r15c06s06:86211] btl:tcp: using ipv6 interface ib0.8001
+[cm4r15c06s06:86211] select: init of component tcp returned success
+[cm4r15c06s06:86211] select: initializing btl component self
+[cm4r15c06s06:86211] select: init of component self returned success
+[cm4r15c06s07:175916] mca: base: components_register: registering framework bml components
+[cm4r15c06s07:175916] mca: base: components_register: found loaded component r2
+[cm4r15c06s07:175916] mca: base: components_register: component r2 register function successful
+[cm4r15c06s07:175916] mca: base: components_open: opening bml components
+[cm4r15c06s07:175916] mca: base: components_open: found loaded component r2
+[cm4r15c06s07:175916] mca: base: components_open: component r2 open function successful
+[cm4r15c06s07:175916] mca: base: components_register: registering framework btl components
+[cm4r15c06s07:175916] mca: base: components_register: found loaded component vader
+[cm4r15c06s07:175916] mca: base: components_register: component vader register function successful
+[cm4r15c06s07:175916] mca: base: components_register: found loaded component tcp
+[cm4r15c06s07:175916] mca: base: components_register: component tcp register function successful
+[cm4r15c06s07:175916] mca: base: components_register: found loaded component self
+[cm4r15c06s07:175916] mca: base: components_register: component self register function successful
+[cm4r15c06s07:175916] mca: base: components_open: opening btl components
+[cm4r15c06s07:175916] mca: base: components_open: found loaded component vader
+[cm4r15c06s07:175916] mca: base: components_open: component vader open function successful
+[cm4r15c06s07:175916] mca: base: components_open: found loaded component tcp
+[cm4r15c06s07:175916] mca: base: components_open: component tcp open function successful
+[cm4r15c06s07:175916] mca: base: components_open: found loaded component self
+[cm4r15c06s07:175916] mca: base: components_open: component self open function successful
+[cm4r15c06s07:175916] select: initializing btl component vader
+[cm4r15c06s07:175916] select: init of component vader returned failure
+[cm4r15c06s07:175916] mca: base: close: component vader closed
+[cm4r15c06s07:175916] mca: base: close: unloading component vader
+[cm4r15c06s07:175916] select: initializing btl component tcp
+[cm4r15c06s07:175916] btl: tcp: Searching for exclude address+prefix: 127.0.0.1 / 8
+[cm4r15c06s07:175916] btl: tcp: Found match: 127.0.0.1 (lo)
+[cm4r15c06s07:175916] btl: tcp: Using interface: sppp 
+[cm4r15c06s07:175916] btl:tcp: Attempting to bind to AF_INET port 1024
+[cm4r15c06s07:175916] btl:tcp: Attempting to bind to AF_INET port 1025
+[cm4r15c06s07:175916] btl:tcp: Successfully bound to AF_INET port 1025
+[cm4r15c06s07:175916] btl:tcp: my listening v4 socket is 0.0.0.0:1025
+[cm4r15c06s07:175916] btl:tcp: examining interface em3
+[cm4r15c06s07:175916] btl:tcp: using ipv6 interface em3
+[cm4r15c06s07:175916] btl:tcp: examining interface ib0.8001
+[cm4r15c06s07:175916] btl:tcp: using ipv6 interface ib0.8001
+[cm4r15c06s07:175916] select: init of component tcp returned success
+[cm4r15c06s07:175916] select: initializing btl component self
+[cm4r15c06s07:175916] select: init of component self returned success
+[cm4r15c06s07:175916] mca: bml: Using self btl for send to [[12134,1],1] on node cm4r15c06s07
+[cm4r15c06s07:175916] btl:tcp: path from 10.0.3.139 to 10.0.3.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175916] btl:tcp: path from 10.0.3.139 to 10.156.155.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175916] btl:tcp: path from 10.156.155.139 to 10.0.3.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175916] btl:tcp: path from 10.156.155.139 to 10.156.155.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175916] mca: bml: Using tcp btl for send to [[12134,1],0] on node cm4r15c06s06
+[cm4r15c06s07:175916] btl:tcp: path from 10.0.3.139 to 10.0.3.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175916] btl:tcp: path from 10.0.3.139 to 10.156.155.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175916] btl:tcp: path from 10.156.155.139 to 10.0.3.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:175916] btl:tcp: path from 10.156.155.139 to 10.156.155.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:175916] mca: bml: Using tcp btl for send to [[12134,1],0] on node cm4r15c06s06
+[cm4r15c06s06:86211] mca: bml: Using self btl for send to [[12134,1],0] on node cm4r15c06s06
+[cm4r15c06s06:86211] btl:tcp: path from 10.0.3.138 to 10.0.3.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:86211] btl:tcp: path from 10.0.3.138 to 10.156.155.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:86211] btl:tcp: path from 10.156.155.138 to 10.0.3.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:86211] btl:tcp: path from 10.156.155.138 to 10.156.155.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:86211] mca: bml: Using tcp btl for send to [[12134,1],1] on node cm4r15c06s07
+[cm4r15c06s06:86211] btl:tcp: path from 10.0.3.138 to 10.0.3.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:86211] btl:tcp: path from 10.0.3.138 to 10.156.155.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:86211] btl:tcp: path from 10.156.155.138 to 10.0.3.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:86211] btl:tcp: path from 10.156.155.138 to 10.156.155.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:86211] mca: bml: Using tcp btl for send to [[12134,1],1] on node cm4r15c06s07
+[cm4r15c06s06:86211] btl: tcp: attempting to connect() to [[12134,1],1] address 10.0.3.139 on port 1025
+[cm4r15c06s06:86211] btl:tcp: would block, so allowing background progress
+[cm4r15c06s06:86211] btl:tcp: connect() to 10.0.3.139:1025 completed (complete_connect), sending connect ACK
+[cm4r15c06s07:175916] btl:tcp: now connected to 10.0.3.138, process [[12134,1],0]
+Comb version 0.3.1
+Args  ./comb;8_8_8;-divide;2_1_1;-periodic;1_1_1;-ghost;1_1_1;-vars;2;-comm;cutoff;250;-comm;disable;all;-comm;enable;mpi;-comm;post_recv;wait_all;-comm;post_send;wait_all;-comm;wait_recv;wait_all;-comm;wait_send;wait_all;-exec;enable;omp;-compute_target_us;26.0;-cycles;100;-print_message_sizes;-print_packing_sizes
+Started rank 0 of 2
+Node cm4r15c06s06
+Compiler "/dss/lrzsys/sys/spack/release/24.4.0/opt/x86_64/intel-oneapi-compilers/2024.1.0-gcc-ibqwgcs/compiler/2024.1/bin/icpx"
+OMP num threads    23
+OMP thread map      0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22
+Cart coords         0        0        0
+Message policy cutoff 250
+Post Recv using wait_all method
+Post Send using wait_all method
+Wait Recv using wait_all method
+Wait Send using wait_all method
+Num cycles        100
+Num vars            2
+ghost_widths        1        1        1
+sizes               8        8        8
+divisions           2        1        1
+periodic            1        1        1
+division map
+map                 0        0        0
+map                 4        8        8
+map                 8                  
+print message and packing sizes to proc file(s)
+Starting test memcpy seq dst Host src Host
+Starting test memcpy omp dst Host src Host
+Starting test Comm mpi Mesh seq Host Buffers seq Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers seq Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers omp Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers omp Host omp Host
+[cm4r15c06s06:86211] mca: base: close: component r2 closed
+[cm4r15c06s06:86211] mca: base: close: unloading component r2
+[cm4r15c06s07:175916] mca: base: close: component r2 closed
+[cm4r15c06s07:175916] mca: base: close: unloading component r2
+[cm4r15c06s06:86211] mca: base: close: component tcp closed
+[cm4r15c06s06:86211] mca: base: close: unloading component tcp
+[cm4r15c06s06:86211] mca: base: close: component self closed
+[cm4r15c06s06:86211] mca: base: close: unloading component self
+[cm4r15c06s07:175916] mca: base: close: component tcp closed
+[cm4r15c06s07:175916] mca: base: close: unloading component tcp
+[cm4r15c06s07:175916] mca: base: close: component self closed
+[cm4r15c06s07:175916] mca: base: close: unloading component self
+===== 06_async1_at1_c23_wait_all exit code: 0 =====
+===== 07_async1_at1_c1_test_all =====
+launcher=mpirun --mca plm slurm --hostfile /dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/openmpi/2n2r_c24/msg_x1KiB_y512B_z512B/midcomm/run_020_MPIonly/openmpi_hosts.gY4XkE -np 2 --map-by ppr:1:node:PE=24 --bind-to core --report-bindings
+comb_cmd=./comb 8_8_8 -divide 2_1_1 -periodic 1_1_1 -ghost 1_1_1 -vars 2 -comm cutoff 250 -comm disable all -comm enable mpi  -comm post_recv wait_all -comm post_send wait_all -comm wait_recv test_all -comm wait_send test_all -exec enable omp -compute_target_us 26.0 -cycles 100 -print_message_sizes -print_packing_sizes 
+binding_mode=omp places + reserved async CPUs
+job_metadata_file=job_metadata.log
+[cm4r15c06s06:86428] MCW rank 0 bound to socket 0[core 0[hwt 0-1]], socket 0[core 1[hwt 0-1]], socket 0[core 2[hwt 0-1]], socket 0[core 3[hwt 0-1]], socket 0[core 4[hwt 0-1]], socket 0[core 5[hwt 0-1]], socket 0[core 6[hwt 0-1]], socket 0[core 7[hwt 0-1]], socket 0[core 8[hwt 0-1]], socket 0[core 9[hwt 0-1]], socket 0[core 10[hwt 0-1]], socket 0[core 11[hwt 0-1]], socket 0[core 12[hwt 0-1]], socket 0[core 13[hwt 0-1]], socket 0[core 14[hwt 0-1]], socket 0[core 15[hwt 0-1]], socket 0[core 16[hwt 0-1]], socket 0[core 17[hwt 0-1]], socket 0[core 18[hwt 0-1]], socket 0[core 19[hwt 0-1]], socket 0[core 20[hwt 0-1]], socket 0[core 21[hwt 0-1]], socket 0[core 22[hwt 0-1]], socket 0[core 23[hwt 0-1]]: [BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..][../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..]
+[cm4r15c06s07:176123] MCW rank 1 bound to socket 0[core 0[hwt 0-1]], socket 0[core 1[hwt 0-1]], socket 0[core 2[hwt 0-1]], socket 0[core 3[hwt 0-1]], socket 0[core 4[hwt 0-1]], socket 0[core 5[hwt 0-1]], socket 0[core 6[hwt 0-1]], socket 0[core 7[hwt 0-1]], socket 0[core 8[hwt 0-1]], socket 0[core 9[hwt 0-1]], socket 0[core 10[hwt 0-1]], socket 0[core 11[hwt 0-1]], socket 0[core 12[hwt 0-1]], socket 0[core 13[hwt 0-1]], socket 0[core 14[hwt 0-1]], socket 0[core 15[hwt 0-1]], socket 0[core 16[hwt 0-1]], socket 0[core 17[hwt 0-1]], socket 0[core 18[hwt 0-1]], socket 0[core 19[hwt 0-1]], socket 0[core 20[hwt 0-1]], socket 0[core 21[hwt 0-1]], socket 0[core 22[hwt 0-1]], socket 0[core 23[hwt 0-1]]: [BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..][../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..]
+rank=0 host=cm4r15c06s06 bind_mode=omp_places allowed=0-23,112-135 total_cpus_per_rank=24 omp_threads=1 async_threads=1 main_cpus_per_rank=23 main_cpu_list=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 progress_cpu_list=23 reserved_async_cpu_list=23 main_socket_set=0 progress_socket_set=0 main_numa_set=0 progress_numa_set=0 binding_relation=same_numa
+rank=1 host=cm4r15c06s07 bind_mode=omp_places allowed=0-23,112-135 total_cpus_per_rank=24 omp_threads=1 async_threads=1 main_cpus_per_rank=23 main_cpu_list=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 progress_cpu_list=23 reserved_async_cpu_list=23 main_socket_set=0 progress_socket_set=0 main_numa_set=0 progress_numa_set=0 binding_relation=same_numa
+rank=0 host=cm4r15c06s06
+rank=1 host=cm4r15c06s07
+runtime_state rank=0 host=cm4r15c06s06 pid=86440 threads=1 Cpus_allowed_list:	0-23,112-135 Mems_allowed_list:	0-1 taskset=pid 86440's current affinity list: 0-23,112-135 
+runtime_state rank=1 host=cm4r15c06s07 pid=176126 threads=1 Cpus_allowed_list:	0-23,112-135 Mems_allowed_list:	0-1 taskset=pid 176126's current affinity list: 0-23,112-135 
+[cm4r15c06s07:176126] mca: base: components_register: registering framework bml components
+[cm4r15c06s07:176126] mca: base: components_register: found loaded component r2
+[cm4r15c06s07:176126] mca: base: components_register: component r2 register function successful
+[cm4r15c06s07:176126] mca: base: components_open: opening bml components
+[cm4r15c06s07:176126] mca: base: components_open: found loaded component r2
+[cm4r15c06s07:176126] mca: base: components_open: component r2 open function successful
+[cm4r15c06s07:176126] mca: base: components_register: registering framework btl components
+[cm4r15c06s07:176126] mca: base: components_register: found loaded component vader
+[cm4r15c06s07:176126] mca: base: components_register: component vader register function successful
+[cm4r15c06s07:176126] mca: base: components_register: found loaded component tcp
+[cm4r15c06s07:176126] mca: base: components_register: component tcp register function successful
+[cm4r15c06s07:176126] mca: base: components_register: found loaded component self
+[cm4r15c06s07:176126] mca: base: components_register: component self register function successful
+[cm4r15c06s07:176126] mca: base: components_open: opening btl components
+[cm4r15c06s07:176126] mca: base: components_open: found loaded component vader
+[cm4r15c06s07:176126] mca: base: components_open: component vader open function successful
+[cm4r15c06s07:176126] mca: base: components_open: found loaded component tcp
+[cm4r15c06s07:176126] mca: base: components_open: component tcp open function successful
+[cm4r15c06s07:176126] mca: base: components_open: found loaded component self
+[cm4r15c06s07:176126] mca: base: components_open: component self open function successful
+[cm4r15c06s07:176126] select: initializing btl component vader
+[cm4r15c06s07:176126] select: init of component vader returned failure
+[cm4r15c06s07:176126] mca: base: close: component vader closed
+[cm4r15c06s07:176126] mca: base: close: unloading component vader
+[cm4r15c06s07:176126] select: initializing btl component tcp
+[cm4r15c06s07:176126] btl: tcp: Searching for exclude address+prefix: 127.0.0.1 / 8
+[cm4r15c06s07:176126] btl: tcp: Found match: 127.0.0.1 (lo)
+[cm4r15c06s07:176126] btl: tcp: Using interface: sppp 
+[cm4r15c06s07:176126] btl:tcp: Attempting to bind to AF_INET port 1024
+[cm4r15c06s07:176126] btl:tcp: Attempting to bind to AF_INET port 1025
+[cm4r15c06s07:176126] btl:tcp: Successfully bound to AF_INET port 1025
+[cm4r15c06s07:176126] btl:tcp: my listening v4 socket is 0.0.0.0:1025
+[cm4r15c06s07:176126] btl:tcp: examining interface em3
+[cm4r15c06s07:176126] btl:tcp: using ipv6 interface em3
+[cm4r15c06s07:176126] btl:tcp: examining interface ib0.8001
+[cm4r15c06s07:176126] btl:tcp: using ipv6 interface ib0.8001
+[cm4r15c06s07:176126] select: init of component tcp returned success
+[cm4r15c06s07:176126] select: initializing btl component self
+[cm4r15c06s07:176126] select: init of component self returned success
+[cm4r15c06s06:86440] mca: base: components_register: registering framework bml components
+[cm4r15c06s06:86440] mca: base: components_register: found loaded component r2
+[cm4r15c06s06:86440] mca: base: components_register: component r2 register function successful
+[cm4r15c06s06:86440] mca: base: components_open: opening bml components
+[cm4r15c06s06:86440] mca: base: components_open: found loaded component r2
+[cm4r15c06s06:86440] mca: base: components_open: component r2 open function successful
+[cm4r15c06s06:86440] mca: base: components_register: registering framework btl components
+[cm4r15c06s06:86440] mca: base: components_register: found loaded component vader
+[cm4r15c06s06:86440] mca: base: components_register: component vader register function successful
+[cm4r15c06s06:86440] mca: base: components_register: found loaded component tcp
+[cm4r15c06s06:86440] mca: base: components_register: component tcp register function successful
+[cm4r15c06s06:86440] mca: base: components_register: found loaded component self
+[cm4r15c06s06:86440] mca: base: components_register: component self register function successful
+[cm4r15c06s06:86440] mca: base: components_open: opening btl components
+[cm4r15c06s06:86440] mca: base: components_open: found loaded component vader
+[cm4r15c06s06:86440] mca: base: components_open: component vader open function successful
+[cm4r15c06s06:86440] mca: base: components_open: found loaded component tcp
+[cm4r15c06s06:86440] mca: base: components_open: component tcp open function successful
+[cm4r15c06s06:86440] mca: base: components_open: found loaded component self
+[cm4r15c06s06:86440] mca: base: components_open: component self open function successful
+[cm4r15c06s06:86440] select: initializing btl component vader
+[cm4r15c06s06:86440] select: init of component vader returned failure
+[cm4r15c06s06:86440] mca: base: close: component vader closed
+[cm4r15c06s06:86440] mca: base: close: unloading component vader
+[cm4r15c06s06:86440] select: initializing btl component tcp
+[cm4r15c06s06:86440] btl: tcp: Searching for exclude address+prefix: 127.0.0.1 / 8
+[cm4r15c06s06:86440] btl: tcp: Found match: 127.0.0.1 (lo)
+[cm4r15c06s06:86440] btl: tcp: Using interface: sppp 
+[cm4r15c06s06:86440] btl:tcp: Attempting to bind to AF_INET port 1024
+[cm4r15c06s06:86440] btl:tcp: Successfully bound to AF_INET port 1024
+[cm4r15c06s06:86440] btl:tcp: my listening v4 socket is 0.0.0.0:1024
+[cm4r15c06s06:86440] btl:tcp: examining interface em3
+[cm4r15c06s06:86440] btl:tcp: using ipv6 interface em3
+[cm4r15c06s06:86440] btl:tcp: examining interface ib0.8001
+[cm4r15c06s06:86440] btl:tcp: using ipv6 interface ib0.8001
+[cm4r15c06s06:86440] select: init of component tcp returned success
+[cm4r15c06s06:86440] select: initializing btl component self
+[cm4r15c06s06:86440] select: init of component self returned success
+[cm4r15c06s07:176126] mca: bml: Using self btl for send to [[11853,1],1] on node cm4r15c06s07
+[cm4r15c06s07:176126] btl:tcp: path from 10.0.3.139 to 10.0.3.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:176126] btl:tcp: path from 10.0.3.139 to 10.156.155.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:176126] btl:tcp: path from 10.156.155.139 to 10.0.3.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:176126] btl:tcp: path from 10.156.155.139 to 10.156.155.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:176126] mca: bml: Using tcp btl for send to [[11853,1],0] on node cm4r15c06s06
+[cm4r15c06s07:176126] btl:tcp: path from 10.0.3.139 to 10.0.3.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:176126] btl:tcp: path from 10.0.3.139 to 10.156.155.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:176126] btl:tcp: path from 10.156.155.139 to 10.0.3.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:176126] btl:tcp: path from 10.156.155.139 to 10.156.155.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:176126] mca: bml: Using tcp btl for send to [[11853,1],0] on node cm4r15c06s06
+[cm4r15c06s06:86440] mca: bml: Using self btl for send to [[11853,1],0] on node cm4r15c06s06
+[cm4r15c06s06:86440] btl:tcp: path from 10.0.3.138 to 10.0.3.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:86440] btl:tcp: path from 10.0.3.138 to 10.156.155.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:86440] btl:tcp: path from 10.156.155.138 to 10.0.3.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:86440] btl:tcp: path from 10.156.155.138 to 10.156.155.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:86440] mca: bml: Using tcp btl for send to [[11853,1],1] on node cm4r15c06s07
+[cm4r15c06s06:86440] btl:tcp: path from 10.0.3.138 to 10.0.3.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:86440] btl:tcp: path from 10.0.3.138 to 10.156.155.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:86440] btl:tcp: path from 10.156.155.138 to 10.0.3.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:86440] btl:tcp: path from 10.156.155.138 to 10.156.155.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:86440] mca: bml: Using tcp btl for send to [[11853,1],1] on node cm4r15c06s07
+[cm4r15c06s06:86440] btl: tcp: attempting to connect() to [[11853,1],1] address 10.0.3.139 on port 1025
+[cm4r15c06s06:86440] btl:tcp: would block, so allowing background progress
+[cm4r15c06s06:86440] btl:tcp: connect() to 10.0.3.139:1025 completed (complete_connect), sending connect ACK
+[cm4r15c06s07:176126] btl:tcp: now connected to 10.0.3.138, process [[11853,1],0]
+Comb version 0.3.1
+Args  ./comb;8_8_8;-divide;2_1_1;-periodic;1_1_1;-ghost;1_1_1;-vars;2;-comm;cutoff;250;-comm;disable;all;-comm;enable;mpi;-comm;post_recv;wait_all;-comm;post_send;wait_all;-comm;wait_recv;test_all;-comm;wait_send;test_all;-exec;enable;omp;-compute_target_us;26.0;-cycles;100;-print_message_sizes;-print_packing_sizes
+Started rank 0 of 2
+Node cm4r15c06s06
+Compiler "/dss/lrzsys/sys/spack/release/24.4.0/opt/x86_64/intel-oneapi-compilers/2024.1.0-gcc-ibqwgcs/compiler/2024.1/bin/icpx"
+OMP num threads     1
+OMP thread map      0
+Cart coords         0        0        0
+Message policy cutoff 250
+Post Recv using wait_all method
+Post Send using wait_all method
+Wait Recv using test_all method
+Wait Send using test_all method
+Num cycles        100
+Num vars            2
+ghost_widths        1        1        1
+sizes               8        8        8
+divisions           2        1        1
+periodic            1        1        1
+division map
+map                 0        0        0
+map                 4        8        8
+map                 8                  
+print message and packing sizes to proc file(s)
+Starting test memcpy seq dst Host src Host
+Starting test memcpy omp dst Host src Host
+Starting test Comm mpi Mesh seq Host Buffers seq Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers seq Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers omp Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers omp Host omp Host
+[cm4r15c06s06:86440] mca: base: close: component r2 closed
+[cm4r15c06s06:86440] mca: base: close: unloading component r2
+[cm4r15c06s06:86440] mca: base: close: component tcp closed
+[cm4r15c06s06:86440] mca: base: close: unloading component tcp
+[cm4r15c06s06:86440] mca: base: close: component self closed
+[cm4r15c06s06:86440] mca: base: close: unloading component self
+[cm4r15c06s07:176126] mca: base: close: component r2 closed
+[cm4r15c06s07:176126] mca: base: close: unloading component r2
+[cm4r15c06s07:176126] mca: base: close: component tcp closed
+[cm4r15c06s07:176126] mca: base: close: unloading component tcp
+[cm4r15c06s07:176126] mca: base: close: component self closed
+[cm4r15c06s07:176126] mca: base: close: unloading component self
+===== 07_async1_at1_c1_test_all exit code: 0 =====
+===== 08_async1_at12_c12_test_all =====
+launcher=mpirun --mca plm slurm --hostfile /dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/openmpi/2n2r_c24/msg_x1KiB_y512B_z512B/midcomm/run_020_MPIonly/openmpi_hosts.gY4XkE -np 2 --map-by ppr:1:node:PE=24 --bind-to core --report-bindings
+comb_cmd=./comb 8_8_8 -divide 2_1_1 -periodic 1_1_1 -ghost 1_1_1 -vars 2 -comm cutoff 250 -comm disable all -comm enable mpi  -comm post_recv wait_all -comm post_send wait_all -comm wait_recv test_all -comm wait_send test_all -exec enable omp -compute_target_us 26.0 -cycles 100 -print_message_sizes -print_packing_sizes 
+binding_mode=omp places + reserved async CPUs
+job_metadata_file=job_metadata.log
+[cm4r15c06s06:86636] MCW rank 0 bound to socket 0[core 0[hwt 0-1]], socket 0[core 1[hwt 0-1]], socket 0[core 2[hwt 0-1]], socket 0[core 3[hwt 0-1]], socket 0[core 4[hwt 0-1]], socket 0[core 5[hwt 0-1]], socket 0[core 6[hwt 0-1]], socket 0[core 7[hwt 0-1]], socket 0[core 8[hwt 0-1]], socket 0[core 9[hwt 0-1]], socket 0[core 10[hwt 0-1]], socket 0[core 11[hwt 0-1]], socket 0[core 12[hwt 0-1]], socket 0[core 13[hwt 0-1]], socket 0[core 14[hwt 0-1]], socket 0[core 15[hwt 0-1]], socket 0[core 16[hwt 0-1]], socket 0[core 17[hwt 0-1]], socket 0[core 18[hwt 0-1]], socket 0[core 19[hwt 0-1]], socket 0[core 20[hwt 0-1]], socket 0[core 21[hwt 0-1]], socket 0[core 22[hwt 0-1]], socket 0[core 23[hwt 0-1]]: [BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..][../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..]
+[cm4r15c06s07:176372] MCW rank 1 bound to socket 0[core 0[hwt 0-1]], socket 0[core 1[hwt 0-1]], socket 0[core 2[hwt 0-1]], socket 0[core 3[hwt 0-1]], socket 0[core 4[hwt 0-1]], socket 0[core 5[hwt 0-1]], socket 0[core 6[hwt 0-1]], socket 0[core 7[hwt 0-1]], socket 0[core 8[hwt 0-1]], socket 0[core 9[hwt 0-1]], socket 0[core 10[hwt 0-1]], socket 0[core 11[hwt 0-1]], socket 0[core 12[hwt 0-1]], socket 0[core 13[hwt 0-1]], socket 0[core 14[hwt 0-1]], socket 0[core 15[hwt 0-1]], socket 0[core 16[hwt 0-1]], socket 0[core 17[hwt 0-1]], socket 0[core 18[hwt 0-1]], socket 0[core 19[hwt 0-1]], socket 0[core 20[hwt 0-1]], socket 0[core 21[hwt 0-1]], socket 0[core 22[hwt 0-1]], socket 0[core 23[hwt 0-1]]: [BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..][../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..]
+rank=1 host=cm4r15c06s07 bind_mode=omp_places allowed=0-23,112-135 total_cpus_per_rank=24 omp_threads=12 async_threads=12 main_cpus_per_rank=12 main_cpu_list=0,1,2,3,4,5,6,7,8,9,10,11 progress_cpu_list=12,13,14,15,16,17,18,19,20,21,22,23 reserved_async_cpu_list=12,13,14,15,16,17,18,19,20,21,22,23 main_socket_set=0 progress_socket_set=0 main_numa_set=0 progress_numa_set=0 binding_relation=same_numa
+rank=0 host=cm4r15c06s06 bind_mode=omp_places allowed=0-23,112-135 total_cpus_per_rank=24 omp_threads=12 async_threads=12 main_cpus_per_rank=12 main_cpu_list=0,1,2,3,4,5,6,7,8,9,10,11 progress_cpu_list=12,13,14,15,16,17,18,19,20,21,22,23 reserved_async_cpu_list=12,13,14,15,16,17,18,19,20,21,22,23 main_socket_set=0 progress_socket_set=0 main_numa_set=0 progress_numa_set=0 binding_relation=same_numa
+rank=1 host=cm4r15c06s07
+rank=0 host=cm4r15c06s06
+runtime_state rank=0 host=cm4r15c06s06 pid=86646 threads=1 Cpus_allowed_list:	0-23,112-135 Mems_allowed_list:	0-1 taskset=pid 86646's current affinity list: 0-23,112-135 
+runtime_state rank=1 host=cm4r15c06s07 pid=176376 threads=1 Cpus_allowed_list:	0-23,112-135 Mems_allowed_list:	0-1 taskset=pid 176376's current affinity list: 0-23,112-135 
+[cm4r15c06s06:86646] mca: base: components_register: registering framework bml components
+[cm4r15c06s06:86646] mca: base: components_register: found loaded component r2
+[cm4r15c06s06:86646] mca: base: components_register: component r2 register function successful
+[cm4r15c06s06:86646] mca: base: components_open: opening bml components
+[cm4r15c06s06:86646] mca: base: components_open: found loaded component r2
+[cm4r15c06s06:86646] mca: base: components_open: component r2 open function successful
+[cm4r15c06s06:86646] mca: base: components_register: registering framework btl components
+[cm4r15c06s06:86646] mca: base: components_register: found loaded component vader
+[cm4r15c06s06:86646] mca: base: components_register: component vader register function successful
+[cm4r15c06s06:86646] mca: base: components_register: found loaded component tcp
+[cm4r15c06s06:86646] mca: base: components_register: component tcp register function successful
+[cm4r15c06s06:86646] mca: base: components_register: found loaded component self
+[cm4r15c06s06:86646] mca: base: components_register: component self register function successful
+[cm4r15c06s06:86646] mca: base: components_open: opening btl components
+[cm4r15c06s06:86646] mca: base: components_open: found loaded component vader
+[cm4r15c06s06:86646] mca: base: components_open: component vader open function successful
+[cm4r15c06s06:86646] mca: base: components_open: found loaded component tcp
+[cm4r15c06s06:86646] mca: base: components_open: component tcp open function successful
+[cm4r15c06s06:86646] mca: base: components_open: found loaded component self
+[cm4r15c06s06:86646] mca: base: components_open: component self open function successful
+[cm4r15c06s06:86646] select: initializing btl component vader
+[cm4r15c06s06:86646] select: init of component vader returned failure
+[cm4r15c06s06:86646] mca: base: close: component vader closed
+[cm4r15c06s06:86646] mca: base: close: unloading component vader
+[cm4r15c06s06:86646] select: initializing btl component tcp
+[cm4r15c06s06:86646] btl: tcp: Searching for exclude address+prefix: 127.0.0.1 / 8
+[cm4r15c06s06:86646] btl: tcp: Found match: 127.0.0.1 (lo)
+[cm4r15c06s06:86646] btl: tcp: Using interface: sppp 
+[cm4r15c06s06:86646] btl:tcp: Attempting to bind to AF_INET port 1024
+[cm4r15c06s06:86646] btl:tcp: Successfully bound to AF_INET port 1024
+[cm4r15c06s06:86646] btl:tcp: my listening v4 socket is 0.0.0.0:1024
+[cm4r15c06s06:86646] btl:tcp: examining interface em3
+[cm4r15c06s06:86646] btl:tcp: using ipv6 interface em3
+[cm4r15c06s06:86646] btl:tcp: examining interface ib0.8001
+[cm4r15c06s06:86646] btl:tcp: using ipv6 interface ib0.8001
+[cm4r15c06s06:86646] select: init of component tcp returned success
+[cm4r15c06s06:86646] select: initializing btl component self
+[cm4r15c06s06:86646] select: init of component self returned success
+[cm4r15c06s07:176376] mca: base: components_register: registering framework bml components
+[cm4r15c06s07:176376] mca: base: components_register: found loaded component r2
+[cm4r15c06s07:176376] mca: base: components_register: component r2 register function successful
+[cm4r15c06s07:176376] mca: base: components_open: opening bml components
+[cm4r15c06s07:176376] mca: base: components_open: found loaded component r2
+[cm4r15c06s07:176376] mca: base: components_open: component r2 open function successful
+[cm4r15c06s07:176376] mca: base: components_register: registering framework btl components
+[cm4r15c06s07:176376] mca: base: components_register: found loaded component vader
+[cm4r15c06s07:176376] mca: base: components_register: component vader register function successful
+[cm4r15c06s07:176376] mca: base: components_register: found loaded component tcp
+[cm4r15c06s07:176376] mca: base: components_register: component tcp register function successful
+[cm4r15c06s07:176376] mca: base: components_register: found loaded component self
+[cm4r15c06s07:176376] mca: base: components_register: component self register function successful
+[cm4r15c06s07:176376] mca: base: components_open: opening btl components
+[cm4r15c06s07:176376] mca: base: components_open: found loaded component vader
+[cm4r15c06s07:176376] mca: base: components_open: component vader open function successful
+[cm4r15c06s07:176376] mca: base: components_open: found loaded component tcp
+[cm4r15c06s07:176376] mca: base: components_open: component tcp open function successful
+[cm4r15c06s07:176376] mca: base: components_open: found loaded component self
+[cm4r15c06s07:176376] mca: base: components_open: component self open function successful
+[cm4r15c06s07:176376] select: initializing btl component vader
+[cm4r15c06s07:176376] select: init of component vader returned failure
+[cm4r15c06s07:176376] mca: base: close: component vader closed
+[cm4r15c06s07:176376] mca: base: close: unloading component vader
+[cm4r15c06s07:176376] select: initializing btl component tcp
+[cm4r15c06s07:176376] btl: tcp: Searching for exclude address+prefix: 127.0.0.1 / 8
+[cm4r15c06s07:176376] btl: tcp: Found match: 127.0.0.1 (lo)
+[cm4r15c06s07:176376] btl: tcp: Using interface: sppp 
+[cm4r15c06s07:176376] btl:tcp: Attempting to bind to AF_INET port 1024
+[cm4r15c06s07:176376] btl:tcp: Attempting to bind to AF_INET port 1025
+[cm4r15c06s07:176376] btl:tcp: Successfully bound to AF_INET port 1025
+[cm4r15c06s07:176376] btl:tcp: my listening v4 socket is 0.0.0.0:1025
+[cm4r15c06s07:176376] btl:tcp: examining interface em3
+[cm4r15c06s07:176376] btl:tcp: using ipv6 interface em3
+[cm4r15c06s07:176376] btl:tcp: examining interface ib0.8001
+[cm4r15c06s07:176376] btl:tcp: using ipv6 interface ib0.8001
+[cm4r15c06s07:176376] select: init of component tcp returned success
+[cm4r15c06s07:176376] select: initializing btl component self
+[cm4r15c06s07:176376] select: init of component self returned success
+[cm4r15c06s07:176376] mca: bml: Using self btl for send to [[11709,1],1] on node cm4r15c06s07
+[cm4r15c06s07:176376] btl:tcp: path from 10.0.3.139 to 10.0.3.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:176376] btl:tcp: path from 10.0.3.139 to 10.156.155.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:176376] btl:tcp: path from 10.156.155.139 to 10.0.3.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:176376] btl:tcp: path from 10.156.155.139 to 10.156.155.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:176376] mca: bml: Using tcp btl for send to [[11709,1],0] on node cm4r15c06s06
+[cm4r15c06s07:176376] btl:tcp: path from 10.0.3.139 to 10.0.3.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:176376] btl:tcp: path from 10.0.3.139 to 10.156.155.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:176376] btl:tcp: path from 10.156.155.139 to 10.0.3.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:176376] btl:tcp: path from 10.156.155.139 to 10.156.155.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:176376] mca: bml: Using tcp btl for send to [[11709,1],0] on node cm4r15c06s06
+[cm4r15c06s06:86646] mca: bml: Using self btl for send to [[11709,1],0] on node cm4r15c06s06
+[cm4r15c06s06:86646] btl:tcp: path from 10.0.3.138 to 10.0.3.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:86646] btl:tcp: path from 10.0.3.138 to 10.156.155.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:86646] btl:tcp: path from 10.156.155.138 to 10.0.3.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:86646] btl:tcp: path from 10.156.155.138 to 10.156.155.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:86646] mca: bml: Using tcp btl for send to [[11709,1],1] on node cm4r15c06s07
+[cm4r15c06s06:86646] btl:tcp: path from 10.0.3.138 to 10.0.3.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:86646] btl:tcp: path from 10.0.3.138 to 10.156.155.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:86646] btl:tcp: path from 10.156.155.138 to 10.0.3.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:86646] btl:tcp: path from 10.156.155.138 to 10.156.155.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:86646] mca: bml: Using tcp btl for send to [[11709,1],1] on node cm4r15c06s07
+[cm4r15c06s06:86646] btl: tcp: attempting to connect() to [[11709,1],1] address 10.0.3.139 on port 1025
+[cm4r15c06s06:86646] btl:tcp: would block, so allowing background progress
+[cm4r15c06s06:86646] btl:tcp: connect() to 10.0.3.139:1025 completed (complete_connect), sending connect ACK
+[cm4r15c06s07:176376] btl:tcp: now connected to 10.0.3.138, process [[11709,1],0]
+Comb version 0.3.1
+Args  ./comb;8_8_8;-divide;2_1_1;-periodic;1_1_1;-ghost;1_1_1;-vars;2;-comm;cutoff;250;-comm;disable;all;-comm;enable;mpi;-comm;post_recv;wait_all;-comm;post_send;wait_all;-comm;wait_recv;test_all;-comm;wait_send;test_all;-exec;enable;omp;-compute_target_us;26.0;-cycles;100;-print_message_sizes;-print_packing_sizes
+Started rank 0 of 2
+Node cm4r15c06s06
+Compiler "/dss/lrzsys/sys/spack/release/24.4.0/opt/x86_64/intel-oneapi-compilers/2024.1.0-gcc-ibqwgcs/compiler/2024.1/bin/icpx"
+OMP num threads    12
+OMP thread map      0;1;2;3;4;5;6;7;8;9;10;11
+Cart coords         0        0        0
+Message policy cutoff 250
+Post Recv using wait_all method
+Post Send using wait_all method
+Wait Recv using test_all method
+Wait Send using test_all method
+Num cycles        100
+Num vars            2
+ghost_widths        1        1        1
+sizes               8        8        8
+divisions           2        1        1
+periodic            1        1        1
+division map
+map                 0        0        0
+map                 4        8        8
+map                 8                  
+print message and packing sizes to proc file(s)
+Starting test memcpy seq dst Host src Host
+Starting test memcpy omp dst Host src Host
+Starting test Comm mpi Mesh seq Host Buffers seq Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers seq Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers omp Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers omp Host omp Host
+[cm4r15c06s06:86646] mca: base: close: component r2 closed
+[cm4r15c06s06:86646] mca: base: close: unloading component r2
+[cm4r15c06s06:86646] mca: base: close: component tcp closed
+[cm4r15c06s06:86646] mca: base: close: unloading component tcp
+[cm4r15c06s06:86646] mca: base: close: component self closed
+[cm4r15c06s06:86646] mca: base: close: unloading component self
+[cm4r15c06s07:176376] mca: base: close: component r2 closed
+[cm4r15c06s07:176376] mca: base: close: unloading component r2
+[cm4r15c06s07:176376] mca: base: close: component tcp closed
+[cm4r15c06s07:176376] mca: base: close: unloading component tcp
+[cm4r15c06s07:176376] mca: base: close: component self closed
+[cm4r15c06s07:176376] mca: base: close: unloading component self
+===== 08_async1_at12_c12_test_all exit code: 0 =====
+===== 09_async1_at1_c23_test_all =====
+launcher=mpirun --mca plm slurm --hostfile /dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/openmpi/2n2r_c24/msg_x1KiB_y512B_z512B/midcomm/run_020_MPIonly/openmpi_hosts.gY4XkE -np 2 --map-by ppr:1:node:PE=24 --bind-to core --report-bindings
+comb_cmd=./comb 8_8_8 -divide 2_1_1 -periodic 1_1_1 -ghost 1_1_1 -vars 2 -comm cutoff 250 -comm disable all -comm enable mpi  -comm post_recv wait_all -comm post_send wait_all -comm wait_recv test_all -comm wait_send test_all -exec enable omp -compute_target_us 26.0 -cycles 100 -print_message_sizes -print_packing_sizes 
+binding_mode=omp places + reserved async CPUs
+job_metadata_file=job_metadata.log
+[cm4r15c06s06:86852] MCW rank 0 bound to socket 0[core 0[hwt 0-1]], socket 0[core 1[hwt 0-1]], socket 0[core 2[hwt 0-1]], socket 0[core 3[hwt 0-1]], socket 0[core 4[hwt 0-1]], socket 0[core 5[hwt 0-1]], socket 0[core 6[hwt 0-1]], socket 0[core 7[hwt 0-1]], socket 0[core 8[hwt 0-1]], socket 0[core 9[hwt 0-1]], socket 0[core 10[hwt 0-1]], socket 0[core 11[hwt 0-1]], socket 0[core 12[hwt 0-1]], socket 0[core 13[hwt 0-1]], socket 0[core 14[hwt 0-1]], socket 0[core 15[hwt 0-1]], socket 0[core 16[hwt 0-1]], socket 0[core 17[hwt 0-1]], socket 0[core 18[hwt 0-1]], socket 0[core 19[hwt 0-1]], socket 0[core 20[hwt 0-1]], socket 0[core 21[hwt 0-1]], socket 0[core 22[hwt 0-1]], socket 0[core 23[hwt 0-1]]: [BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..][../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..]
+[cm4r15c06s07:176572] MCW rank 1 bound to socket 0[core 0[hwt 0-1]], socket 0[core 1[hwt 0-1]], socket 0[core 2[hwt 0-1]], socket 0[core 3[hwt 0-1]], socket 0[core 4[hwt 0-1]], socket 0[core 5[hwt 0-1]], socket 0[core 6[hwt 0-1]], socket 0[core 7[hwt 0-1]], socket 0[core 8[hwt 0-1]], socket 0[core 9[hwt 0-1]], socket 0[core 10[hwt 0-1]], socket 0[core 11[hwt 0-1]], socket 0[core 12[hwt 0-1]], socket 0[core 13[hwt 0-1]], socket 0[core 14[hwt 0-1]], socket 0[core 15[hwt 0-1]], socket 0[core 16[hwt 0-1]], socket 0[core 17[hwt 0-1]], socket 0[core 18[hwt 0-1]], socket 0[core 19[hwt 0-1]], socket 0[core 20[hwt 0-1]], socket 0[core 21[hwt 0-1]], socket 0[core 22[hwt 0-1]], socket 0[core 23[hwt 0-1]]: [BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/BB/../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..][../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../../..]
+rank=0 host=cm4r15c06s06 bind_mode=omp_places allowed=0-23,112-135 total_cpus_per_rank=24 omp_threads=23 async_threads=1 main_cpus_per_rank=23 main_cpu_list=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 progress_cpu_list=23 reserved_async_cpu_list=23 main_socket_set=0 progress_socket_set=0 main_numa_set=0 progress_numa_set=0 binding_relation=same_numa
+rank=1 host=cm4r15c06s07 bind_mode=omp_places allowed=0-23,112-135 total_cpus_per_rank=24 omp_threads=23 async_threads=1 main_cpus_per_rank=23 main_cpu_list=0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22 progress_cpu_list=23 reserved_async_cpu_list=23 main_socket_set=0 progress_socket_set=0 main_numa_set=0 progress_numa_set=0 binding_relation=same_numa
+rank=0 host=cm4r15c06s06
+rank=1 host=cm4r15c06s07
+runtime_state rank=0 host=cm4r15c06s06 pid=86864 threads=1 Cpus_allowed_list:	0-23,112-135 Mems_allowed_list:	0-1 taskset=pid 86864's current affinity list: 0-23,112-135 
+runtime_state rank=1 host=cm4r15c06s07 pid=176576 threads=1 Cpus_allowed_list:	0-23,112-135 Mems_allowed_list:	0-1 taskset=pid 176576's current affinity list: 0-23,112-135 
+[cm4r15c06s07:176576] mca: base: components_register: registering framework bml components
+[cm4r15c06s07:176576] mca: base: components_register: found loaded component r2
+[cm4r15c06s07:176576] mca: base: components_register: component r2 register function successful
+[cm4r15c06s07:176576] mca: base: components_open: opening bml components
+[cm4r15c06s07:176576] mca: base: components_open: found loaded component r2
+[cm4r15c06s07:176576] mca: base: components_open: component r2 open function successful
+[cm4r15c06s07:176576] mca: base: components_register: registering framework btl components
+[cm4r15c06s07:176576] mca: base: components_register: found loaded component vader
+[cm4r15c06s07:176576] mca: base: components_register: component vader register function successful
+[cm4r15c06s07:176576] mca: base: components_register: found loaded component tcp
+[cm4r15c06s07:176576] mca: base: components_register: component tcp register function successful
+[cm4r15c06s07:176576] mca: base: components_register: found loaded component self
+[cm4r15c06s07:176576] mca: base: components_register: component self register function successful
+[cm4r15c06s07:176576] mca: base: components_open: opening btl components
+[cm4r15c06s07:176576] mca: base: components_open: found loaded component vader
+[cm4r15c06s07:176576] mca: base: components_open: component vader open function successful
+[cm4r15c06s07:176576] mca: base: components_open: found loaded component tcp
+[cm4r15c06s07:176576] mca: base: components_open: component tcp open function successful
+[cm4r15c06s07:176576] mca: base: components_open: found loaded component self
+[cm4r15c06s07:176576] mca: base: components_open: component self open function successful
+[cm4r15c06s07:176576] select: initializing btl component vader
+[cm4r15c06s07:176576] select: init of component vader returned failure
+[cm4r15c06s07:176576] mca: base: close: component vader closed
+[cm4r15c06s07:176576] mca: base: close: unloading component vader
+[cm4r15c06s07:176576] select: initializing btl component tcp
+[cm4r15c06s07:176576] btl: tcp: Searching for exclude address+prefix: 127.0.0.1 / 8
+[cm4r15c06s07:176576] btl: tcp: Found match: 127.0.0.1 (lo)
+[cm4r15c06s07:176576] btl: tcp: Using interface: sppp 
+[cm4r15c06s07:176576] btl:tcp: Attempting to bind to AF_INET port 1024
+[cm4r15c06s07:176576] btl:tcp: Attempting to bind to AF_INET port 1025
+[cm4r15c06s07:176576] btl:tcp: Successfully bound to AF_INET port 1025
+[cm4r15c06s07:176576] btl:tcp: my listening v4 socket is 0.0.0.0:1025
+[cm4r15c06s07:176576] btl:tcp: examining interface em3
+[cm4r15c06s07:176576] btl:tcp: using ipv6 interface em3
+[cm4r15c06s07:176576] btl:tcp: examining interface ib0.8001
+[cm4r15c06s07:176576] btl:tcp: using ipv6 interface ib0.8001
+[cm4r15c06s07:176576] select: init of component tcp returned success
+[cm4r15c06s07:176576] select: initializing btl component self
+[cm4r15c06s07:176576] select: init of component self returned success
+[cm4r15c06s06:86864] mca: base: components_register: registering framework bml components
+[cm4r15c06s06:86864] mca: base: components_register: found loaded component r2
+[cm4r15c06s06:86864] mca: base: components_register: component r2 register function successful
+[cm4r15c06s06:86864] mca: base: components_open: opening bml components
+[cm4r15c06s06:86864] mca: base: components_open: found loaded component r2
+[cm4r15c06s06:86864] mca: base: components_open: component r2 open function successful
+[cm4r15c06s06:86864] mca: base: components_register: registering framework btl components
+[cm4r15c06s06:86864] mca: base: components_register: found loaded component vader
+[cm4r15c06s06:86864] mca: base: components_register: component vader register function successful
+[cm4r15c06s06:86864] mca: base: components_register: found loaded component tcp
+[cm4r15c06s06:86864] mca: base: components_register: component tcp register function successful
+[cm4r15c06s06:86864] mca: base: components_register: found loaded component self
+[cm4r15c06s06:86864] mca: base: components_register: component self register function successful
+[cm4r15c06s06:86864] mca: base: components_open: opening btl components
+[cm4r15c06s06:86864] mca: base: components_open: found loaded component vader
+[cm4r15c06s06:86864] mca: base: components_open: component vader open function successful
+[cm4r15c06s06:86864] mca: base: components_open: found loaded component tcp
+[cm4r15c06s06:86864] mca: base: components_open: component tcp open function successful
+[cm4r15c06s06:86864] mca: base: components_open: found loaded component self
+[cm4r15c06s06:86864] mca: base: components_open: component self open function successful
+[cm4r15c06s06:86864] select: initializing btl component vader
+[cm4r15c06s06:86864] select: init of component vader returned failure
+[cm4r15c06s06:86864] mca: base: close: component vader closed
+[cm4r15c06s06:86864] mca: base: close: unloading component vader
+[cm4r15c06s06:86864] select: initializing btl component tcp
+[cm4r15c06s06:86864] btl: tcp: Searching for exclude address+prefix: 127.0.0.1 / 8
+[cm4r15c06s06:86864] btl: tcp: Found match: 127.0.0.1 (lo)
+[cm4r15c06s06:86864] btl: tcp: Using interface: sppp 
+[cm4r15c06s06:86864] btl:tcp: Attempting to bind to AF_INET port 1024
+[cm4r15c06s06:86864] btl:tcp: Successfully bound to AF_INET port 1024
+[cm4r15c06s06:86864] btl:tcp: my listening v4 socket is 0.0.0.0:1024
+[cm4r15c06s06:86864] btl:tcp: examining interface em3
+[cm4r15c06s06:86864] btl:tcp: using ipv6 interface em3
+[cm4r15c06s06:86864] btl:tcp: examining interface ib0.8001
+[cm4r15c06s06:86864] btl:tcp: using ipv6 interface ib0.8001
+[cm4r15c06s06:86864] select: init of component tcp returned success
+[cm4r15c06s06:86864] select: initializing btl component self
+[cm4r15c06s06:86864] select: init of component self returned success
+[cm4r15c06s06:86864] mca: bml: Using self btl for send to [[11413,1],0] on node cm4r15c06s06
+[cm4r15c06s06:86864] btl:tcp: path from 10.0.3.138 to 10.0.3.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:86864] btl:tcp: path from 10.0.3.138 to 10.156.155.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:86864] btl:tcp: path from 10.156.155.138 to 10.0.3.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:86864] btl:tcp: path from 10.156.155.138 to 10.156.155.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:86864] mca: bml: Using tcp btl for send to [[11413,1],1] on node cm4r15c06s07
+[cm4r15c06s06:86864] btl:tcp: path from 10.0.3.138 to 10.0.3.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:86864] btl:tcp: path from 10.0.3.138 to 10.156.155.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:86864] btl:tcp: path from 10.156.155.138 to 10.0.3.139: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s06:86864] btl:tcp: path from 10.156.155.138 to 10.156.155.139: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s06:86864] mca: bml: Using tcp btl for send to [[11413,1],1] on node cm4r15c06s07
+[cm4r15c06s07:176576] mca: bml: Using self btl for send to [[11413,1],1] on node cm4r15c06s07
+[cm4r15c06s07:176576] btl:tcp: path from 10.0.3.139 to 10.0.3.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:176576] btl:tcp: path from 10.0.3.139 to 10.156.155.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:176576] btl:tcp: path from 10.156.155.139 to 10.0.3.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:176576] btl:tcp: path from 10.156.155.139 to 10.156.155.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:176576] mca: bml: Using tcp btl for send to [[11413,1],0] on node cm4r15c06s06
+[cm4r15c06s07:176576] btl:tcp: path from 10.0.3.139 to 10.0.3.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:176576] btl:tcp: path from 10.0.3.139 to 10.156.155.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:176576] btl:tcp: path from 10.156.155.139 to 10.0.3.138: IPV4 PRIVATE DIFFERENT NETWORK
+[cm4r15c06s07:176576] btl:tcp: path from 10.156.155.139 to 10.156.155.138: IPV4 PRIVATE SAME NETWORK
+[cm4r15c06s07:176576] mca: bml: Using tcp btl for send to [[11413,1],0] on node cm4r15c06s06
+[cm4r15c06s06:86864] btl: tcp: attempting to connect() to [[11413,1],1] address 10.0.3.139 on port 1025
+[cm4r15c06s06:86864] btl:tcp: would block, so allowing background progress
+[cm4r15c06s06:86864] btl:tcp: connect() to 10.0.3.139:1025 completed (complete_connect), sending connect ACK
+[cm4r15c06s07:176576] btl:tcp: now connected to 10.0.3.138, process [[11413,1],0]
+Comb version 0.3.1
+Args  ./comb;8_8_8;-divide;2_1_1;-periodic;1_1_1;-ghost;1_1_1;-vars;2;-comm;cutoff;250;-comm;disable;all;-comm;enable;mpi;-comm;post_recv;wait_all;-comm;post_send;wait_all;-comm;wait_recv;test_all;-comm;wait_send;test_all;-exec;enable;omp;-compute_target_us;26.0;-cycles;100;-print_message_sizes;-print_packing_sizes
+Started rank 0 of 2
+Node cm4r15c06s06
+Compiler "/dss/lrzsys/sys/spack/release/24.4.0/opt/x86_64/intel-oneapi-compilers/2024.1.0-gcc-ibqwgcs/compiler/2024.1/bin/icpx"
+OMP num threads    23
+OMP thread map      0;1;2;3;4;5;6;7;8;9;10;11;12;13;14;15;16;17;18;19;20;21;22
+Cart coords         0        0        0
+Message policy cutoff 250
+Post Recv using wait_all method
+Post Send using wait_all method
+Wait Recv using test_all method
+Wait Send using test_all method
+Num cycles        100
+Num vars            2
+ghost_widths        1        1        1
+sizes               8        8        8
+divisions           2        1        1
+periodic            1        1        1
+division map
+map                 0        0        0
+map                 4        8        8
+map                 8                  
+print message and packing sizes to proc file(s)
+Starting test memcpy seq dst Host src Host
+Starting test memcpy omp dst Host src Host
+Starting test Comm mpi Mesh seq Host Buffers seq Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers seq Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers omp Host seq Host
+Starting test Comm mpi Mesh omp Host Buffers omp Host omp Host
+[cm4r15c06s06:86864] mca: base: close: component r2 closed
+[cm4r15c06s06:86864] mca: base: close: unloading component r2
+[cm4r15c06s06:86864] mca: base: close: component tcp closed
+[cm4r15c06s06:86864] mca: base: close: unloading component tcp
+[cm4r15c06s06:86864] mca: base: close: component self closed
+[cm4r15c06s06:86864] mca: base: close: unloading component self
+[cm4r15c06s07:176576] mca: base: close: component r2 closed
+[cm4r15c06s07:176576] mca: base: close: unloading component r2
+[cm4r15c06s07:176576] mca: base: close: component tcp closed
+[cm4r15c06s07:176576] mca: base: close: unloading component tcp
+[cm4r15c06s07:176576] mca: base: close: component self closed
+[cm4r15c06s07:176576] mca: base: close: unloading component self
+===== 09_async1_at1_c23_test_all exit code: 0 =====
+All cases done.

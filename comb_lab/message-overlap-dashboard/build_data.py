@@ -11,6 +11,9 @@ ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT.parent))
 from analyze_overlap import parse_summary
 from summarize_message_overlap import CONFIGURATIONS, MPI_NAMES, resolve_run_name
+from supplement_runs import include_supplements
+from completed_runs import include_completed, cohort_counts
+from run_exclusions import apply_exclusions
 
 CASES = {"01": ("wait_all", 24), "03": ("test_all", 24),
          "06": ("wait_all", 23), "09": ("test_all", 23)}
@@ -22,7 +25,7 @@ BASE = ROOT.parent / "generated/cm4_inter"
 CASE_EXCLUSIONS = {("mpich", "msg_x1KiB_y512B_z512B", "06"): {"run_006", "run_014"}}
 
 
-def selections(text):
+def selections(text, with_completed=True, with_exclusions=True):
     configs = {xyz: (payload, directory) for xyz, payload, directory, _ in CONFIGURATIONS}
     selected = {}
     for line in text.split("<!--", 1)[0].splitlines():
@@ -58,6 +61,11 @@ def selections(text):
             raise ValueError("Expected matching valid-run Case 01/06 tables: " + str(location.groups()))
         selected[location.groups()].update(run_names=list(expected["01"]), baseline_us=float(baseline[1]),
             source="retest", expected=expected, summaries=summaries)
+    include_supplements(selected, BASE)
+    if with_completed:
+        include_completed(selected, BASE)
+        if with_exclusions:
+            apply_exclusions(selected)
     return sorted(selected.values(), key=lambda item: int(item["payload"].split(" B")[0].replace(",", "")))
 
 
@@ -99,30 +107,36 @@ def write_csv(path, rows):
         writer.writerows(rows)
 
 
-def main():
-    entries = selections((ROOT.parent / "实验记录" / "消息大小影响.md").read_text())
+def main(output_dir=ROOT, entries=None):
+    entries = entries if entries is not None else selections((ROOT.parent / "实验记录" / "消息大小影响.md").read_text())
     singles, raw = [], []
     comparisons = {name: [] for name in PAIRS}
     for entry in entries:
+        # Validate the documented historical cohort before adding or excluding runs.
+        # Its old summary must not be compared against the newly merged mean.
+        for case, expected in entry['summaries'].items():
+            values = [sample(entry, run, case)['overlap'] for run in entry['expected'][case]]
+            if any(abs(a - b) > 0.015 for a, b in zip((min(values), mean(values), max(values)), expected)):
+                raise ValueError(f"Retest summary mismatch: {entry['mpi']}/{entry['directory']}/{case}")
         meta = dict(payload=entry["payload"].split("(", 1)[1].rstrip(")"), mpi=entry["mpi"],
             directory=entry["directory"], runs=", ".join(entry["run_names"]),
             run_count=len(entry["run_names"]), source=entry["source"], baseline_us=entry["baseline_us"],
             normalization="fixed_old_baseline" if entry["baseline_us"] is not None else "measured_compute")
+        meta.update(excluded_run_count=len(entry.get('user_excluded_runs', [])),
+                    excluded_runs=', '.join(entry.get('user_excluded_runs', [])))
         samples = {case: [sample(entry, run, case) for run in entry["run_names"]] for case in CASES}
         cycle_counts = sorted({value["cycles"] for values in samples.values() for value in values})
         meta["cycles"] = ", ".join(str(count) for count in cycle_counts)
         for case, values in samples.items():
             overlaps = [value["overlap"] for value in values]
             stats = min(overlaps), mean(overlaps), max(overlaps)
-            expected = entry["summaries"].get(case)
-            if expected and any(abs(a - b) > 0.015 for a, b in zip(stats, expected)):
-                raise ValueError(f"Retest summary mismatch: {entry['mpi']}/{entry['directory']}/{case}: {stats} vs {expected}")
             excluded = CASE_EXCLUSIONS.get((entry["mpi"], entry["directory"], case), set())
             values = [value for value in values if value["run"] not in excluded]
             samples[case] = values
             overlaps = [value["overlap"] for value in values]
             stats = min(overlaps), mean(overlaps), max(overlaps)
-            case_meta = dict(meta, runs=", ".join(v["run"] for v in values), run_count=len(values))
+            case_meta = dict(meta, runs=", ".join(v["run"] for v in values), run_count=len(values),
+                             **cohort_counts(entry, [v['run'] for v in values]))
             singles.append(dict(case_meta, case=case, min=stats[0], mean=stats[1], max=stats[2],
                 anomaly=stats[0] < 0 or stats[2] > 100 or stats[2] - stats[0] > 30))
             raw.extend(dict(case_meta, **value) for value in values)
@@ -132,7 +146,8 @@ def main():
             paired = [(left, b_by_run[left["run"]]) for left in a if left["run"] in b_by_run]
             differences = [right["overlap"] - left["overlap"] for left, right in paired]
             pair_meta = dict(meta, runs=", ".join(left["run"] for left, _ in paired),
-                             run_count=len(paired), first_run_count=len(a), second_run_count=len(b))
+                             run_count=len(paired), first_run_count=len(a), second_run_count=len(b),
+                             **cohort_counts(entry, [left['run'] for left, _ in paired]))
             comparisons[name].append(dict(pair_meta, **{
                 first + "_overlap": mean(row["overlap"] for row in a),
                 second + "_overlap": mean(row["overlap"] for row in b),
@@ -143,12 +158,17 @@ def main():
     # Do not publish partial data if any raw sample or documented summary fails validation.
     datasets = dict(OVERLAP_DATA=singles, **comparisons)
     output = "".join(f"const {name} = {json.dumps(data, ensure_ascii=False, indent=2, allow_nan=False)};\n" for name, data in datasets.items())
-    (ROOT / "data.js").write_text(output)
-    write_csv(ROOT / "overlap-current.csv", singles)
-    write_csv(ROOT / "overlap-runs-current.csv", raw)
+    (output_dir / "data.js").write_text(output)
+    (output_dir / "cohorts.json").write_text(json.dumps([
+        {key: entry.get(key) for key in ('mpi', 'directory', 'run_names', 'added_runs',
+                                        'excluded_incompatible_runs', 'source', 'baseline_us',
+                                        'run_names_before_filter', 'user_excluded_runs')}
+        for entry in entries], ensure_ascii=False, indent=2) + '\n')
+    write_csv(output_dir / "overlap-current.csv", singles)
+    write_csv(output_dir / "overlap-runs-current.csv", raw)
     for name, (first, second) in PAIRS.items():
-        write_csv(ROOT / f"case{first}_vs_case{second}-current.csv", comparisons[name])
-    retests = [entry for entry in entries if entry["source"] == "retest"]
+        write_csv(output_dir / f"case{first}_vs_case{second}-current.csv", comparisons[name])
+    retests = [entry for entry in entries if entry["source"].startswith("retest")]
     print(f"Built {len(singles)} case points and {len(raw)} run/case samples; {len(retests)} retest points override original selections.")
     print("Validated all documented Case 01/06 retest rows and min/mean/max summaries against raw timings.")
     for entry in retests:

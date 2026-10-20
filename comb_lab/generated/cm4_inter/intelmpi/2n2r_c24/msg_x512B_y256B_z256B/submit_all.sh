@@ -5,123 +5,87 @@ set -euo pipefail
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 submitted=0
 
-job_dir=$(dirname "${SCRIPT_DIR}/midcomm/run_027/run.sh")
-echo "Submitting midcomm/run_027/run.sh"
-output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/midcomm/run_027/run.sh")")
+job_dir=$(dirname "${SCRIPT_DIR}/midcomm/run_044_MPIonly/run.sh")
+echo "Submitting midcomm/run_044_MPIonly/run.sh"
+output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/midcomm/run_044_MPIonly/run.sh")")
 echo "  $output"
 submitted=$((submitted + 1))
 
-job_dir=$(dirname "${SCRIPT_DIR}/no_midcomm/run_027/run.sh")
-echo "Submitting no_midcomm/run_027/run.sh"
-output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/no_midcomm/run_027/run.sh")")
+job_dir=$(dirname "${SCRIPT_DIR}/no_midcomm/run_044_MPIonly/run.sh")
+echo "Submitting no_midcomm/run_044_MPIonly/run.sh"
+output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/no_midcomm/run_044_MPIonly/run.sh")")
 echo "  $output"
 submitted=$((submitted + 1))
 
-job_dir=$(dirname "${SCRIPT_DIR}/midcomm/run_028/run.sh")
-echo "Submitting midcomm/run_028/run.sh"
-output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/midcomm/run_028/run.sh")")
+job_dir=$(dirname "${SCRIPT_DIR}/midcomm/run_045_MPIonly/run.sh")
+echo "Submitting midcomm/run_045_MPIonly/run.sh"
+output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/midcomm/run_045_MPIonly/run.sh")")
 echo "  $output"
 submitted=$((submitted + 1))
 
-job_dir=$(dirname "${SCRIPT_DIR}/no_midcomm/run_028/run.sh")
-echo "Submitting no_midcomm/run_028/run.sh"
-output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/no_midcomm/run_028/run.sh")")
+job_dir=$(dirname "${SCRIPT_DIR}/no_midcomm/run_045_MPIonly/run.sh")
+echo "Submitting no_midcomm/run_045_MPIonly/run.sh"
+output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/no_midcomm/run_045_MPIonly/run.sh")")
 echo "  $output"
 submitted=$((submitted + 1))
 
-job_dir=$(dirname "${SCRIPT_DIR}/midcomm/run_029/run.sh")
-echo "Submitting midcomm/run_029/run.sh"
-output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/midcomm/run_029/run.sh")")
+job_dir=$(dirname "${SCRIPT_DIR}/midcomm/run_046_MPIonly/run.sh")
+echo "Submitting midcomm/run_046_MPIonly/run.sh"
+output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/midcomm/run_046_MPIonly/run.sh")")
 echo "  $output"
 submitted=$((submitted + 1))
 
-job_dir=$(dirname "${SCRIPT_DIR}/no_midcomm/run_029/run.sh")
-echo "Submitting no_midcomm/run_029/run.sh"
-output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/no_midcomm/run_029/run.sh")")
+job_dir=$(dirname "${SCRIPT_DIR}/no_midcomm/run_046_MPIonly/run.sh")
+echo "Submitting no_midcomm/run_046_MPIonly/run.sh"
+output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/no_midcomm/run_046_MPIonly/run.sh")")
 echo "  $output"
 submitted=$((submitted + 1))
 
-job_dir=$(dirname "${SCRIPT_DIR}/midcomm/run_030/run.sh")
-echo "Submitting midcomm/run_030/run.sh"
-output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/midcomm/run_030/run.sh")")
+job_dir=$(dirname "${SCRIPT_DIR}/midcomm/run_047_MPIonly/run.sh")
+echo "Submitting midcomm/run_047_MPIonly/run.sh"
+output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/midcomm/run_047_MPIonly/run.sh")")
 echo "  $output"
 submitted=$((submitted + 1))
 
-job_dir=$(dirname "${SCRIPT_DIR}/no_midcomm/run_030/run.sh")
-echo "Submitting no_midcomm/run_030/run.sh"
-output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/no_midcomm/run_030/run.sh")")
+job_dir=$(dirname "${SCRIPT_DIR}/no_midcomm/run_047_MPIonly/run.sh")
+echo "Submitting no_midcomm/run_047_MPIonly/run.sh"
+output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/no_midcomm/run_047_MPIonly/run.sh")")
 echo "  $output"
 submitted=$((submitted + 1))
 
-job_dir=$(dirname "${SCRIPT_DIR}/midcomm/run_031/run.sh")
-echo "Submitting midcomm/run_031/run.sh"
-output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/midcomm/run_031/run.sh")")
+job_dir=$(dirname "${SCRIPT_DIR}/midcomm/run_048_MPIonly/run.sh")
+echo "Submitting midcomm/run_048_MPIonly/run.sh"
+output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/midcomm/run_048_MPIonly/run.sh")")
 echo "  $output"
 submitted=$((submitted + 1))
 
-job_dir=$(dirname "${SCRIPT_DIR}/no_midcomm/run_031/run.sh")
-echo "Submitting no_midcomm/run_031/run.sh"
-output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/no_midcomm/run_031/run.sh")")
+job_dir=$(dirname "${SCRIPT_DIR}/no_midcomm/run_048_MPIonly/run.sh")
+echo "Submitting no_midcomm/run_048_MPIonly/run.sh"
+output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/no_midcomm/run_048_MPIonly/run.sh")")
 echo "  $output"
 submitted=$((submitted + 1))
 
-job_dir=$(dirname "${SCRIPT_DIR}/midcomm/run_032/run.sh")
-echo "Submitting midcomm/run_032/run.sh"
-output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/midcomm/run_032/run.sh")")
+job_dir=$(dirname "${SCRIPT_DIR}/midcomm/run_049_MPIonly/run.sh")
+echo "Submitting midcomm/run_049_MPIonly/run.sh"
+output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/midcomm/run_049_MPIonly/run.sh")")
 echo "  $output"
 submitted=$((submitted + 1))
 
-job_dir=$(dirname "${SCRIPT_DIR}/no_midcomm/run_032/run.sh")
-echo "Submitting no_midcomm/run_032/run.sh"
-output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/no_midcomm/run_032/run.sh")")
+job_dir=$(dirname "${SCRIPT_DIR}/no_midcomm/run_049_MPIonly/run.sh")
+echo "Submitting no_midcomm/run_049_MPIonly/run.sh"
+output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/no_midcomm/run_049_MPIonly/run.sh")")
 echo "  $output"
 submitted=$((submitted + 1))
 
-job_dir=$(dirname "${SCRIPT_DIR}/midcomm/run_033/run.sh")
-echo "Submitting midcomm/run_033/run.sh"
-output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/midcomm/run_033/run.sh")")
+job_dir=$(dirname "${SCRIPT_DIR}/midcomm/run_050_MPIonly/run.sh")
+echo "Submitting midcomm/run_050_MPIonly/run.sh"
+output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/midcomm/run_050_MPIonly/run.sh")")
 echo "  $output"
 submitted=$((submitted + 1))
 
-job_dir=$(dirname "${SCRIPT_DIR}/no_midcomm/run_033/run.sh")
-echo "Submitting no_midcomm/run_033/run.sh"
-output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/no_midcomm/run_033/run.sh")")
-echo "  $output"
-submitted=$((submitted + 1))
-
-job_dir=$(dirname "${SCRIPT_DIR}/midcomm/run_034/run.sh")
-echo "Submitting midcomm/run_034/run.sh"
-output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/midcomm/run_034/run.sh")")
-echo "  $output"
-submitted=$((submitted + 1))
-
-job_dir=$(dirname "${SCRIPT_DIR}/no_midcomm/run_034/run.sh")
-echo "Submitting no_midcomm/run_034/run.sh"
-output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/no_midcomm/run_034/run.sh")")
-echo "  $output"
-submitted=$((submitted + 1))
-
-job_dir=$(dirname "${SCRIPT_DIR}/midcomm/run_035/run.sh")
-echo "Submitting midcomm/run_035/run.sh"
-output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/midcomm/run_035/run.sh")")
-echo "  $output"
-submitted=$((submitted + 1))
-
-job_dir=$(dirname "${SCRIPT_DIR}/no_midcomm/run_035/run.sh")
-echo "Submitting no_midcomm/run_035/run.sh"
-output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/no_midcomm/run_035/run.sh")")
-echo "  $output"
-submitted=$((submitted + 1))
-
-job_dir=$(dirname "${SCRIPT_DIR}/midcomm/run_036/run.sh")
-echo "Submitting midcomm/run_036/run.sh"
-output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/midcomm/run_036/run.sh")")
-echo "  $output"
-submitted=$((submitted + 1))
-
-job_dir=$(dirname "${SCRIPT_DIR}/no_midcomm/run_036/run.sh")
-echo "Submitting no_midcomm/run_036/run.sh"
-output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/no_midcomm/run_036/run.sh")")
+job_dir=$(dirname "${SCRIPT_DIR}/no_midcomm/run_050_MPIonly/run.sh")
+echo "Submitting no_midcomm/run_050_MPIonly/run.sh"
+output=$(cd "$job_dir" && sbatch "$(basename "/dss/dsshome1/02/ge63neh3/comb_lab/generated/cm4_inter/intelmpi/2n2r_c24/msg_x512B_y256B_z256B/no_midcomm/run_050_MPIonly/run.sh")")
 echo "  $output"
 submitted=$((submitted + 1))
 

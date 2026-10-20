@@ -6,7 +6,7 @@
   const colors = ['#087f73', '#e25d3f'];
   const cohorts = ['no_polling', 'polling'];
   const format = value => value == null ? '—' : value.toFixed(2);
-  const stats = group => group.n ? [group.min, group.overlap, group.max].map(format).join(' / ') : '暂无结果';
+  const stats = group => group.n ? [group.min, group.overlap, group.max].map(format).join(' / ') : 'No results';
   const ranges = {
     id: 'pollingRanges',
     afterDatasetsDraw(chart) {
@@ -76,10 +76,10 @@
         });
       return tr;
     }));
-    document.getElementById('polling-status').textContent = `Case ${caseSelect.value}：${selected.filter(row => row.no_polling.n && row.polling.n).length}/${selected.length} 个消息大小可对比。数据取自最近一次生成的快照；各 case 按完整计时结果独立计数。`;
+    document.getElementById('polling-status').textContent = `Case ${caseSelect.value}: ${selected.filter(row => row.no_polling.n && row.polling.n).length}/${selected.length} message sizes have both cohorts available. Data come from the latest generated snapshot; each Case counts complete timing results independently.`;
     const missing = selected.flatMap(row => cohorts.flatMap(key => row[key].missing.map(issue => {
       const li = document.createElement('li');
-      li.textContent = `${row.payload} · ${key === 'polling' ? '有 polling' : '无 polling'} · ${issue}`;
+      li.textContent = `${row.payload} · ${key === 'polling' ? 'Polling' : 'No polling'} · ${issue}`;
       return li;
     })));
     document.getElementById('polling-missing').replaceChildren(...missing);

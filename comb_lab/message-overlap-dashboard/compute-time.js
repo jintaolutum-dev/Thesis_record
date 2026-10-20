@@ -64,8 +64,8 @@ function update() {
   const rows = COMPUTE_TIME_DATA.filter(r => r.case === caseSelect.value && r.policy === policySelect.value).map(r => combined || metricSelect.value === 'overlap' ? r : {...r, ...r.metrics[metricSelect.value]});
   chart.options.scales.y.title.text = combined ? 'Overlap (%) · Bars' : metricLabels[metricSelect.value];
   chart.options.scales.yHidden.display = combined;
-  document.getElementById('table-title').textContent = combined ? '统计数据 · Overlap 与隐藏 Tcomm' : '统计数据 · ' + metricLabels[metricSelect.value];
-  document.getElementById('baseline').textContent = '固定 Tcomm（原始 Case 06 基准，同一执行策略下各组共用）: ' + rows.filter(r => r.factor === '1').map(r => `${r.payload}: ${r.tcomm_us == null ? '不可用' : r.tcomm_us.toFixed(3) + ' μs'}`).join('；');
+  document.getElementById('table-title').textContent = combined ? 'Statistics · Overlap and Hidden Tcomm' : 'Statistics · ' + metricLabels[metricSelect.value];
+  document.getElementById('baseline').textContent = 'Fixed Tcomm (original Case 06 baseline, shared across groups for the same execution policy): ' + rows.filter(r => r.factor === '1').map(r => `${r.payload}: ${r.tcomm_us == null ? 'Unavailable' : r.tcomm_us.toFixed(3) + ' μs'}`).join('; ');
   chart.data.datasets = ['0.5','1','2'].map((factor, i) => {
     const selected = payloads.map(payload => rows.find(r => r.payload === payload && r.factor === factor));
     return {label:factor === '1' ? 'Tcomm (original configuration)' : `${factor}T communication`, type:'bar',yAxisID:'y',order:2,data:selected.map(r => r.mean), rows:selected,

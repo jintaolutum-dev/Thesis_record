@@ -1,0 +1,128 @@
+Comb version 0.3.1
+Args  ./comb;32_32_32;-divide;2_1_1;-periodic;1_1_1;-ghost;1_1_1;-vars;256;-comm;cutoff;250;-comm;disable;all;-comm;enable;mpi;-comm;post_recv;wait_all;-comm;post_send;wait_all;-comm;wait_recv;wait_all;-comm;wait_send;wait_all;-exec;enable;omp;-compute_target_us;0;-cycles;50;-print_message_sizes;-print_packing_sizes
+Started rank 0 of 2
+Node cm4r15c06s07
+Compiler "/usr/bin/c++"
+OMP num threads    23
+OMP thread map      0;1;2;3;4;5;6;7;8;9;10;11;112;113;114;115;116;117;118;119;120;121;122
+Cart coords         0        0        0
+Message policy cutoff 250
+Post Recv using wait_all method
+Post Send using wait_all method
+Wait Recv using wait_all method
+Wait Send using wait_all method
+Num cycles         50
+Num vars          256
+ghost_widths        1        1        1
+sizes              32       32       32
+divisions           2        1        1
+periodic            1        1        1
+division map
+map                 0        0        0
+map                16       32       32
+map                32                  
+print message and packing sizes to proc file(s)
+send:    0 partner    0 tag    540672 items   4325376 bytes
+                    256 vars        16 items/var       128 bytes/var
+                    256 vars        16 items/var       128 bytes/var
+                    256 vars        16 items/var       128 bytes/var
+                    256 vars        16 items/var       128 bytes/var
+                    256 vars       512 items/var      4096 bytes/var
+                    256 vars       512 items/var      4096 bytes/var
+                    256 vars       512 items/var      4096 bytes/var
+                    256 vars       512 items/var      4096 bytes/var
+send:    1 partner    1 tag    591872 items   4734976 bytes
+                    256 vars         1 items/var         8 bytes/var
+                    256 vars         1 items/var         8 bytes/var
+                    256 vars         1 items/var         8 bytes/var
+                    256 vars         1 items/var         8 bytes/var
+                    256 vars         1 items/var         8 bytes/var
+                    256 vars         1 items/var         8 bytes/var
+                    256 vars         1 items/var         8 bytes/var
+                    256 vars         1 items/var         8 bytes/var
+                    256 vars        32 items/var       256 bytes/var
+                    256 vars        32 items/var       256 bytes/var
+                    256 vars        32 items/var       256 bytes/var
+                    256 vars        32 items/var       256 bytes/var
+                    256 vars        32 items/var       256 bytes/var
+                    256 vars        32 items/var       256 bytes/var
+                    256 vars        32 items/var       256 bytes/var
+                    256 vars        32 items/var       256 bytes/var
+                    256 vars      1024 items/var      8192 bytes/var
+                    256 vars      1024 items/var      8192 bytes/var
+recv:    0 partner    0 tag    540672 items   4325376 bytes
+                    256 vars        16 items/var       128 bytes/var
+                    256 vars        16 items/var       128 bytes/var
+                    256 vars        16 items/var       128 bytes/var
+                    256 vars        16 items/var       128 bytes/var
+                    256 vars       512 items/var      4096 bytes/var
+                    256 vars       512 items/var      4096 bytes/var
+                    256 vars       512 items/var      4096 bytes/var
+                    256 vars       512 items/var      4096 bytes/var
+recv:    1 partner    0 tag    591872 items   4734976 bytes
+                    256 vars         1 items/var         8 bytes/var
+                    256 vars         1 items/var         8 bytes/var
+                    256 vars         1 items/var         8 bytes/var
+                    256 vars         1 items/var         8 bytes/var
+                    256 vars         1 items/var         8 bytes/var
+                    256 vars         1 items/var         8 bytes/var
+                    256 vars         1 items/var         8 bytes/var
+                    256 vars         1 items/var         8 bytes/var
+                    256 vars        32 items/var       256 bytes/var
+                    256 vars        32 items/var       256 bytes/var
+                    256 vars        32 items/var       256 bytes/var
+                    256 vars        32 items/var       256 bytes/var
+                    256 vars        32 items/var       256 bytes/var
+                    256 vars        32 items/var       256 bytes/var
+                    256 vars        32 items/var       256 bytes/var
+                    256 vars        32 items/var       256 bytes/var
+                    256 vars      1024 items/var      8192 bytes/var
+                    256 vars      1024 items/var      8192 bytes/var
+Starting test memcpy seq dst Host src Host
+copy_sync-256-20808-8: num 50 avg 0.003648750 s min 0.003603563 s max 0.003805508 s
+Starting test memcpy omp dst Host src Host
+copy_sync-256-20808-8: num 50 avg 0.001502710 s min 0.001488426 s max 0.001578532 s
+Starting test Comm mpi Mesh seq Host Buffers seq Host seq Host
+pre-comm:   num 50 avg 0.001885722 s min 0.001861891 s max 0.001942587 s
+post-recv:  num 50 avg 0.000013890 s min 0.000012272 s max 0.000022946 s
+post-send:  num 50 avg 0.002820198 s min 0.002668465 s max 0.003869126 s
+mid-comm:   num 50 avg 0.000000088 s min 0.000000082 s max 0.000000094 s
+wait-recv:  num 50 avg 0.005968648 s min 0.004456546 s max 0.006518813 s
+wait-send:  num 50 avg 0.000212863 s min 0.000201138 s max 0.000230276 s
+post-comm:  num 50 avg 0.002067101 s min 0.002032904 s max 0.002178699 s
+start-up:   num 1 avg 0.012668792 s min 0.012668792 s max 0.012668792 s
+test-comm:  num 1 avg 0.388146141 s min 0.388146141 s max 0.388146141 s
+bench-comm: num 1 avg 0.648883067 s min 0.648883067 s max 0.648883067 s
+Starting test Comm mpi Mesh omp Host Buffers seq Host seq Host
+pre-comm:   num 50 avg 0.001339019 s min 0.001324060 s max 0.001418962 s
+post-recv:  num 50 avg 0.000018308 s min 0.000013670 s max 0.000046640 s
+post-send:  num 50 avg 0.003786612 s min 0.003543398 s max 0.006918595 s
+mid-comm:   num 50 avg 0.000000093 s min 0.000000084 s max 0.000000110 s
+wait-recv:  num 50 avg 0.005947032 s min 0.003167264 s max 0.006896190 s
+wait-send:  num 50 avg 0.000208355 s min 0.000196125 s max 0.000223452 s
+post-comm:  num 50 avg 0.001395562 s min 0.001375591 s max 0.001599772 s
+start-up:   num 1 avg 0.001746525 s min 0.001746525 s max 0.001746525 s
+test-comm:  num 1 avg 0.099482399 s min 0.099482399 s max 0.099482399 s
+bench-comm: num 1 avg 0.636200529 s min 0.636200529 s max 0.636200529 s
+Starting test Comm mpi Mesh omp Host Buffers omp Host seq Host
+pre-comm:   num 50 avg 0.001336184 s min 0.001321975 s max 0.001363731 s
+post-recv:  num 50 avg 0.000016566 s min 0.000012909 s max 0.000035945 s
+post-send:  num 50 avg 0.002843260 s min 0.002625970 s max 0.003707473 s
+mid-comm:   num 50 avg 0.000000088 s min 0.000000054 s max 0.000000107 s
+wait-recv:  num 50 avg 0.005357825 s min 0.004382148 s max 0.006127840 s
+wait-send:  num 50 avg 0.000284415 s min 0.000260738 s max 0.000306589 s
+post-comm:  num 50 avg 0.001372637 s min 0.001355121 s max 0.001398715 s
+start-up:   num 1 avg 0.001764366 s min 0.001764366 s max 0.001764366 s
+test-comm:  num 1 avg 0.086120949 s min 0.086120949 s max 0.086120949 s
+bench-comm: num 1 avg 0.561003414 s min 0.561003414 s max 0.561003414 s
+Starting test Comm mpi Mesh omp Host Buffers omp Host omp Host
+pre-comm:   num 50 avg 0.001360883 s min 0.001339633 s max 0.001441456 s
+post-recv:  num 50 avg 0.000017099 s min 0.000012672 s max 0.000042422 s
+post-send:  num 50 avg 0.002949238 s min 0.002633298 s max 0.003806626 s
+mid-comm:   num 50 avg 0.000000090 s min 0.000000055 s max 0.000000122 s
+wait-recv:  num 50 avg 0.005246846 s min 0.003998928 s max 0.006419617 s
+wait-send:  num 50 avg 0.000284859 s min 0.000266150 s max 0.000309274 s
+post-comm:  num 50 avg 0.001403144 s min 0.001381918 s max 0.001427058 s
+start-up:   num 1 avg 0.001740053 s min 0.001740053 s max 0.001740053 s
+test-comm:  num 1 avg 0.086116972 s min 0.086116972 s max 0.086116972 s
+bench-comm: num 1 avg 0.563455746 s min 0.563455746 s max 0.563455746 s
